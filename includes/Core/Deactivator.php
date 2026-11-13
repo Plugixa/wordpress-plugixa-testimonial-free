@@ -22,5 +22,7 @@ class Deactivator {
 
     private static function clear_scheduled_events(): void {
         wp_clear_scheduled_hook('plugixatestimonial_daily_cleanup');
+        // Review-platform sync, scheduled by the premium review importers when it is on.
+        wp_clear_scheduled_hook('plugixatestimonial_review_sync');
     }
 }

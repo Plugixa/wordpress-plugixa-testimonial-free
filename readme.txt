@@ -4,7 +4,7 @@ Tags: testimonials, customer reviews, star ratings, testimonial slider, social p
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 1.0.3
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -61,7 +61,10 @@ Nothing appears on your site until you say so. Every testimonial moves through a
 
 = Plugixa Testimonial Pro Features =
 
-* Google Reviews import - find your business and bring its Google reviews in as testimonials, using your own Google Places API key
+* Google Reviews import - connect your Google Business Profile to bring in all of your reviews, or search any business with your own Google Places API key
+* Facebook Reviews import - bring in your Facebook Page's reviews through your own Meta app
+* WooCommerce Reviews import - turn approved product reviews into testimonials, filtered by rating, category or verified owners
+* Optional daily sync - new reviews arrive by themselves, and none is imported twice
 * PDF export - download your testimonials as a formatted PDF document
 * Demo data - fill a test site with sample testimonials, categories and displays in one click, and remove them again just as easily
 * Priority support
@@ -190,7 +193,7 @@ Deleting the plugin from the Plugins screen removes everything it created: its d
 
 = Q. What is the difference between the free and Pro versions? =
 
-The free plugin is complete - unlimited testimonials and displays, all four layouts, the submission form, request emails, custom fields, CSV and JSON import and export, video testimonials, review schema, and the block, Elementor and WooCommerce integrations. Pro adds the Google Reviews import, PDF export and demo data. Upgrading never moves or changes your data. See the [Pro features](https://www.plugixa.com/plugins/plugixa-testimonial#pricing).
+The free plugin is complete - unlimited testimonials and displays, all four layouts, the submission form, request emails, custom fields, CSV and JSON import and export, video testimonials, review schema, and the block, Elementor and WooCommerce integrations. Pro adds review import from Google, Facebook and WooCommerce, PDF export and demo data. Upgrading never moves or changes your data. See the [Pro features](https://www.plugixa.com/plugins/plugixa-testimonial#pricing).
 
 = Q. Where can I find the documentation? =
 
@@ -254,6 +257,11 @@ Privacy policy: https://vimeo.com/privacy
 
 == Changelog ==
 
+= 1.1.0 =
+* New in Pro: import reviews from Google (Business Profile or Places search), Facebook Pages and WooCommerce products, with a list to select the ones you want
+* New in Pro: for each source, choose manual selection, or an automatic daily import of all new reviews or positive reviews only
+* Changed: review schema (JSON-LD) now covers only reviews collected on your own site, as Google's guidelines require; reviews imported from other platforms are displayed but not marked up
+
 = 1.0.3 =
 * New: a display can give each person's initials (or icon) placeholder a colour of its own, picked from their name, under Photo > Fallback Colors
 * Fixed: the display builder's preview showed coloured placeholder photos that the site never rendered; it now shows the real placeholder
@@ -270,6 +278,9 @@ Privacy policy: https://vimeo.com/privacy
 * Multilingual support via Polylang and WPML
 
 == Upgrade Notice ==
+
+= 1.1.0 =
+Pro can now import reviews from Google, Facebook and WooCommerce. Review schema now covers only reviews collected on your own site.
 
 = 1.0.3 =
 Adds per-person placeholder colours. Existing displays look exactly as before until you turn it on.

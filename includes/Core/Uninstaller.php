@@ -92,6 +92,11 @@ class Uninstaller {
             'plugixatestimonial_ml_v2_migrated',
             'plugixatestimonial_show_website_migrated',
             'plugixatestimonial_custom_css_purged',
+            'plugixatestimonial_external_id_migrated',
+            // Review-platform connections (API keys, OAuth tokens) and the sync log the
+            // premium review importers keep. Credentials must not outlive the plugin.
+            'plugixatestimonial_review_credentials',
+            'plugixatestimonial_review_sync_state',
             // Same reasoning: left behind, this makes the next install's
             // Activator::maybe_upgrade_capabilities() short-circuit and leave the
             // administrator role without the capabilities remove_capabilities() just took.
@@ -103,6 +108,7 @@ class Uninstaller {
         }
 
         delete_transient('plugixatestimonial_google_fonts');
+        wp_clear_scheduled_hook('plugixatestimonial_review_sync');
     }
 
     private static function remove_capabilities(): void {

@@ -44,6 +44,18 @@ class Schema {
         $rating_sum = 0;
         $reviews = [];
 
+        // Only reviews collected on this site are marked up. Google's review-snippet rules
+        // forbid marking up reviews taken from other sites, so a row imported from a
+        // review platform is displayed but left out of the graph.
+        $first_party = self::first_party_sources();
+        $testimonials = array_filter(
+            $testimonials,
+            static fn($t) => in_array((string) ($t['source'] ?? 'manual'), $first_party, true)
+        );
+        if (empty($testimonials)) {
+            return '';
+        }
+
         foreach ($testimonials as $testimonial) {
             $rating = (int) ($testimonial['rating'] ?? 0);
             if ($rating > 0) {
@@ -97,6 +109,21 @@ class Schema {
         $json = wp_json_encode($schema, JSON_UNESCAPED_UNICODE);
 
         return is_string($json) ? $json : '';
+    }
+
+    /**
+     * The `source` values whose rows may appear in the Review/AggregateRating graph.
+     *
+     * An allowlist, so it fails closed: a source this list does not name stays out of
+     * the graph, including rows an importer wrote before it was removed. A module that
+     * collects reviews on this site adds its source through the filter.
+     *
+     * @return string[]
+     */
+    public static function first_party_sources(): array {
+        $sources = apply_filters('plugixatestimonial_first_party_sources', ['manual', 'import', 'frontend_form']);
+
+        return array_values(array_filter(array_map('strval', (array) $sources)));
     }
 
     /**

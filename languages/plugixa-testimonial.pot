@@ -2,23 +2,21 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Plugixa Testimonial 1.0.3\n"
-"Report-Msgid-Bugs-To: https://plugixa.com/support\n"
+"Project-Id-Version: Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider 1.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugixa-testimonial\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-14T15:12:17+00:00\n"
+"POT-Creation-Date: 2026-11-02T18:38:43+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: plugixa-testimonial\n"
 
 #. Plugin Name of the plugin
 #: plugixa-testimonial.php
-#: includes/Core/Admin/Admin.php:33
-#: includes/Modules/Elementor/Elementor.php:47
-msgid "Plugixa Testimonial"
+msgid "Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -39,6 +37,11 @@ msgstr ""
 #. Author URI of the plugin
 #: plugixa-testimonial.php
 msgid "https://www.plugixa.com"
+msgstr ""
+
+#: includes/Core/Admin/Admin.php:33
+#: includes/Modules/Elementor/Elementor.php:47
+msgid "Plugixa Testimonial"
 msgstr ""
 
 #: includes/Core/Admin/Admin.php:34
@@ -102,7 +105,7 @@ msgstr ""
 
 #: includes/Core/Admin/Admin.php:135
 #: includes/Modules/Elementor/TestimonialWidget.php:116
-#: templates/submission-form.php:114
+#: templates/submission-form.php:118
 #: assets/blocks/testimonial-block/edit.jsx:59
 msgid "Name"
 msgstr ""
@@ -184,8 +187,8 @@ msgstr ""
 
 #: includes/Core/Admin/Assets.php:431
 #: includes/Modules/Elementor/TestimonialWidget.php:115
-#: includes/Modules/Frontend/Shortcodes.php:816
-#: templates/submission-form.php:230
+#: includes/Modules/Frontend/Shortcodes.php:834
+#: templates/submission-form.php:234
 #: assets/blocks/testimonial-block/edit.jsx:58
 msgid "Rating"
 msgstr ""
@@ -239,6 +242,7 @@ msgid "You do not have permission to change approval status."
 msgstr ""
 
 #: includes/Core/Http/RestController.php:82
+#: pro/includes/Modules/GoogleReviews/Module.php:46
 msgid "Administrator access required."
 msgstr ""
 
@@ -307,13 +311,13 @@ msgstr ""
 #: includes/Modules/CustomFields/Http/CustomFieldsController.php:242
 #: includes/Modules/CustomFields/Http/CustomFieldsController.php:258
 #: includes/Modules/CustomFields/Http/CustomFieldsController.php:332
-#: includes/Modules/Frontend/Http/FrontendApi.php:1006
+#: includes/Modules/Frontend/Http/FrontendApi.php:983
 #: includes/Modules/Shortcodes/Http/ShortcodesController.php:203
 #: includes/Modules/Shortcodes/Http/ShortcodesController.php:243
 #: includes/Modules/Testimonials/Http/TestimonialsController.php:442
 #: includes/Modules/Testimonials/Http/TestimonialsController.php:525
-#: includes/Modules/Views/Http/ViewsController.php:326
-#: includes/Modules/Views/Http/ViewsController.php:373
+#: includes/Modules/Views/Http/ViewsController.php:327
+#: includes/Modules/Views/Http/ViewsController.php:375
 msgid "Validation failed"
 msgstr ""
 
@@ -478,13 +482,13 @@ msgstr ""
 
 #: includes/Modules/Elementor/TestimonialWidget.php:135
 #: includes/Modules/Elementor/TestimonialWidget.php:180
-#: includes/Modules/Frontend/Shortcodes.php:1250
+#: includes/Modules/Frontend/Shortcodes.php:1268
 msgid "Yes"
 msgstr ""
 
 #: includes/Modules/Elementor/TestimonialWidget.php:136
 #: includes/Modules/Elementor/TestimonialWidget.php:181
-#: includes/Modules/Frontend/Shortcodes.php:1250
+#: includes/Modules/Frontend/Shortcodes.php:1268
 msgid "No"
 msgstr ""
 
@@ -607,158 +611,158 @@ msgstr ""
 msgid "Testimonial submissions are currently disabled."
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:733
+#: includes/Modules/Frontend/Http/FrontendApi.php:729
 msgid "reCAPTCHA verification required."
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:744
-#: includes/Modules/Frontend/Http/FrontendApi.php:749
+#: includes/Modules/Frontend/Http/FrontendApi.php:740
+#: includes/Modules/Frontend/Http/FrontendApi.php:745
 msgid "reCAPTCHA verification failed."
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:756
+#: includes/Modules/Frontend/Http/FrontendApi.php:752
 msgid "reCAPTCHA score too low. Please try again."
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:794
+#: includes/Modules/Frontend/Http/FrontendApi.php:780
 msgid "Invalid file upload."
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:800
+#: includes/Modules/Frontend/Http/FrontendApi.php:786
 msgid "File too large. Maximum size is 2MB."
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:809
+#: includes/Modules/Frontend/Http/FrontendApi.php:795
 msgid "Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed."
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:824
-#: includes/Modules/Frontend/Http/FrontendApi.php:836
+#: includes/Modules/Frontend/Http/FrontendApi.php:810
+#: includes/Modules/Frontend/Http/FrontendApi.php:822
 msgid "Failed to upload photo."
 msgstr ""
 
 #. translators: %s: custom field label
 #. translators: %s: form field name
-#: includes/Modules/Frontend/Http/FrontendApi.php:901
-#: includes/Modules/Frontend/Http/FrontendApi.php:963
+#: includes/Modules/Frontend/Http/FrontendApi.php:878
+#: includes/Modules/Frontend/Http/FrontendApi.php:940
 #, php-format
 msgid "%s is required"
 msgstr ""
 
 #. translators: %s: custom field label
-#: includes/Modules/Frontend/Http/FrontendApi.php:924
+#: includes/Modules/Frontend/Http/FrontendApi.php:901
 #, php-format
 msgid "%s must be a valid number"
 msgstr ""
 
 #. translators: %s: custom field label
-#: includes/Modules/Frontend/Http/FrontendApi.php:930
+#: includes/Modules/Frontend/Http/FrontendApi.php:907
 #, php-format
 msgid "%s must be a valid URL"
 msgstr ""
 
 #. translators: %s: custom field label
-#: includes/Modules/Frontend/Http/FrontendApi.php:936
+#: includes/Modules/Frontend/Http/FrontendApi.php:913
 #, php-format
 msgid "%s must be a valid date"
 msgstr ""
 
 #. translators: %s: custom field label
-#: includes/Modules/Frontend/Http/FrontendApi.php:942
+#: includes/Modules/Frontend/Http/FrontendApi.php:919
 #, php-format
 msgid "%s must be a valid hex color"
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:957
+#: includes/Modules/Frontend/Http/FrontendApi.php:934
 msgid "Email is required"
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:969
+#: includes/Modules/Frontend/Http/FrontendApi.php:946
 msgid "Please enter a valid email address"
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:974
+#: includes/Modules/Frontend/Http/FrontendApi.php:951
 msgid "Please enter a valid URL"
 msgstr ""
 
 #. translators: %d: minimum number of characters
-#: includes/Modules/Frontend/Http/FrontendApi.php:985
+#: includes/Modules/Frontend/Http/FrontendApi.php:962
 #, php-format
 msgid "Testimonial must be at least %d characters"
 msgstr ""
 
 #. translators: %d: maximum number of characters
-#: includes/Modules/Frontend/Http/FrontendApi.php:989
+#: includes/Modules/Frontend/Http/FrontendApi.php:966
 #, php-format
 msgid "Testimonial must not exceed %d characters"
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:1014
+#: includes/Modules/Frontend/Http/FrontendApi.php:991
 msgid "Failed to submit testimonial"
 msgstr ""
 
-#: includes/Modules/Frontend/Http/FrontendApi.php:1064
+#: includes/Modules/Frontend/Http/FrontendApi.php:1038
 msgid "Thank you for your testimonial!"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:284
+#: includes/Modules/Frontend/Shortcodes.php:288
 msgid "Load More"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:315
+#: includes/Modules/Frontend/Shortcodes.php:319
 msgid "No testimonials found."
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:807
+#: includes/Modules/Frontend/Shortcodes.php:825
 msgid "Your Name"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:810
+#: includes/Modules/Frontend/Shortcodes.php:828
 msgid "Your Role/Title"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:813
-#: templates/submission-form.php:166
+#: includes/Modules/Frontend/Shortcodes.php:831
+#: templates/submission-form.php:170
 msgid "Company"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:823
-#: templates/submission-form.php:245
+#: includes/Modules/Frontend/Shortcodes.php:841
+#: templates/submission-form.php:249
 msgid "Your Testimonial"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:826
+#: includes/Modules/Frontend/Shortcodes.php:844
 msgid "Website URL"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:829
-#: templates/submission-form.php:56
-#: templates/submission-form.php:345
+#: includes/Modules/Frontend/Shortcodes.php:847
+#: templates/submission-form.php:60
+#: templates/submission-form.php:349
 msgid "Submit Testimonial"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:850
-#: includes/Modules/Frontend/Shortcodes.php:950
+#: includes/Modules/Frontend/Shortcodes.php:868
+#: includes/Modules/Frontend/Shortcodes.php:968
 msgid "All"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:851
+#: includes/Modules/Frontend/Shortcodes.php:869
 msgid "All Categories"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:1349
+#: includes/Modules/Frontend/Shortcodes.php:1374
 msgid "Loading more..."
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:1357
+#: includes/Modules/Frontend/Shortcodes.php:1382
 msgid "Testimonials pagination"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:1361
+#: includes/Modules/Frontend/Shortcodes.php:1386
 msgid "Prev"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:1375
+#: includes/Modules/Frontend/Shortcodes.php:1400
 msgid "Next"
 msgstr ""
 
@@ -1053,7 +1057,7 @@ msgstr ""
 #: includes/Modules/Shortcodes/Http/ShortcodesController.php:297
 #: includes/Modules/Testimonials/Http/TestimonialsController.php:637
 #: includes/Modules/Testimonials/Http/TestimonialsController.php:711
-#: includes/Modules/Views/Http/ViewsController.php:448
+#: includes/Modules/Views/Http/ViewsController.php:451
 msgid "No IDs provided"
 msgstr ""
 
@@ -1072,7 +1076,7 @@ msgid "Shortcode duplicated successfully"
 msgstr ""
 
 #: includes/Modules/Shortcodes/Http/ShortcodesController.php:376
-#: includes/Modules/Views/Http/ViewsController.php:585
+#: includes/Modules/Views/Http/ViewsController.php:588
 msgid "Name is required"
 msgstr ""
 
@@ -1154,62 +1158,62 @@ msgstr ""
 msgid "Rating must be between 1 and 5"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:306
-#: includes/Modules/Views/Http/ViewsController.php:494
+#: includes/Modules/Views/Http/ViewsController.php:307
+#: includes/Modules/Views/Http/ViewsController.php:497
 msgid "View not found"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:353
+#: includes/Modules/Views/Http/ViewsController.php:355
 msgid "Failed to create view"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:361
+#: includes/Modules/Views/Http/ViewsController.php:363
 msgid "View created successfully"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:403
+#: includes/Modules/Views/Http/ViewsController.php:406
 msgid "Failed to update view"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:413
+#: includes/Modules/Views/Http/ViewsController.php:416
 msgid "View updated successfully"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:429
+#: includes/Modules/Views/Http/ViewsController.php:432
 msgid "Default view cannot be deleted."
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:436
+#: includes/Modules/Views/Http/ViewsController.php:439
 msgid "Failed to delete view"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:439
+#: includes/Modules/Views/Http/ViewsController.php:442
 msgid "View deleted successfully"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:462
+#: includes/Modules/Views/Http/ViewsController.php:465
 msgid "Cannot delete the default view."
 msgstr ""
 
 #. translators: %d: number of views deleted
-#: includes/Modules/Views/Http/ViewsController.php:477
+#: includes/Modules/Views/Http/ViewsController.php:480
 #, php-format
 msgid "%d views deleted successfully"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:514
+#: includes/Modules/Views/Http/ViewsController.php:517
 msgid "Failed to duplicate view"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:519
+#: includes/Modules/Views/Http/ViewsController.php:522
 msgid "View duplicated successfully"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:535
+#: includes/Modules/Views/Http/ViewsController.php:538
 msgid "Failed to set default view"
 msgstr ""
 
-#: includes/Modules/Views/Http/ViewsController.php:540
+#: includes/Modules/Views/Http/ViewsController.php:543
 msgid "Default view updated successfully"
 msgstr ""
 
@@ -1242,31 +1246,108 @@ msgstr ""
 msgid "All data has been reset and demo data re-loaded."
 msgstr ""
 
-#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:83
+#: pro/includes/Modules/FacebookReviews/FacebookClient.php:53
+msgid "Facebook did not return a long-lived token."
+msgstr ""
+
+#: pro/includes/Modules/FacebookReviews/FacebookClient.php:80
+msgid "This token manages no Facebook Page. Grant pages_show_list and pages_read_user_content."
+msgstr ""
+
+#. translators: %d: HTTP status code
+#: pro/includes/Modules/FacebookReviews/FacebookClient.php:164
+#, php-format
+msgid "Facebook returned HTTP %d."
+msgstr ""
+
+#: pro/includes/Modules/FacebookReviews/FacebookReviewSource.php:32
+msgid "Facebook"
+msgstr ""
+
+#: pro/includes/Modules/FacebookReviews/FacebookReviewSource.php:62
+msgid "Connect a Facebook Page in Settings first."
+msgstr ""
+
+#: pro/includes/Modules/FacebookReviews/Http/FacebookReviewsController.php:65
+msgid "Save the App ID and App secret first."
+msgstr ""
+
+#: pro/includes/Modules/FacebookReviews/Http/FacebookReviewsController.php:81
+msgid "Facebook connected."
+msgstr ""
+
+#: pro/includes/Modules/FacebookReviews/Http/FacebookReviewsController.php:97
+msgid "Facebook disconnected."
+msgstr ""
+
+#: pro/includes/Modules/GoogleReviews/BusinessProfileClient.php:81
+msgid "Google did not return a refresh token. Remove the app from your Google account permissions and connect again."
+msgstr ""
+
+#: pro/includes/Modules/GoogleReviews/BusinessProfileClient.php:102
+msgid "Google Business Profile is not connected."
+msgstr ""
+
+#: pro/includes/Modules/GoogleReviews/BusinessProfileClient.php:173
+msgid "Choose a Business Profile location first."
+msgstr ""
+
+#: pro/includes/Modules/GoogleReviews/BusinessProfileClient.php:194
+msgid "A Google user"
+msgstr ""
+
+#. translators: %d: HTTP status code
+#: pro/includes/Modules/GoogleReviews/BusinessProfileClient.php:241
+#: pro/includes/Modules/GoogleReviews/GoogleReviews.php:141
+#, php-format
+msgid "Google returned HTTP %d."
+msgstr ""
+
+#: pro/includes/Modules/GoogleReviews/GoogleReviews.php:74
+msgid "Invalid place ID."
+msgstr ""
+
+#: pro/includes/Modules/GoogleReviews/GoogleReviewSource.php:35
+msgid "Google"
+msgstr ""
+
+#: pro/includes/Modules/GoogleReviews/GoogleReviewSource.php:73
+#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:114
 msgid "Google Places API key is not configured. Go to Settings to add it."
 msgstr ""
 
-#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:130
+#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:163
+#: pro/includes/Modules/ReviewSources/Http/ReviewSourcesController.php:146
 msgid "No reviews selected for import."
 msgstr ""
 
 #. translators: 1: number of reviews imported, 2: number skipped as duplicates
-#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:203
+#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:179
+#: pro/includes/Modules/ReviewSources/Http/ReviewSourcesController.php:160
+#: pro/includes/Modules/ReviewSources/Http/ReviewSourcesController.php:185
 #, php-format
 msgid "%1$d reviews imported, %2$d skipped (duplicates)"
 msgstr ""
 
-#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:214
+#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:193
+msgid "Save the OAuth client ID and secret first."
+msgstr ""
+
+#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:220
+msgid "Google Business Profile disconnected."
+msgstr ""
+
+#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:227
 msgid "API key is required."
 msgstr ""
 
 #. translators: %s: error message returned by the Google Places API
-#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:223
+#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:236
 #, php-format
 msgid "Connection failed: %s"
 msgstr ""
 
-#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:229
+#: pro/includes/Modules/GoogleReviews/Http/GoogleReviewsController.php:242
 msgid "Connection successful! API key is valid."
 msgstr ""
 
@@ -1283,98 +1364,144 @@ msgid "Import Google Reviews"
 msgstr ""
 
 #: pro/includes/Modules/Pro/ProBootstrap.php:64
-msgid "Data Management"
+msgid "Facebook Reviews"
 msgstr ""
 
 #: pro/includes/Modules/Pro/ProBootstrap.php:65
-msgid "Load Demo Data"
+msgid "Import Facebook Reviews"
 msgstr ""
 
 #: pro/includes/Modules/Pro/ProBootstrap.php:66
-msgid "Reset Demo Data"
+msgid "WooCommerce Reviews"
 msgstr ""
 
 #: pro/includes/Modules/Pro/ProBootstrap.php:67
+msgid "Import WooCommerce Reviews"
+msgstr ""
+
+#: pro/includes/Modules/Pro/ProBootstrap.php:68
+msgid "Data Management"
+msgstr ""
+
+#: pro/includes/Modules/Pro/ProBootstrap.php:69
+msgid "Load Demo Data"
+msgstr ""
+
+#: pro/includes/Modules/Pro/ProBootstrap.php:70
+msgid "Reset Demo Data"
+msgstr ""
+
+#: pro/includes/Modules/Pro/ProBootstrap.php:71
 msgid "PDF"
+msgstr ""
+
+#: pro/includes/Modules/ReviewSources/Http/ReviewSourcesController.php:104
+msgid "Settings saved."
+msgstr ""
+
+#: pro/includes/Modules/ReviewSources/Http/ReviewSourcesController.php:116
+msgid "This source is not connected yet. Open its settings first."
+msgstr ""
+
+#: pro/includes/Modules/ReviewSources/Http/ReviewSourcesController.php:175
+msgid "This source cannot be synced with its current settings."
+msgstr ""
+
+#: pro/includes/Modules/ReviewSources/Http/ReviewSourcesController.php:194
+msgid "Unknown review source."
+msgstr ""
+
+#: pro/includes/Modules/ReviewSources/Http/ReviewSourcesController.php:197
+msgid "This review source is not available on this site."
+msgstr ""
+
+#. translators: %s: the reviewer's name
+#: pro/includes/Modules/ReviewSources/ReviewImporter.php:72
+#, php-format
+msgid "Failed to import the review from %s"
+msgstr ""
+
+#: pro/includes/Modules/WooCommerceReviews/WooCommerceReviewSource.php:37
+msgid "WooCommerce"
 msgstr ""
 
 #: templates/submission-form.php:22
 msgid "Thank you for your testimonial! It will be reviewed shortly."
 msgstr ""
 
-#: templates/submission-form.php:84
+#: templates/submission-form.php:88
 msgid "Form sections"
 msgstr ""
 
-#: templates/submission-form.php:87
+#: templates/submission-form.php:91
 msgid "Personal Info"
 msgstr ""
 
-#: templates/submission-form.php:91
+#: templates/submission-form.php:95
 msgid "Your Review"
 msgstr ""
 
-#: templates/submission-form.php:96
+#: templates/submission-form.php:100
 msgid "Additional Info"
 msgstr ""
 
-#: templates/submission-form.php:122
+#: templates/submission-form.php:126
 msgid "Your name"
 msgstr ""
 
-#: templates/submission-form.php:132
+#: templates/submission-form.php:136
 msgid "Email"
 msgstr ""
 
-#: templates/submission-form.php:140
+#: templates/submission-form.php:144
 msgid "Your email"
 msgstr ""
 
-#: templates/submission-form.php:151
+#: templates/submission-form.php:155
 msgid "Role / Title"
 msgstr ""
 
-#: templates/submission-form.php:158
+#: templates/submission-form.php:162
 msgid "e.g. Marketing Manager"
 msgstr ""
 
-#: templates/submission-form.php:173
+#: templates/submission-form.php:177
 msgid "Your company"
 msgstr ""
 
-#: templates/submission-form.php:184
+#: templates/submission-form.php:188
 msgid "Website"
 msgstr ""
 
-#: templates/submission-form.php:200
+#: templates/submission-form.php:204
 msgid "Profile Photo"
 msgstr ""
 
-#: templates/submission-form.php:209
+#: templates/submission-form.php:213
 msgid "Choose Photo"
 msgstr ""
 
-#: templates/submission-form.php:252
+#: templates/submission-form.php:256
 msgid "Share your experience..."
 msgstr ""
 
-#: templates/submission-form.php:298
+#: templates/submission-form.php:302
 msgid "Select..."
 msgstr ""
 
-#: templates/submission-form.php:338
+#: templates/submission-form.php:342
 msgid "← Previous"
 msgstr ""
 
-#: templates/submission-form.php:342
+#: templates/submission-form.php:346
 msgid "Next →"
 msgstr ""
 
-#: templates/submission-form.php:358
+#: templates/submission-form.php:362
 msgid "Thank You!"
 msgstr ""
 
-#: templates/submission-form.php:361
+#: templates/submission-form.php:365
 msgid "Submit another testimonial"
 msgstr ""
 

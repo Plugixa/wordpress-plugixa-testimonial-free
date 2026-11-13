@@ -24,6 +24,7 @@ class Activator {
         self::maybe_purge_custom_css();
         self::maybe_backfill_null_language_codes();
         self::maybe_add_status_columns();
+        self::maybe_migrate_external_id();
         self::add_capabilities();
         self::set_default_options();
         self::seed_default_views();
@@ -57,6 +58,7 @@ class Activator {
             is_featured tinyint(1) NOT NULL DEFAULT 0,
             display_order int(11) NOT NULL DEFAULT 0,
             source varchar(50) NOT NULL DEFAULT 'manual',
+            external_id varchar(191) DEFAULT NULL,
             view_count bigint(20) unsigned NOT NULL DEFAULT 0,
             created_at datetime NOT NULL,
             created_by bigint(20) unsigned NOT NULL,
@@ -71,7 +73,8 @@ class Activator {
             KEY display_order (display_order),
             KEY created_by (created_by),
             KEY language_code (language_code),
-            KEY translation_group (translation_group)
+            KEY translation_group (translation_group),
+            KEY source_external (source, external_id)
         ) {$charset_collate};"); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- Custom plugin table; WordPress core has no API for it. This line only builds a table-name string from $wpdb->prefix and a hard-coded literal; no query is executed here and no user input is involved. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
 
         // Categories table
@@ -231,6 +234,9 @@ class Activator {
 
         // Add video_url column
         self::maybe_migrate_video_url();
+
+        // Add the external_id column review imports deduplicate on
+        self::maybe_migrate_external_id();
 
         // Make the newly-rendered website link opt-in on pre-existing displays
         self::maybe_migrate_show_website();
@@ -595,6 +601,33 @@ class Activator {
 
         // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Custom plugin table; WordPress core has no API for it. The query string is a constant literal and the table name is bound as an identifier with %i. This runs during activation/migration, before any cache exists to read.
         $wpdb->query($wpdb->prepare("ALTER TABLE %i ADD COLUMN video_url varchar(500) DEFAULT NULL AFTER client_photo_id", $table));
+    }
+
+    /**
+     * Add the external_id column: the id a row has on the platform it was imported from
+     * (a review id, a comment id). An import deduplicates on (source, external_id), so a
+     * review edited on its platform is still recognised as the same review.
+     *
+     * Flagged by an option because maybe_create_tables() runs on every request.
+     */
+    private static function maybe_migrate_external_id(): void {
+        global $wpdb;
+
+        if (get_option('plugixatestimonial_external_id_migrated')) {
+            return;
+        }
+
+        $table = $wpdb->prefix . 'plugixatestimonial_testimonials';
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. The query string is a constant literal and the table name is bound as an identifier with %i. This runs during activation/migration, before any cache exists to read.
+        $column = $wpdb->get_results($wpdb->prepare("SHOW COLUMNS FROM %i LIKE %s", $table, $wpdb->esc_like('external_id')));
+        if (empty($column)) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Custom plugin table; WordPress core has no API for it. The query string is a constant literal and the table name is bound as an identifier with %i. This runs during activation/migration, before any cache exists to read.
+            $wpdb->query($wpdb->prepare("ALTER TABLE %i ADD COLUMN external_id varchar(191) DEFAULT NULL AFTER source", $table));
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.DirectDatabaseQuery.SchemaChange -- Custom plugin table; WordPress core has no API for it. The query string is a constant literal and the table name is bound as an identifier with %i. This runs during activation/migration, before any cache exists to read.
+            $wpdb->query($wpdb->prepare("ALTER TABLE %i ADD KEY source_external (source, external_id)", $table));
+        }
+
+        update_option('plugixatestimonial_external_id_migrated', 1);
     }
 
     /**

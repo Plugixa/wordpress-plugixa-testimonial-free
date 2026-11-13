@@ -315,7 +315,7 @@ class Multilingual {
         $maps = [
             'testimonials' => [
                 'translatable' => ['client_name', 'client_role', 'client_company', 'testimonial_text'],
-                'shared'       => ['rating', 'client_photo_id', 'video_url', 'website_url', 'status', 'is_featured', 'display_order', 'source'],
+                'shared'       => ['rating', 'client_photo_id', 'video_url', 'website_url', 'status', 'is_featured', 'display_order', 'source', 'external_id'],
             ],
             'categories' => [
                 'translatable' => ['name', 'description', 'slug'],
