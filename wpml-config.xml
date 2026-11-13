@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wpml-config>
+    <shortcodes>
+        <shortcode>
+            <tag>plugixa_testimonials</tag>
+            <attributes>
+                <attribute>id</attribute>
+                <attribute>category</attribute>
+            </attributes>
+        </shortcode>
+        <shortcode>
+            <tag>plugixa_testimonial_form</tag>
+        </shortcode>
+    </shortcodes>
+</wpml-config>

@@ -1,0 +1,19 @@
+{
+    "name": "plugixa/plugixa-testimonial",
+    "description": "Testimonial management plugin for WordPress with a React admin panel, star ratings, an approval workflow and multiple display layouts.",
+    "type": "wordpress-plugin",
+    "license": "GPL-2.0-or-later",
+    "require": {
+        "php": ">=8.2",
+        "freemius/wordpress-sdk": "2.*"
+    },
+    "autoload": {
+        "classmap": [
+            "includes/"
+        ]
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    }
+}

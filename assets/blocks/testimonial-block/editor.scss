@@ -1,0 +1,19 @@
+/*!
+ * @package   PlugixaTestimonial
+ * @copyright Copyright (C) 2026 Plugixa (https://plugixa.com)
+ * @license   GNU General Public License v2 or later
+ * @link      https://www.gnu.org/licenses/gpl-2.0.html
+ */
+.plugixa-testimonial-block {
+    .components-placeholder {
+        min-height: 150px;
+    }
+
+    .pxt-custom-testimonial-root {
+        pointer-events: none;
+    }
+
+    .block-editor-server-side-render {
+        min-height: 100px;
+    }
+}

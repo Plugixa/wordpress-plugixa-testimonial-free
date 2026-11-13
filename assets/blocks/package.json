@@ -1,0 +1,13 @@
+{
+    "name": "plugixa-testimonial-blocks",
+    "version": "1.0.2",
+    "private": true,
+    "description": "Gutenberg blocks for Plugixa Testimonial",
+    "scripts": {
+        "build": "wp-scripts build testimonial-block/index.js --output-path=../build/blocks/testimonial-block && cp testimonial-block/block.json ../build/blocks/testimonial-block/block.json && node ../build-tools/stamp-source-banner.mjs blocks",
+        "start": "wp-scripts start testimonial-block/index.js --output-path=../build/blocks/testimonial-block"
+    },
+    "devDependencies": {
+        "@wordpress/scripts": "^34.0.0"
+    }
+}

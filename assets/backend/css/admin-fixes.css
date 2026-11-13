@@ -1,0 +1,97 @@
+/*!
+ * @package   PlugixaTestimonial
+ * @copyright Copyright (C) 2026 Plugixa (https://plugixa.com)
+ * @license   GNU General Public License v2 or later
+ * @link      https://www.gnu.org/licenses/gpl-2.0.html
+ */
+/* Admin fixes - Hide WordPress admin UI when React app is loaded */
+#plugixatestimonial-root {
+    margin: 0;
+    padding: 0;
+}
+
+/* Hide the WordPress admin footer on our pages. Keyed off the body class added by
+   Assets::mark_body() rather than a list of per-page body classes: the old list was
+   hard-coded to six slugs and missed the custom-fields and requests screens. */
+body.plugixa-testimonial-screen #wpfooter {
+    display: none;
+}
+
+/* Ensure our app takes full width */
+#plugixatestimonial-root .wrap {
+    margin: 0;
+}
+
+/* =============================================
+   The one wp-admin rule that survives the strip
+   (see Assets::DROP_STYLES for the rest)
+   ============================================= */
+
+/* The focus ring is NOT in forms.css - it lives in the admin COLOUR SCHEME
+   (wp-admin/css/colors/<scheme>/colors.css), which paints the admin menu and therefore
+   cannot be dropped:
+
+       input[type=text]:focus, ... { box-shadow: 0 0 0 1.5px var(--wp-admin-theme-color) }
+
+   MUI shows focus by thickening the <fieldset> it draws BEHIND the input and puts no
+   box-shadow on the input itself, so WordPress's ring is not overriding anything - it is
+   simply drawn on top, and the field ends up wearing both.
+
+   Scoped to the BODY rather than #plugixatestimonial-root. In this plugin the Emotion
+   CacheProvider already keeps MUI's portals (Dialog, Menu, Popover, Tooltip) INSIDE the
+   mount point - verified, `root.contains(popover) === true` - so a root-scoped rule would
+   work today. Body scope is deliberate anyway: it does not depend on that portal-container
+   config staying as it is, and it is one selector either way. (0,2,2) beats the colour
+   scheme's (0,2,1).
+
+   box-shadow ONLY. WordPress also sets border-color, but MUI's input has no border to
+   colour - resetting one we cannot see means overriding one MUI might want later. */
+body.plugixa-testimonial-screen input:focus,
+body.plugixa-testimonial-screen select:focus,
+body.plugixa-testimonial-screen textarea:focus {
+    box-shadow: none;
+}
+
+/* =============================================
+   Fullscreen Mode
+   Triggered by .plugixa-fullscreen on <html>
+   ============================================= */
+
+/* Smooth transitions for entering/exiting fullscreen */
+html.plugixa-fullscreen #wpadminbar,
+html.plugixa-fullscreen #adminmenuwrap,
+html.plugixa-fullscreen #adminmenuback {
+    display: none !important;
+}
+
+html.plugixa-fullscreen #wpcontent,
+html.plugixa-fullscreen #wpbody {
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+html.plugixa-fullscreen #wpbody-content {
+    padding-bottom: 0 !important;
+}
+
+html.plugixa-fullscreen,
+html.plugixa-fullscreen body {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+html.plugixa-fullscreen #plugixatestimonial-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99999;
+    background: #f0f0f1;
+    overflow: auto;
+}
+
+#wpcontent {
+    padding-left: 0px;
+}
+

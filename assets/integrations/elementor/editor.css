@@ -1,0 +1,20 @@
+/*!
+ * @package   PlugixaTestimonial
+ * @copyright Copyright (C) 2026 Plugixa (https://plugixa.com)
+ * @license   GNU General Public License v2 or later
+ * @link      https://www.gnu.org/licenses/gpl-2.0.html
+ */
+/* Elementor Editor Styles for Plugixa Testimonial Widget */
+
+.elementor-element .elementor-widget-plugixa_testimonial .elementor-widget-container {
+    min-height: 100px;
+}
+
+.elementor-editor-active .pxt-custom-testimonial-root {
+    pointer-events: none;
+}
+
+/* Widget icon in panel */
+.elementor-element .icon-plugixa_testimonial {
+    font-family: eicons;
+}
