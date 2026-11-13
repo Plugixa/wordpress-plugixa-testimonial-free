@@ -4,7 +4,7 @@
  * Plugin Name: Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider
  * Plugin URI: https://www.plugixa.com/plugins/plugixa-testimonial
  * Description: A modern testimonial management plugin with React admin panel, star ratings, client photos, approval workflow, and multiple display layouts.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: Plugixa
  * Author URI: https://www.plugixa.com
  * License: GPLv2 or later
@@ -29,7 +29,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 // Plugin constants
-define( 'PLUGIXA_TESTIMONIAL_VERSION', '1.1.0' );
+define( 'PLUGIXA_TESTIMONIAL_VERSION', '1.1.1' );
 define( 'PLUGIXA_TESTIMONIAL_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PLUGIXA_TESTIMONIAL_URL', plugin_dir_url( __FILE__ ) );
 define( 'PLUGIXA_TESTIMONIAL_BASENAME', plugin_basename( __FILE__ ) );

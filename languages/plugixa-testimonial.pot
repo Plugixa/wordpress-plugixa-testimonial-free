@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider 1.1.0\n"
+"Project-Id-Version: Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider 1.1.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugixa-testimonial\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1565,4 +1565,108 @@ msgstr ""
 #: assets/blocks/testimonial-block/block.json
 msgctxt "block keyword"
 msgid "plugixa"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:469
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:470
+msgid "See Pro features"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:471
+msgid "See Pro plans"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:472
+msgid "Compare plans"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:473
+msgid "Plugixa Testimonial Pro"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:474
+msgid "Everything in the free plugin keeps working. Pro brings in the reviews your customers already left on Google, Facebook and WooCommerce, and adds PDF export and demo data. Your testimonials, displays and settings stay as they are when you upgrade."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:475
+msgid "Bring in your reviews"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:476
+msgid "Export and setup"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:477
+msgid "Google reviews"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:478
+msgid "Connect your Google Business Profile to bring in all of your reviews, or search any business with your own Places API key."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:479
+msgid "Facebook reviews"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:480
+msgid "Bring in your Facebook Page's reviews through your own Meta app."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:481
+msgid "WooCommerce product reviews"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:482
+msgid "Turn approved product reviews into testimonials, filtered by rating, category or verified owners."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:483
+msgid "Daily sync"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:484
+msgid "New reviews arrive by themselves, and none is imported twice."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:485
+msgid "PDF export"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:486
+msgid "Download your testimonials as a formatted PDF document."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:487
+msgid "Demo data"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:488
+msgid "Fill a test site with sample testimonials, categories and displays in one click, and remove them just as easily."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:489
+msgid "Priority support"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:490
+msgid "Faster answers from the team that builds the plugin."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:491
+msgid "Already bought Pro? Download it from your Plugixa account and install it. It takes over from this plugin and keeps all your data."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:492
+msgid "Get more from Plugixa Testimonial"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:493
+msgid "Review import from Google, Facebook and WooCommerce, a daily sync, PDF export and more come with Pro."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:494
+msgid "Hide this card"
 msgstr ""

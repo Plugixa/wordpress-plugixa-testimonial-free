@@ -72,7 +72,7 @@ class TemplateLoader {
             'submission-form' => __('Frontend submission form', 'plugixa-testimonial'),
         ];
 
-        if (is_dir(PLUGIXA_TESTIMONIAL_PATH . 'pro/')) {
+        if (Edition::is_premium()) {
             $templates['video-card']         = __('Video testimonial card (Pro)', 'plugixa-testimonial');
             $templates['custom-fields-row']  = __('Custom fields row partial (Pro)', 'plugixa-testimonial');
         }

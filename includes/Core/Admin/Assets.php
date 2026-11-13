@@ -8,6 +8,8 @@
 
 namespace PlugixaTestimonial\Core\Admin;
 
+use PlugixaTestimonial\Core\Edition;
+
 if (!defined('ABSPATH')) { exit; }
 
 /**
@@ -260,11 +262,23 @@ class Assets {
     }
 
     private function inject_config(): void {
+        $config = $this->build_config();
+
+        $this->print_config($config);
+    }
+
+    /**
+     * The object the admin app reads as `window.PlugixaTestimonialConfig`.
+     *
+     * Public so a test can read what the app is told (the edition and the plans link)
+     * without printing a page.
+     */
+    public function build_config(): array {
         $current_user = wp_get_current_user();
 
         $initial_route = $this->get_initial_route();
 
-        $config = [
+        return [
             'initialRoute'  => $initial_route,
             'apiUrl'        => esc_url_raw(rest_url('plugixatestimonial/v1/')),
             'adminUrl'      => esc_url(admin_url()),
@@ -289,9 +303,18 @@ class Assets {
             // premium build". There is no runtime licence object: the free build ships no
             // pro UI to gate, so this flag is purely informational (it lets a screen skip
             // a query whose route does not exist in free).
-            'isPro'         => is_dir(PLUGIXA_TESTIMONIAL_PATH . 'pro/'),
+            'isPro'         => Edition::is_premium(),
+            // `free` or `premium`. The free build shows its administrators a Pro features
+            // page and an upgrade button; the premium build carries the same free code and
+            // must not, so the app reads this rather than guessing from what it was built with.
+            'edition'       => Edition::current(),
+            // Where "See Pro plans" goes. A link the admin clicks, never a request. It travels
+            // from here so the app's own source names no outside address.
+            'pricingUrl'    => Edition::PRICING_URL,
         ];
+    }
 
+    private function print_config(array $config): void {
         add_action('admin_head', function() use ($config) {
             // Emitted through the core inline-script API rather than a literal <script>
             // tag: wp_print_inline_script_tag() applies the script filters and the CSP
@@ -441,6 +464,34 @@ JS;
             'edit_category'      => __('Edit Category', 'plugixa-testimonial'),
             'category_name'      => __('Category Name', 'plugixa-testimonial'),
             'description'        => __('Description', 'plugixa-testimonial'),
+
+            // The free build's Pro features page, header button and dashboard card.
+            'proNav'             => __('Upgrade to Pro', 'plugixa-testimonial'),
+            'proSeeFeatures'     => __('See Pro features', 'plugixa-testimonial'),
+            'proSeePlans'        => __('See Pro plans', 'plugixa-testimonial'),
+            'proComparePlans'    => __('Compare plans', 'plugixa-testimonial'),
+            'proPageTitle'       => __('Plugixa Testimonial Pro', 'plugixa-testimonial'),
+            'proPageIntro'       => __('Everything in the free plugin keeps working. Pro brings in the reviews your customers already left on Google, Facebook and WooCommerce, and adds PDF export and demo data. Your testimonials, displays and settings stay as they are when you upgrade.', 'plugixa-testimonial'),
+            'proGroupReviews'    => __('Bring in your reviews', 'plugixa-testimonial'),
+            'proGroupTools'      => __('Export and setup', 'plugixa-testimonial'),
+            'proFGoogle'         => __('Google reviews', 'plugixa-testimonial'),
+            'proFGoogleDesc'     => __('Connect your Google Business Profile to bring in all of your reviews, or search any business with your own Places API key.', 'plugixa-testimonial'),
+            'proFFacebook'       => __('Facebook reviews', 'plugixa-testimonial'),
+            'proFFacebookDesc'   => __('Bring in your Facebook Page\'s reviews through your own Meta app.', 'plugixa-testimonial'),
+            'proFWoo'            => __('WooCommerce product reviews', 'plugixa-testimonial'),
+            'proFWooDesc'        => __('Turn approved product reviews into testimonials, filtered by rating, category or verified owners.', 'plugixa-testimonial'),
+            'proFSync'           => __('Daily sync', 'plugixa-testimonial'),
+            'proFSyncDesc'       => __('New reviews arrive by themselves, and none is imported twice.', 'plugixa-testimonial'),
+            'proFPdf'            => __('PDF export', 'plugixa-testimonial'),
+            'proFPdfDesc'        => __('Download your testimonials as a formatted PDF document.', 'plugixa-testimonial'),
+            'proFSamples'        => __('Demo data', 'plugixa-testimonial'),
+            'proFSamplesDesc'    => __('Fill a test site with sample testimonials, categories and displays in one click, and remove them just as easily.', 'plugixa-testimonial'),
+            'proFSupport'        => __('Priority support', 'plugixa-testimonial'),
+            'proFSupportDesc'    => __('Faster answers from the team that builds the plugin.', 'plugixa-testimonial'),
+            'proOwnedNote'       => __('Already bought Pro? Download it from your Plugixa account and install it. It takes over from this plugin and keeps all your data.', 'plugixa-testimonial'),
+            'proCardTitle'       => __('Get more from Plugixa Testimonial', 'plugixa-testimonial'),
+            'proCardBody'        => __('Review import from Google, Facebook and WooCommerce, a daily sync, PDF export and more come with Pro.', 'plugixa-testimonial'),
+            'proCardHide'        => __('Hide this card', 'plugixa-testimonial'),
         ];
 
         /**

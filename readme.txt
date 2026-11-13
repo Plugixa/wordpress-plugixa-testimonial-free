@@ -4,7 +4,7 @@ Tags: testimonials, customer reviews, star ratings, testimonial slider, social p
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 1.1.0
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -257,6 +257,9 @@ Privacy policy: https://vimeo.com/privacy
 
 == Changelog ==
 
+= 1.1.1 =
+* Improved: French translation updated
+
 = 1.1.0 =
 * New in Pro: import reviews from Google (Business Profile or Places search), Facebook Pages and WooCommerce products, with a list to select the ones you want
 * New in Pro: for each source, choose manual selection, or an automatic daily import of all new reviews or positive reviews only
@@ -278,6 +281,9 @@ Privacy policy: https://vimeo.com/privacy
 * Multilingual support via Polylang and WPML
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+Maintenance release.
 
 = 1.1.0 =
 Pro can now import reviews from Google, Facebook and WooCommerce. Review schema now covers only reviews collected on your own site.
