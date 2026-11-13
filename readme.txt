@@ -1,10 +1,10 @@
-=== Plugixa Testimonial ===
+=== Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider ===
 Contributors: zakaria04, freemius
-Tags: testimonials, reviews, ratings, customer reviews, social proof
+Tags: testimonials, customer reviews, star ratings, testimonial slider, social proof
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 1.0.2
+Stable tag: 1.0.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -231,18 +231,32 @@ Privacy policy: https://vimeo.com/privacy
 
 == Screenshots ==
 
-1. Testimonials - the list, with ratings, statuses and filters
-2. Display builder - layouts, colours and typography with a live preview
-3. Grid layout on the frontend
-4. Slider layout on the frontend
-5. Frontend testimonial submission form
-6. Dashboard - totals, average rating, rating and status charts, and the latest testimonials
-7. Testimonial editor - client details, text, photo, video and translations
-8. Shortcode builder - pick a display and its filters, copy the tag, and preview the result
-9. Masonry layout on the frontend
-10. Import - bring testimonials in from a CSV or JSON file, with column mapping
+1. Grid layout with star ratings, photos, roles and companies
+2. Masonry layout for testimonials of different lengths
+3. Slider layout with dots and autoplay
+4. List layout for longer testimonials
+5. A dark card style, made in the display builder
+6. A colourful masonry style, made in the display builder
+7. A minimal list style with muted tones
+8. A corporate slider style with larger photos
+9. A compact two-column style
+10. Category filter pills and numbered pagination
+11. Rating filter tabs
+12. Photo beside the text, in two columns
+13. Coloured initials for people without a photo
+14. Frontend testimonial submission form
+15. The testimonials list, with ratings, statuses and categories
+16. Display builder - layouts, colours and typography with a live preview
+17. Testimonial editor - client details, text, photo and video
+18. Dashboard - totals, average rating, charts and the latest testimonials
+19. Shortcode builder - pick a display and its filters, copy the tag, and preview the result
+20. Import - bring testimonials in from a CSV or JSON file, with column mapping
 
 == Changelog ==
+
+= 1.0.3 =
+* New: a display can give each person's initials (or icon) placeholder a colour of its own, picked from their name, under Photo > Fallback Colors
+* Fixed: the display builder's preview showed coloured placeholder photos that the site never rendered; it now shows the real placeholder
 
 = 1.0.2 =
 * Initial release
@@ -256,6 +270,9 @@ Privacy policy: https://vimeo.com/privacy
 * Multilingual support via Polylang and WPML
 
 == Upgrade Notice ==
+
+= 1.0.3 =
+Adds per-person placeholder colours. Existing displays look exactly as before until you turn it on.
 
 = 1.0.2 =
 Initial release of Plugixa Testimonial.

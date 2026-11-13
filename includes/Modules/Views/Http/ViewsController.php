@@ -97,6 +97,7 @@ class ViewsController extends RestController {
             'sizeUnit' => 'px',
             'borderRadius' => 50,
             'fallbackMode' => 'initials',
+            'fallbackColorMode' => 'single',
             'fallbackBgColor' => '#e5e7eb',
             'fallbackTextColor' => '#6b7280',
             'borderWidth' => 0,

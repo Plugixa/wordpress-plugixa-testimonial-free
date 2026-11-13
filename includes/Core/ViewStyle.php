@@ -70,6 +70,7 @@ final class ViewStyle {
     /** Keyword leaves: path => allowed values (the first is the fallback). */
     private const KEYWORDS = [
         'photo.sizeUnit'    => ['px', '%'],
+        'photo.fallbackColorMode' => ['single', 'auto'],
         'photo.borderStyle' => ['none', 'solid', 'dashed', 'dotted', 'double'],
     ];
 

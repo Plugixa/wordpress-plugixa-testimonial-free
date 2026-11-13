@@ -22,6 +22,7 @@ $pxt_kses_allowed = \PlugixaTestimonial\Core\Kses::allowed_html();
 $display = $view_config['display'] ?? [];
 $photo_config = $view_config['photo'] ?? [];
 $photo_fallback_mode = $photo_config['fallbackMode'] ?? 'initials';
+$photo_auto_color = ($photo_config['fallbackColorMode'] ?? 'single') === 'auto';
 $photo_position = $photo_config['position'] ?? 'inline';
 $photo_size_unit = $photo_config['sizeUnit'] ?? 'px';
 $is_side_position = in_array($photo_position, ['left', 'right'], true);
@@ -39,6 +40,7 @@ $is_percent = $photo_size_unit === '%';
         $photo_html = '';
         if (!empty($display['showPhoto'])) {
             $photo_classes = 'pxt-custom-photo' . ($is_percent ? ' pxt-custom-photo--percent' : '');
+            $fallback_attr = $photo_auto_color ? \PlugixaTestimonial\Core\AvatarColor::style_attribute((string) $testimonial['client_name']) : '';
             if ($photo_url) {
                 $photo_html = '<div class="' . $photo_classes . '"><img src="' . esc_url($photo_url) . '" alt="' . esc_attr($testimonial['client_name']) . '" /></div>';
             } elseif ($photo_fallback_mode === 'initials') {
@@ -46,9 +48,9 @@ $is_percent = $photo_size_unit === '%';
                 $init = '';
                 foreach ($words as $w) { if ($w !== '') $init .= mb_strtoupper(mb_substr($w, 0, 1)); }
                 $init = mb_substr($init, 0, 2);
-                $photo_html = '<div class="' . $photo_classes . '"><div class="pxt-custom-fallback">' . esc_html($init) . '</div></div>';
+                $photo_html = '<div class="' . $photo_classes . '"><div class="pxt-custom-fallback"' . $fallback_attr . '>' . esc_html($init) . '</div></div>';
             } elseif ($photo_fallback_mode === 'icon') {
-                $photo_html = '<div class="' . $photo_classes . '"><div class="pxt-custom-fallback"><svg viewBox="0 0 24 24" fill="currentColor" style="width:40%;height:40%"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div></div>';
+                $photo_html = '<div class="' . $photo_classes . '"><div class="pxt-custom-fallback"' . $fallback_attr . '><svg viewBox="0 0 24 24" fill="currentColor" style="width:40%;height:40%"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg></div></div>';
             }
         }
 
