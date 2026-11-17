@@ -17,11 +17,11 @@ use WP_REST_Response;
 use WP_Error;
 use PlugixaTestimonial\Core\Cache;
 use PlugixaTestimonial\Core\Multilingual;
-use PlugixaTestimonial\Modules\Requests\Http\RequestsController;
-use PlugixaTestimonial\Core\Mail\EmailNotifier;
+use PlugixaTestimonial\Core\TemplateLoader;
+use PlugixaTestimonial\Modules\Frontend\Shortcodes;
 
 /**
- * Frontend REST API Controller - Public testimonials display + form submission
+ * Frontend REST API Controller - Public testimonials display
  */
 class FrontendApi extends RestController {
 
@@ -90,18 +90,6 @@ class FrontendApi extends RestController {
                 'callback'            => [$this, 'get_testimonials_page'],
                 'permission_callback' => '__return_true',
                 'args'                => $collection_args,
-            ],
-        ]);
-
-        // Public by design: the visitor submission form. An anonymous submitter has no
-        // nonce and no capability to check, so the gate is the off-by-default
-        // form_enabled setting, optional reCAPTCHA, and a 'pending' default status -
-        // nothing submitted here is published without an administrator approving it.
-        register_rest_route($this->namespace, '/frontend/submit', [
-            [
-                'methods'             => 'POST',
-                'callback'            => [$this, 'submit_testimonial'],
-                'permission_callback' => '__return_true',
             ],
         ]);
 
@@ -285,10 +273,9 @@ class FrontendApi extends RestController {
             ), ARRAY_A);
         });
 
-        // Attach photo data and custom fields
+        // Attach photo data
         if ($items) {
             $item_ids = array_column($items, 'id');
-            $meta_map = $this->get_meta_for_testimonials($item_ids);
 
             foreach ($items as &$item) {
                 if (!empty($item['client_photo_id'])) {
@@ -297,10 +284,11 @@ class FrontendApi extends RestController {
                 } else {
                     $item['client_photo_url'] = '';
                 }
-
-                $item['custom_fields'] = $meta_map[$item['id']] ?? (object) [];
             }
             unset($item);
+
+            // Display fields an extension owns (see Shortcodes::get_testimonials()).
+            $items = apply_filters('plugixatestimonial_display_testimonials', $items);
 
             $this->bump_view_counts($item_ids);
         }
@@ -504,23 +492,20 @@ class FrontendApi extends RestController {
             ), ARRAY_A) ?: [];
         }
 
-        // Custom-field values for the rendered cards. Restricted to published,
-        // frontend-visible field definitions - never the raw meta table.
+        // Display fields an extension owns (see Shortcodes::get_testimonials()).
         if (!empty($testimonials)) {
-            $meta_map = $this->get_meta_for_testimonials(array_column($testimonials, 'id'));
-            foreach ($testimonials as &$pxt_item) {
-                $pxt_item['custom_fields'] = $meta_map[(int) $pxt_item['id']] ?? [];
-            }
-            unset($pxt_item);
+            $testimonials = apply_filters('plugixatestimonial_display_testimonials', $testimonials);
         }
 
         // Render items HTML using template
         $layout_style = $view_config['layout']['style'] ?? 'grid';
-        $template = in_array($layout_style, ['grid', 'masonry', 'list']) ? $layout_style : 'grid';
-        $template_file = PLUGIXA_TESTIMONIAL_PATH . 'templates/' . $template . '.php';
+        // Same lookup as the first page (theme override, extension, then this plugin),
+        // so page 2 renders with the template page 1 used.
+        $template = in_array($layout_style, Shortcodes::layouts(), true) ? $layout_style : 'grid';
+        $template_file = TemplateLoader::locate($template);
 
         $items_html = '';
-        if (file_exists($template_file) && !empty($testimonials)) {
+        if ($template_file && !empty($testimonials)) {
             ob_start();
             include $template_file;
             $items_html = ob_get_clean();
@@ -617,61 +602,6 @@ class FrontendApi extends RestController {
     }
 
     /**
-     * Get custom-field values for a list of testimonial IDs.
-     *
-     * The meta table is a general key/value store and also holds the submitter's
-     * email address (see submit_testimonial()). This runs on a PUBLIC, unauthenticated
-     * endpoint, so the result is restricted to keys that correspond to a published,
-     * frontend-visible custom-field definition. An allowlist, not a denylist: a new
-     * internal meta key added later stays private by default instead of leaking until
-     * someone remembers to exclude it.
-     *
-     * @param int[] $ids Testimonial ids.
-     * @return array<int, array<string, string>> Map of testimonial id => field values.
-     */
-    private function get_meta_for_testimonials(array $ids): array {
-        global $wpdb;
-
-        $ids = array_values(array_filter(array_map('intval', $ids)));
-        if (empty($ids)) {
-            return [];
-        }
-
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; core has no API for it. Reads are served through Cache::remember() and invalidated by Cache::flush() on write (see includes/class-cache.php).
-        $public_keys = $wpdb->get_col($wpdb->prepare(
-            "SELECT field_key FROM %i WHERE show_in_frontend = 1 AND status = %s",
-            $wpdb->prefix . 'plugixatestimonial_custom_fields',
-            'publish'
-        ));
-
-        if (empty($public_keys)) {
-            return [];
-        }
-
-        // Two FIND_IN_SET lookups instead of two variable-length IN() lists, so the
-        // query text is a constant literal. Ids are ints and $public_keys are
-        // sanitised field keys, so neither comma-joined list can contain a comma.
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; core has no API for it. Reads are served through Cache::remember() and invalidated by Cache::flush() on write (see includes/class-cache.php).
-        $results = $wpdb->get_results($wpdb->prepare(
-            "SELECT testimonial_id, meta_key, meta_value FROM %i WHERE FIND_IN_SET(testimonial_id, %s) AND FIND_IN_SET(meta_key, %s)",
-            $wpdb->prefix . 'plugixatestimonial_meta',
-            implode(',', array_map('intval', $ids)),
-            implode(',', $public_keys)
-        ), ARRAY_A);
-
-        $map = [];
-        foreach ($results as $row) {
-            $tid = (int) $row['testimonial_id'];
-            if (!isset($map[$tid])) {
-                $map[$tid] = [];
-            }
-            $map[$tid][$row['meta_key']] = $row['meta_value'];
-        }
-
-        return $map;
-    }
-
-    /**
      * Get recent approved testimonials for social proof notification popups
      */
     public function get_social_proof_testimonials(WP_REST_Request $request): WP_REST_Response|WP_Error {
@@ -704,342 +634,5 @@ class FrontendApi extends RestController {
         }
 
         return $this->success($items ?: []);
-    }
-
-    /**
-     * Submit a testimonial from the frontend form
-     */
-    public function submit_testimonial(WP_REST_Request $request): WP_REST_Response|WP_Error {
-        global $wpdb;
-
-        $settings = get_option('plugixatestimonial_settings', []);
-
-        if (empty($settings['form_enabled'])) {
-            return $this->error(__('Testimonial submissions are currently disabled.', 'plugixa-testimonial'), 403);
-        }
-
-        // Every field is read from $request, never from $_POST/$_FILES: the REST server has
-        // already loaded a multipart body (unslashed) into the body params and its uploads
-        // into the file params, so a FormData and a JSON submission are read the same way.
-
-        // reCAPTCHA verification
-        if (!empty($settings['recaptcha_enabled']) && !empty($settings['recaptcha_secret_key'])) {
-            $recaptcha_token = sanitize_text_field((string) $request->get_param('recaptcha_token'));
-            if (empty($recaptcha_token)) {
-                return $this->error(__('reCAPTCHA verification required.', 'plugixa-testimonial'), 400);
-            }
-
-            $verify = wp_remote_post('https://www.google.com/recaptcha/api/siteverify', [
-                'body' => [
-                    'secret'   => $settings['recaptcha_secret_key'],
-                    'response' => $recaptcha_token,
-                ],
-            ]);
-
-            if (is_wp_error($verify)) {
-                return $this->error(__('reCAPTCHA verification failed.', 'plugixa-testimonial'), 400);
-            }
-
-            $verify_body = json_decode(wp_remote_retrieve_body($verify), true);
-            if (empty($verify_body['success'])) {
-                return $this->error(__('reCAPTCHA verification failed.', 'plugixa-testimonial'), 400);
-            }
-
-            // v3 score threshold check
-            $threshold = (float) ($settings['recaptcha_score_threshold'] ?? 0.5);
-            $score = (float) ($verify_body['score'] ?? 0);
-            if ($score < $threshold) {
-                return $this->error(__('reCAPTCHA score too low. Please try again.', 'plugixa-testimonial'), 403);
-            }
-        }
-
-        // Sanitize
-        $email = sanitize_email((string) $request->get_param('email'));
-        $data = [
-            'client_name'      => sanitize_text_field((string) $request->get_param('client_name')),
-            'client_role'      => sanitize_text_field((string) $request->get_param('client_role')),
-            'client_company'   => sanitize_text_field((string) $request->get_param('client_company')),
-            'testimonial_text' => sanitize_textarea_field((string) $request->get_param('testimonial_text')),
-            'rating'           => max(1, min(5, (int) ($request->get_param('rating') ?? 5))),
-            'website_url'      => esc_url_raw((string) $request->get_param('website_url')),
-            'source'           => 'frontend_form',
-            'status'           => !empty($settings['auto_approve']) ? 'approved' : ($settings['default_status'] ?? 'pending'),
-            'created_at'       => current_time('mysql'),
-        ];
-
-        // Handle photo upload
-        // The upload's tmp_name/size come from PHP; it is checked with is_uploaded_file() and
-        // wp_check_filetype_and_ext() below, and its name and type are replaced before the
-        // uploader sees them.
-        $uploads = $request->get_file_params();
-        if (!empty($settings['photo_upload_enabled']) && !empty($uploads['client_photo']) && !empty($uploads['client_photo']['size'])) {
-            $file = $uploads['client_photo'];
-
-            // Must be a genuine PHP upload, not an arbitrary path smuggled in.
-            if (empty($file['tmp_name']) || !is_uploaded_file($file['tmp_name'])) {
-                return $this->error(__('Invalid file upload.', 'plugixa-testimonial'), 400);
-            }
-
-            // Validate file size (max 2MB) before touching the contents.
-            $max_size = 2 * 1024 * 1024;
-            if ($file['size'] > $max_size) {
-                return $this->error(__('File too large. Maximum size is 2MB.', 'plugixa-testimonial'), 400);
-            }
-
-            // Validate the type from the file itself. $file['type'] is supplied by the
-            // client and must never be trusted; wp_check_filetype_and_ext() sniffs the
-            // real contents and confirms they agree with the extension.
-            $allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-            $check = wp_check_filetype_and_ext($file['tmp_name'], $file['name']);
-            if (empty($check['type']) || !in_array($check['type'], $allowed_types, true)) {
-                return $this->error(__('Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed.', 'plugixa-testimonial'), 400);
-            }
-
-            // The uploader is handed the name and type decided here, not the browser's:
-            // the name sanitized, the type the one just sniffed from the file itself.
-            $file['name'] = sanitize_file_name($file['name']);
-            $file['type'] = $check['type'];
-
-            // This runs in a REST request, where wp-admin's upload functions are not loaded.
-            if (!function_exists('wp_handle_upload')) {
-                require_once ABSPATH . 'wp-admin/includes/file.php';
-            }
-
-            $uploaded = wp_handle_upload($file, ['test_form' => false]);
-            if (!is_array($uploaded) || isset($uploaded['error']) || empty($uploaded['file'])) {
-                return $this->error(__('Failed to upload photo.', 'plugixa-testimonial'), 500);
-            }
-
-            $attachment_id = wp_insert_attachment([
-                'post_mime_type' => $uploaded['type'],
-                'guid'           => $uploaded['url'],
-                'post_title'     => sanitize_text_field(pathinfo($uploaded['file'], PATHINFO_FILENAME)),
-                'post_content'   => '',
-                'post_status'    => 'inherit',
-            ], $uploaded['file'], 0, true);
-            if (is_wp_error($attachment_id)) {
-                wp_delete_file($uploaded['file']);
-                return $this->error(__('Failed to upload photo.', 'plugixa-testimonial'), 500);
-            }
-
-            // Thumbnail sizes and image dimensions; also a wp-admin file a REST request lacks.
-            if (!function_exists('wp_generate_attachment_metadata')) {
-                require_once ABSPATH . 'wp-admin/includes/image.php';
-            }
-
-            $metadata = wp_generate_attachment_metadata($attachment_id, $uploaded['file']);
-            wp_update_attachment_metadata($attachment_id, $metadata);
-
-            $data['client_photo_id'] = $attachment_id;
-        }
-
-        if (!empty($settings['auto_approve'])) {
-            $data['approved_at'] = current_time('mysql');
-        }
-
-        // If user is logged in, record user ID
-        if (is_user_logged_in()) {
-            $data['created_by'] = get_current_user_id();
-        }
-
-        // Multilingual: prefer language from frontend form, fallback to auto-detection
-        $multilingual = Multilingual::instance();
-        $lang_param = sanitize_text_field((string) $request->get_param('language_code'));
-        if (!empty($lang_param)) {
-            $data['language_code'] = $lang_param;
-        } elseif ($multilingual->is_multilingual_active()) {
-            $data['language_code'] = $multilingual->get_current_language();
-        }
-
-        // Extract custom fields from submission
-        // Each key is sanitize_key()'d and each value sanitized in the loop below.
-        $submitted_custom_fields = $request->get_param('custom_fields');
-        if (!is_array($submitted_custom_fields)) {
-            $submitted_custom_fields = [];
-        }
-
-        // Validate required custom fields against definitions
-        $cf_table = $wpdb->prefix . 'plugixatestimonial_custom_fields';
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; core has no API for it. Reads are served through Cache::remember() and invalidated by Cache::flush() on write (see includes/class-cache.php).
-        $cf_defs = $wpdb->get_results($wpdb->prepare(
-            "SELECT field_key, field_label, field_type, is_required FROM %i WHERE show_in_frontend = 1 AND status = %s",
-            $cf_table,
-            'publish'
-        ), ARRAY_A);
-        $cf_errors = [];
-        $valid_keys = [];
-        $sanitized_custom_fields = [];
-        if ($cf_defs) {
-            foreach ($cf_defs as $cf_def) {
-                $valid_keys[] = $cf_def['field_key'];
-                if ($cf_def['is_required'] && empty($submitted_custom_fields[$cf_def['field_key']])) {
-                    $cf_errors[$cf_def['field_key']] = sprintf(
-                        /* translators: %s: custom field label */
-                        __('%s is required', 'plugixa-testimonial'),
-                        $cf_def['field_label']
-                    );
-                }
-            }
-            // Filter out invalid keys and sanitize values
-            foreach ($submitted_custom_fields as $key => $value) {
-                $key = sanitize_key($key);
-                if (in_array($key, $valid_keys, true) && $value !== '') {
-                    $sanitized_custom_fields[$key] = sanitize_text_field($value);
-                }
-            }
-        }
-
-        // Type-specific validation for custom fields
-        if ($cf_defs) {
-            foreach ($cf_defs as $cf_def) {
-                $val = $sanitized_custom_fields[$cf_def['field_key']] ?? '';
-                if ($val === '') continue;
-                switch ($cf_def['field_type']) {
-                    case 'number':
-                        if (!is_numeric($val)) {
-                            /* translators: %s: custom field label */
-                            $cf_errors[$cf_def['field_key']] = sprintf(__('%s must be a valid number', 'plugixa-testimonial'), $cf_def['field_label']);
-                        }
-                        break;
-                    case 'url':
-                        if (!filter_var($val, FILTER_VALIDATE_URL)) {
-                            /* translators: %s: custom field label */
-                            $cf_errors[$cf_def['field_key']] = sprintf(__('%s must be a valid URL', 'plugixa-testimonial'), $cf_def['field_label']);
-                        }
-                        break;
-                    case 'date':
-                        if (!strtotime($val)) {
-                            /* translators: %s: custom field label */
-                            $cf_errors[$cf_def['field_key']] = sprintf(__('%s must be a valid date', 'plugixa-testimonial'), $cf_def['field_label']);
-                        }
-                        break;
-                    case 'color':
-                        if (!preg_match('/^#[0-9a-f]{6}$/i', $val)) {
-                            /* translators: %s: custom field label */
-                            $cf_errors[$cf_def['field_key']] = sprintf(__('%s must be a valid hex color', 'plugixa-testimonial'), $cf_def['field_label']);
-                        }
-                        break;
-                }
-            }
-        }
-
-        // Validate required fields
-        $required = $settings['required_fields'] ?? ['client_name', 'testimonial_text', 'rating'];
-        $errors = [];
-
-        foreach ($required as $field) {
-            // Email is not in $data (no DB column), check separately
-            if ($field === 'email') {
-                if (empty($email)) {
-                    $errors['email'] = __('Email is required', 'plugixa-testimonial');
-                }
-                continue;
-            }
-            if (empty($data[$field])) {
-                /* translators: %s: form field name */
-                $errors[$field] = sprintf(__('%s is required', 'plugixa-testimonial'), ucfirst(str_replace('_', ' ', $field)));
-            }
-        }
-
-        // Email format validation
-        if (!empty($email) && !is_email($email)) {
-            $errors['email'] = __('Please enter a valid email address', 'plugixa-testimonial');
-        }
-
-        // URL format validation
-        if (!empty($data['website_url']) && !filter_var($data['website_url'], FILTER_VALIDATE_URL)) {
-            $errors['website_url'] = __('Please enter a valid URL', 'plugixa-testimonial');
-        }
-
-        // Text length validation
-        $min_length = $settings['min_text_length'] ?? 10;
-        $max_length = $settings['max_text_length'] ?? 2000;
-
-        if (!empty($data['testimonial_text'])) {
-            $text_length = strlen($data['testimonial_text']);
-            if ($text_length < $min_length) {
-                /* translators: %d: minimum number of characters */
-                $errors['testimonial_text'] = sprintf(__('Testimonial must be at least %d characters', 'plugixa-testimonial'), $min_length);
-            }
-            if ($text_length > $max_length) {
-                /* translators: %d: maximum number of characters */
-                $errors['testimonial_text'] = sprintf(__('Testimonial must not exceed %d characters', 'plugixa-testimonial'), $max_length);
-            }
-        }
-
-        // Merge custom field validation errors
-        if (!empty($cf_errors)) {
-            $errors = array_merge($errors, $cf_errors);
-        }
-
-        if (!empty($errors)) {
-            // The photo was stored before the fields were checked. A refused submission
-            // must not leave it behind: this endpoint is public, and each rejected
-            // attempt would otherwise add an unattached image to the media library.
-            if (!empty($data['client_photo_id'])) {
-                wp_delete_attachment((int) $data['client_photo_id'], true);
-            }
-
-            return $this->error(__('Validation failed', 'plugixa-testimonial'), 400, $errors);
-        }
-
-        $table = $wpdb->prefix . 'plugixatestimonial_testimonials';
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-        $result = $wpdb->insert($table, $data);
-
-        if ($result === false) {
-            return $this->error(__('Failed to submit testimonial', 'plugixa-testimonial'), 500);
-        }
-
-        $insert_id = $wpdb->insert_id;
-
-        // Save email as meta (no DB column in testimonials table)
-        if (!empty($email)) {
-            $meta_table = $wpdb->prefix . 'plugixatestimonial_meta';
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-            $wpdb->insert($meta_table, [
-                'testimonial_id' => $insert_id,
-                // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                'meta_key'       => 'email',
-                // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value itself is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                'meta_value'     => $email,
-            ]);
-        }
-
-        // Save custom field meta values
-        if (!empty($sanitized_custom_fields)) {
-            $meta_table = $wpdb->prefix . 'plugixatestimonial_meta';
-            foreach ($sanitized_custom_fields as $meta_key => $meta_value) {
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                $wpdb->insert($meta_table, [
-                    'testimonial_id' => $insert_id,
-                    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    'meta_key'       => $meta_key,
-                    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value itself is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    'meta_value'     => $meta_value,
-                ]);
-            }
-        }
-
-        // Send notification email
-        EmailNotifier::send_new_submission_notification($insert_id, $data);
-
-        // If submitted via request token, mark request as submitted
-        $request_token = sanitize_text_field((string) $request->get_param('pxt_request_token'));
-        if (!empty($request_token)) {
-            RequestsController::mark_submitted($request_token, $insert_id);
-        }
-
-        // Assign language for new submissions
-        if ($multilingual->is_multilingual_active() && !empty($data['language_code'])) {
-            $multilingual->assign_language($table, $insert_id, $data['language_code']);
-        }
-
-        $message = $settings['success_message'] ?? __('Thank you for your testimonial!', 'plugixa-testimonial');
-
-        return $this->success(
-            ['id' => $insert_id],
-            $message
-        );
     }
 }

@@ -1,18 +1,18 @@
-=== Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider ===
+=== Plugixa Testimonial – Customer Reviews, Star Ratings & Social Proof ===
 Contributors: zakaria04, freemius
-Tags: testimonials, customer reviews, star ratings, testimonial slider, social proof
+Tags: testimonials, customer reviews, star ratings, reviews, social proof
 Requires at least: 6.5
 Tested up to: 7.1
 Requires PHP: 8.2
-Stable tag: 1.1.1
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Collect, manage, and showcase customer testimonials with star ratings, photos, an approval workflow, and grid, slider, masonry, and list layouts.
+Manage and showcase customer testimonials with star ratings, photos, an approval workflow, grid and list layouts and review schema.
 
 == Description ==
 
-⭐ Collect, approve and showcase what your customers say with **Plugixa Testimonial** - star ratings, photos, videos and an approval workflow, in a fast React admin, displayed in grid, slider, masonry or list layouts.
+⭐ Approve and showcase what your customers say with **Plugixa Testimonial** - star ratings, photos and an approval workflow, in a fast React admin, displayed in grid or list layouts.
 
 📚 Read the [**Documentation**](https://www.plugixa.com/documentation/plugixa-testimonial)
 🌐 Visit the official website [**Plugixa**](https://www.plugixa.com/)
@@ -22,9 +22,9 @@ Collect, manage, and showcase customer testimonials with star ratings, photos, a
 
 Show your first testimonials in **3 simple steps**:
 
-1. Add testimonials yourself, or let customers send them through the submission form
+1. Add your testimonials
 2. Approve the ones you want to publish
-3. Build a display with the live preview and place it with the block or a shortcode
+3. Build a display with the live preview and place it with a shortcode
 
 Testimonials live in the plugin's **own database tables**, not in posts and post meta, so lists, filters and displays stay fast as your collection grows.
 
@@ -32,7 +32,7 @@ Testimonials live in the plugin's **own database tables**, not in posts and post
 
 Nothing appears on your site until you say so. Every testimonial moves through a clear workflow, and visitors only ever see the approved ones.
 
-✅ **Pending** - everything sent through the submission form arrives here first
+✅ **Pending** - waiting for your decision
 ✅ **Approved** - published, and the only status any display can show
 ✅ **Rejected** - kept for your records, never shown
 ✅ **Draft** - testimonials you are still writing up
@@ -42,46 +42,32 @@ Nothing appears on your site until you say so. Every testimonial moves through a
 * Fast, Material UI-based admin application
 * Unlimited testimonials, categories and saved displays (views) - no cap
 * Star ratings, client photos, role, company and website
-* Video testimonials - YouTube, Vimeo or self-hosted
 * Approval workflow: pending, approved, rejected and draft
 * Categories to organize and filter testimonials
-* Four display layouts: grid, list, masonry and slider
+* Grid and list layouts
 * Display builder with a live preview, colours, typography and spacing
-* Gutenberg block and shortcodes for placing testimonials anywhere
-* Frontend submission form, with optional Google reCAPTCHA
-* Testimonial request emails with single-use submission links
-* Custom fields for capturing extra testimonial data
-* Import from CSV and JSON, and export to CSV and JSON
+* Category and rating filters, and pagination
+* Shortcodes for placing testimonials anywhere
 * Social-proof notification popups
 * Review schema (JSON-LD) for SEO
-* Elementor widget and a WooCommerce product tab
 * Multilingual support via Polylang and WPML
 * Works with your WordPress roles: authors can approve, editors can delete, settings stay with administrators
 * Fonts are served from your own site, never from Google's servers
 
 = Plugixa Testimonial Pro Features =
 
-* Google Reviews import - connect your Google Business Profile to bring in all of your reviews, or search any business with your own Google Places API key
-* Facebook Reviews import - bring in your Facebook Page's reviews through your own Meta app
-* WooCommerce Reviews import - turn approved product reviews into testimonials, filtered by rating, category or verified owners
-* Optional daily sync - new reviews arrive by themselves, and none is imported twice
-* PDF export - download your testimonials as a formatted PDF document
-* Demo data - fill a test site with sample testimonials, categories and displays in one click, and remove them again just as easily
-* Priority support
+* Slider and masonry layouts
+* Video testimonials, custom fields, and CSV and JSON import and export
+* Frontend submission form with reCAPTCHA, testimonial request emails and email notifications
+* Elementor widget, block editor block and a WooCommerce product tab
+* Review import from Google, Facebook and WooCommerce, with an optional daily sync
+* PDF export, demo data and priority support
 
 [Upgrade to Plugixa Testimonial Pro](https://www.plugixa.com/plugins/plugixa-testimonial#pricing)
 
-= 🎨 Four Layouts, One Display Builder =
+= 🎨 One Display Builder =
 
-Choose grid, list, masonry or slider, then adjust colours, typography, photo position, ratings and pagination with a live preview beside you. Each display is saved, so the same look can be placed on any number of pages, and changing it once updates it everywhere.
-
-= 📝 Let Your Customers Write Them =
-
-Add `[plugixa_testimonial_form]` to a page and visitors can send a testimonial with a rating and a photo. Everything they send is stored as pending and never appears on the site until you approve it. Turn on Google reCAPTCHA to keep spam out.
-
-= ✉️ Ask for a Testimonial by Email =
-
-Send a request to a customer straight from the admin. The email carries a single-use link to the submission form, with their name and email already filled in, so leaving a testimonial takes them less than a minute.
+Choose grid or list, then adjust colours, typography, photo position, ratings, category and rating filters and pagination with a live preview beside you. Each display is saved, so the same look can be placed on any number of pages, and changing it once updates it everywhere.
 
 = 🔎 Review Schema for Search Engines =
 
@@ -99,7 +85,7 @@ With Polylang or WPML active, each testimonial, category and display can be tran
 
 Plugixa Testimonial is built to be usable without a manual, but it is documented in full.
 
-👉 Read the [Documentation](https://www.plugixa.com/documentation/plugixa-testimonial) - getting started, displays, the submission form, requests, import and export, and the shortcodes
+👉 Read the [Documentation](https://www.plugixa.com/documentation/plugixa-testimonial) - getting started, displays and the shortcodes
 👉 Ask on the [WordPress.org support forum](https://wordpress.org/support/plugin/plugixa-testimonial/)
 👉 Or [contact us directly](https://www.plugixa.com/contact)
 👉 Browse more plugins at [plugixa.com](https://www.plugixa.com/)
@@ -114,10 +100,6 @@ Show a saved display:
 Or skip the saved display and pass attributes directly:
 `[plugixa_testimonial view="grid" limit="6" min_rating="4" orderby="rating" order="DESC"]`
 
-Show the frontend submission form:
-`[plugixa_testimonial_form]`
-
-A Gutenberg block ("Plugixa Testimonial") is also available if you prefer the editor.
 
 == Installation ==
 
@@ -140,7 +122,7 @@ A Gutenberg block ("Plugixa Testimonial") is also available if you prefer the ed
    (or upload the `plugixa-testimonial` folder to `/wp-content/plugins/` over FTP)
 3. Activate the plugin through the Plugins menu. The database tables are created on activation
 4. Open "Testimonials" in the admin menu to add your first testimonial and create a display
-5. Place the display on your site with the "Plugixa Testimonial" block or a shortcode
+5. Place the display on your site with its shortcode
 
 = GIVING OTHER PEOPLE ACCESS =
 
@@ -149,7 +131,7 @@ The plugin follows the WordPress roles you already use:
 * Anyone who can edit posts (Contributor and up) can open the plugin and add and change testimonials, categories and displays
 * Anyone who can publish posts (Author and up) can also approve and reject testimonials
 * Anyone who can delete other people's posts (Editor and up) can also delete testimonials
-* Settings, testimonial requests and import and export stay with administrators
+* Settings stay with administrators
 
 To give a role one of these rights without the matching WordPress capability, grant it `plugixa_testimonial_edit`, `plugixa_testimonial_approve` or `plugixa_testimonial_delete`, for example with a role editor plugin.
 
@@ -157,23 +139,19 @@ To give a role one of these rights without the matching WordPress capability, gr
 
 = Q. How do I display testimonials on my site? =
 
-Create a display (view) in the admin, then add it to any page with the "Plugixa Testimonial" Gutenberg block or the shortcode the Shortcodes screen gives you. You can choose grid, list, masonry or slider layouts.
+Create a display (view) in the admin, then add it to any page with the shortcode the Shortcodes screen gives you. You can choose a grid or list layout.
 
 = Q. What attributes does the shortcode take? =
 
 `id`, `view`, `view_id`, `category`, `limit`, `orderby`, `order`, `featured_only`, `min_rating`, `show_photo`, `show_rating`, `show_role`, `show_company`, `show_date`, `show_website`, `show_quote_icon`, `dark_mode`, `pagination`, `pagination_style`, `per_page` and `schema`.
 
-For example: `[plugixa_testimonial view="slider" category="clients" limit="5"]`
+For example: `[plugixa_testimonial view="list" category="clients" limit="5"]`
 
 `[plugixa_testimonials]` (plural) still works as a deprecated alias of `[plugixa_testimonial]`.
 
 = Q. Can visitors submit their own testimonials? =
 
-Yes. Add `[plugixa_testimonial_form]` to a page. Testimonials sent through the form arrive as pending and only appear on the site once you approve them from the admin.
-
-= Q. How do I stop spam submissions? =
-
-Turn on Google reCAPTCHA in the plugin's settings and enter your reCAPTCHA keys. The submission form then verifies every visitor before a testimonial is accepted.
+Not in the free plugin. The submission form, with reCAPTCHA, and request emails are part of Pro.
 
 = Q. Is it compatible with multilingual sites? =
 
@@ -181,7 +159,7 @@ Yes. Plugixa Testimonial integrates with Polylang and WPML, grouping translation
 
 = Q. Does it work with the block editor and page builders? =
 
-Yes. A dedicated Gutenberg block is included, along with an Elementor widget and shortcodes for the classic editor and any other page builder.
+Yes. The shortcode works in the block editor's Shortcode block, the classic editor and any page builder that accepts shortcodes.
 
 = Q. Does it store testimonials as posts or custom post types? =
 
@@ -189,15 +167,15 @@ No. It uses its own database tables, so lists, filters and displays stay fast ho
 
 = Q. What happens to my testimonials if I delete the plugin? =
 
-Deleting the plugin from the Plugins screen removes everything it created: its database tables with every testimonial, category, display and request, its settings, its capabilities and its downloaded fonts. Export your testimonials to CSV or JSON first if you want to keep them. Deactivating the plugin removes nothing.
+Deleting the plugin from the Plugins screen removes everything it created: its database tables with every testimonial, category and display, its settings, its capabilities and its downloaded fonts. Deactivating the plugin removes nothing.
 
 = Q. What is the difference between the free and Pro versions? =
 
-The free plugin is complete - unlimited testimonials and displays, all four layouts, the submission form, request emails, custom fields, CSV and JSON import and export, video testimonials, review schema, and the block, Elementor and WooCommerce integrations. Pro adds review import from Google, Facebook and WooCommerce, PDF export and demo data. Upgrading never moves or changes your data. See the [Pro features](https://www.plugixa.com/plugins/plugixa-testimonial#pricing).
+The free plugin gives you unlimited testimonials and displays, grid and list layouts, filters, pagination, social-proof popups and review schema. Pro adds the slider and masonry layouts, video testimonials, custom fields, the submission form and request emails, import and export, the Elementor, block and WooCommerce integrations, and review import from Google, Facebook and WooCommerce. Upgrading never moves or changes your data. See the [Pro features](https://www.plugixa.com/plugins/plugixa-testimonial#pricing).
 
 = Q. Where can I find the documentation? =
 
-Full documentation - getting started, displays, the submission form, requests, import and export, and the shortcodes - is at https://www.plugixa.com/documentation/plugixa-testimonial
+Full documentation - getting started, displays and the shortcodes - is at https://www.plugixa.com/documentation/plugixa-testimonial
 
 == External services ==
 
@@ -208,54 +186,41 @@ This plugin can connect to the third-party services listed below. Apart from the
 We use Freemius to handle licensing, software updates, and - only if you opt in - anonymous usage diagnostics. On activation you are shown an opt-in screen; if you skip it, no identifiable data is sent. When you opt in, or when you manage a license or purchase, data such as your site URL, WordPress and PHP versions, active theme/plugins, and the email address used at opt-in may be transmitted. This occurs on activation, plugin updates, and license actions.
 Provided by Freemius, Inc. - Terms: https://freemius.com/terms/ - Privacy: https://freemius.com/privacy/
 
-= Google reCAPTCHA =
-
-Used only if an administrator enables reCAPTCHA on the frontend testimonial submission form. When a visitor submits the form, a reCAPTCHA token is generated in the visitor's browser via the script at https://www.google.com/recaptcha/api.js, and the token plus your reCAPTCHA secret key are sent to https://www.google.com/recaptcha/api/siteverify for verification. As part of reCAPTCHA, Google also receives information about the visitor's browser and interaction.
-Terms of service: https://policies.google.com/terms
-Privacy policy: https://policies.google.com/privacy
-
 = Google Fonts =
 
 If an administrator selects a Google font for a display's typography, the plugin downloads that font's stylesheet and font files from the hosts fonts.googleapis.com and fonts.gstatic.com to your server and then serves them locally. Neither the frontend nor the admin ever loads fonts from Google's servers — no visitor or administrator data is sent to Google when a page or the admin preview is viewed. When you browse and select fonts in the admin, the font list is fetched from the Google Fonts Web API (host www.googleapis.com, path /webfonts/v1/webfonts) using your Google Fonts API key. The request carries only that key and the sort order; no visitor data.
 Terms of service: https://policies.google.com/terms
 Privacy policy: https://policies.google.com/privacy
 
-= YouTube =
-
-Used only if an administrator attaches a YouTube video to a testimonial. On any page that displays that testimonial, the video's preview thumbnail is loaded in the visitor's browser from the host img.youtube.com, so YouTube receives the visitor's IP address and browser information on page view. The video itself is not loaded until the visitor clicks play, at which point it is embedded from the privacy-enhanced domain www.youtube-nocookie.com. If no testimonial has a YouTube video, no request is made.
-Terms of service: https://www.youtube.com/t/terms
-Privacy policy: https://policies.google.com/privacy
-
-= Vimeo =
-
-Used only if an administrator attaches a Vimeo video to a testimonial, and only after the visitor clicks play — nothing is loaded from Vimeo on page view. On click, the player is embedded from https://player.vimeo.com, and Vimeo receives the visitor's IP address and browser information. If no testimonial has a Vimeo video, no request is made.
-Terms of service: https://vimeo.com/terms
-Privacy policy: https://vimeo.com/privacy
-
 == Screenshots ==
 
 1. Grid layout with star ratings, photos, roles and companies
-2. Masonry layout for testimonials of different lengths
-3. Slider layout with dots and autoplay
+2. Masonry layout for testimonials of different lengths (Pro)
+3. Slider layout with dots and autoplay (Pro)
 4. List layout for longer testimonials
 5. A dark card style, made in the display builder
-6. A colourful masonry style, made in the display builder
+6. A colourful masonry style, made in the display builder (Pro)
 7. A minimal list style with muted tones
-8. A corporate slider style with larger photos
+8. A corporate slider style with larger photos (Pro)
 9. A compact two-column style
 10. Category filter pills and numbered pagination
 11. Rating filter tabs
 12. Photo beside the text, in two columns
 13. Coloured initials for people without a photo
-14. Frontend testimonial submission form
+14. Frontend testimonial submission form (Pro)
 15. The testimonials list, with ratings, statuses and categories
 16. Display builder - layouts, colours and typography with a live preview
-17. Testimonial editor - client details, text, photo and video
+17. Testimonial editor - client details, text and photo (the video field is Pro)
 18. Dashboard - totals, average rating, charts and the latest testimonials
 19. Shortcode builder - pick a display and its filters, copy the tag, and preview the result
-20. Import - bring testimonials in from a CSV or JSON file, with column mapping
+20. Import - bring testimonials in from a CSV or JSON file, with column mapping (Pro)
 
 == Changelog ==
+
+= 1.2.0 =
+* Changed: the slider and masonry layouts, video testimonials, custom fields, CSV and JSON import and export, the submission form with reCAPTCHA, testimonial requests, email notifications, the Elementor widget, the block and the WooCommerce product tab are now part of Pro
+* Changed: a display saved with the slider or masonry layout shows as a grid in the free plugin
+* Your data is kept: videos, custom-field values and requests stay in the database and come back as they were if you upgrade to Pro
 
 = 1.1.1 =
 * Improved: French translation updated
@@ -281,6 +246,9 @@ Privacy policy: https://vimeo.com/privacy
 * Multilingual support via Polylang and WPML
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+Several features move to Pro: slider and masonry layouts, video, custom fields, import and export, the submission form, requests, notifications and the Elementor, block and WooCommerce integrations. Slider and masonry displays fall back to a grid. No data is deleted.
 
 = 1.1.1 =
 Maintenance release.

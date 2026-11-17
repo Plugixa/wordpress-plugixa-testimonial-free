@@ -2,21 +2,21 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider 1.1.1\n"
+"Project-Id-Version: Plugixa Testimonial – Customer Reviews, Star Ratings & Social Proof 1.2.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/plugixa-testimonial\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-02T18:38:43+00:00\n"
+"POT-Creation-Date: 2026-11-17T10:06:54+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: plugixa-testimonial\n"
 
 #. Plugin Name of the plugin
 #: plugixa-testimonial.php
-msgid "Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider"
+msgid "Plugixa Testimonial – Customer Reviews, Star Ratings & Social Proof"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -40,193 +40,371 @@ msgid "https://www.plugixa.com"
 msgstr ""
 
 #: includes/Core/Admin/Admin.php:33
-#: includes/Modules/Elementor/Elementor.php:47
+#: pro/includes/Modules/Elementor/Elementor.php:47
 msgid "Plugixa Testimonial"
 msgstr ""
 
 #: includes/Core/Admin/Admin.php:34
 #: includes/Core/Admin/Admin.php:45
 #: includes/Core/Admin/Admin.php:91
-#: includes/Core/Admin/Admin.php:172
-#: includes/Core/Admin/Assets.php:424
-#: includes/Modules/WooCommerce/WCProductMetabox.php:45
-#: includes/Modules/WooCommerce/WCProductTab.php:43
+#: includes/Core/Admin/Admin.php:169
+#: includes/Core/Admin/Assets.php:451
+#: pro/includes/Modules/WooCommerce/WCProductMetabox.php:45
+#: pro/includes/Modules/WooCommerce/WCProductTab.php:43
 msgid "Testimonials"
 msgstr ""
 
 #: includes/Core/Admin/Admin.php:44
 #: includes/Core/Admin/Admin.php:90
-#: includes/Core/Admin/Admin.php:171
-#: includes/Core/Admin/Admin.php:180
-#: includes/Core/Admin/Assets.php:423
+#: includes/Core/Admin/Admin.php:168
+#: includes/Core/Admin/Admin.php:175
+#: includes/Core/Admin/Assets.php:450
 msgid "Dashboard"
 msgstr ""
 
 #: includes/Core/Admin/Admin.php:46
 #: includes/Core/Admin/Admin.php:92
-#: includes/Core/Admin/Admin.php:173
-#: includes/Core/Admin/Assets.php:425
-#: includes/Modules/Elementor/TestimonialWidget.php:90
-#: assets/blocks/testimonial-block/edit.jsx:128
+#: includes/Core/Admin/Admin.php:170
+#: includes/Core/Admin/Assets.php:452
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:91
+#: pro/assets/blocks/testimonial-block/edit.jsx:128
 msgid "Categories"
 msgstr ""
 
 #: includes/Core/Admin/Admin.php:47
-#: includes/Core/Admin/Admin.php:94
-#: includes/Core/Admin/Admin.php:175
-#: includes/Core/Admin/Assets.php:438
+#: includes/Core/Admin/Admin.php:93
+#: includes/Core/Admin/Admin.php:171
+#: includes/Core/Admin/Assets.php:465
 msgid "Views"
 msgstr ""
 
 #: includes/Core/Admin/Admin.php:48
-#: includes/Core/Admin/Admin.php:95
-#: includes/Core/Admin/Admin.php:176
-#: includes/Core/Admin/Assets.php:439
+#: includes/Core/Admin/Admin.php:94
+#: includes/Core/Admin/Admin.php:172
+#: includes/Core/Admin/Assets.php:466
 msgid "Shortcodes"
 msgstr ""
 
 #: includes/Core/Admin/Admin.php:65
 #: includes/Core/Admin/Admin.php:66
-#: includes/Core/Admin/Admin.php:102
-#: includes/Core/Admin/Admin.php:178
-#: includes/Core/Admin/Assets.php:426
+#: includes/Core/Admin/Admin.php:99
+#: includes/Core/Admin/Admin.php:173
+#: includes/Core/Admin/Assets.php:453
 msgid "Settings"
 msgstr ""
 
-#: includes/Core/Admin/Admin.php:93
-#: includes/Core/Admin/Admin.php:174
-msgid "Custom Fields"
-msgstr ""
-
-#: includes/Core/Admin/Admin.php:101
-#: includes/Core/Admin/Admin.php:177
-msgid "Requests"
-msgstr ""
-
-#: includes/Core/Admin/Admin.php:135
-#: includes/Modules/Elementor/TestimonialWidget.php:116
-#: templates/submission-form.php:118
-#: assets/blocks/testimonial-block/edit.jsx:59
+#: includes/Core/Admin/Admin.php:132
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:117
+#: pro/templates/frontend/submission-form.php:118
+#: pro/assets/blocks/testimonial-block/edit.jsx:59
 msgid "Name"
 msgstr ""
 
-#: includes/Core/Admin/Admin.php:136
+#: includes/Core/Admin/Admin.php:133
 msgid "Details"
 msgstr ""
 
-#: includes/Core/Admin/Admin.php:137
-#: includes/Core/Admin/Assets.php:432
+#: includes/Core/Admin/Admin.php:134
+#: includes/Core/Admin/Assets.php:459
 msgid "Status"
 msgstr ""
 
-#: includes/Core/Admin/Admin.php:138
-#: includes/Modules/Elementor/TestimonialWidget.php:114
-#: assets/blocks/testimonial-block/edit.jsx:57
+#: includes/Core/Admin/Admin.php:135
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:115
+#: pro/assets/blocks/testimonial-block/edit.jsx:57
 msgid "Date"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:412
+#: includes/Core/Admin/Assets.php:439
 msgid "Save"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:413
+#: includes/Core/Admin/Assets.php:440
 msgid "Cancel"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:414
+#: includes/Core/Admin/Assets.php:441
 msgid "Delete"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:415
+#: includes/Core/Admin/Assets.php:442
 msgid "Edit"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:416
+#: includes/Core/Admin/Assets.php:443
 msgid "Add"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:417
+#: includes/Core/Admin/Assets.php:444
 msgid "Search"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:418
+#: includes/Core/Admin/Assets.php:445
 msgid "Loading..."
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:419
+#: includes/Core/Admin/Assets.php:446
 msgid "An error occurred"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:420
+#: includes/Core/Admin/Assets.php:447
 msgid "Success"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:421
+#: includes/Core/Admin/Assets.php:448
 msgid "Are you sure you want to delete?"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:422
+#: includes/Core/Admin/Assets.php:449
 msgid "No results found"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:427
+#: includes/Core/Admin/Assets.php:454
 msgid "Add Testimonial"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:428
+#: includes/Core/Admin/Assets.php:455
 msgid "Edit Testimonial"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:429
+#: includes/Core/Admin/Assets.php:456
 msgid "Client Name"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:430
+#: includes/Core/Admin/Assets.php:457
 msgid "Testimonial Text"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:431
-#: includes/Modules/Elementor/TestimonialWidget.php:115
-#: includes/Modules/Frontend/Shortcodes.php:834
-#: templates/submission-form.php:234
-#: assets/blocks/testimonial-block/edit.jsx:58
+#: includes/Core/Admin/Assets.php:458
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:116
+#: pro/includes/Modules/SubmissionForm/FormShortcode.php:103
+#: pro/templates/frontend/submission-form.php:234
+#: pro/assets/blocks/testimonial-block/edit.jsx:58
 msgid "Rating"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:433
+#: includes/Core/Admin/Assets.php:460
 msgid "Pending"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:434
+#: includes/Core/Admin/Assets.php:461
 msgid "Approved"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:435
+#: includes/Core/Admin/Assets.php:462
 msgid "Rejected"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:436
+#: includes/Core/Admin/Assets.php:463
 msgid "Draft"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:437
+#: includes/Core/Admin/Assets.php:464
 msgid "Featured"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:440
+#: includes/Core/Admin/Assets.php:467
 msgid "Add Category"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:441
+#: includes/Core/Admin/Assets.php:468
 msgid "Edit Category"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:442
+#: includes/Core/Admin/Assets.php:469
 msgid "Category Name"
 msgstr ""
 
-#: includes/Core/Admin/Assets.php:443
+#: includes/Core/Admin/Assets.php:470
 msgid "Description"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:473
+msgid "Upgrade to Pro"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:474
+msgid "See Pro features"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:475
+msgid "See Pro plans"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:476
+msgid "Compare plans"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:477
+msgid "Plugixa Testimonial Pro"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:478
+msgid "Pro adds the layouts, the ways to collect testimonials and the integrations a growing site needs, and brings in the reviews your customers already left on Google, Facebook and WooCommerce. Your testimonials, displays and settings stay as they are when you upgrade."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:479
+msgid "More ways to show them"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:480
+msgid "Slider and masonry layouts"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:481
+msgid "A carousel with seven transition effects and autoplay, and a masonry wall for cards of different heights, next to the grid and list."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:482
+msgid "Video testimonials"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:483
+msgid "Add a YouTube, Vimeo or self-hosted video to any testimonial. It plays in the card when a visitor clicks it."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:484
+msgid "Custom fields"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:485
+msgid "Add your own fields, such as product, location or order number, and show them on the cards."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:486
+msgid "Collect testimonials"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:487
+msgid "Submission form"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:488
+msgid "A form your customers fill in on your site, with photo upload and reCAPTCHA. New testimonials wait for your approval."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:489
+msgid "Testimonial requests"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:490
+msgid "Email a customer a personal link to the form, with their name already filled in."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:491
+msgid "Email notifications"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:492
+msgid "Get an email the moment a new testimonial arrives."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:493
+msgid "Show them anywhere"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:494
+msgid "Elementor widget and block"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:495
+msgid "Place testimonials with the Elementor widget or the block editor block, with a live preview."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:496
+msgid "WooCommerce product tab"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:497
+msgid "Show testimonials in a tab on your product pages."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:498
+msgid "CSV and JSON import and export"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:499
+msgid "Move testimonials in from a spreadsheet or another site, and back out again."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:500
+msgid "Bring in your reviews"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:501
+msgid "Export and setup"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:502
+msgid "Google reviews"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:503
+msgid "Connect your Google Business Profile to bring in all of your reviews, or search any business with your own Places API key."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:504
+msgid "Facebook reviews"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:505
+msgid "Bring in your Facebook Page's reviews through your own Meta app."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:506
+msgid "WooCommerce product reviews"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:507
+msgid "Turn approved product reviews into testimonials, filtered by rating, category or verified owners."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:508
+msgid "Daily sync"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:509
+msgid "New reviews arrive by themselves, and none is imported twice."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:510
+msgid "PDF export"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:511
+msgid "Download your testimonials as a formatted PDF document."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:512
+msgid "Demo data"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:513
+msgid "Fill a test site with sample testimonials, categories and displays in one click, and remove them just as easily."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:514
+msgid "Priority support"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:515
+msgid "Faster answers from the team that builds the plugin."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:516
+msgid "Already bought Pro? Download it from your Plugixa account and install it. It takes over from this plugin and keeps all your data."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:517
+msgid "Get more from Plugixa Testimonial"
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:518
+msgid "Slider and masonry layouts, the submission form, video testimonials, review import from Google, Facebook and WooCommerce and more come with Pro."
+msgstr ""
+
+#: includes/Core/Admin/Assets.php:519
+msgid "Hide this card"
 msgstr ""
 
 #: includes/Core/Http/RestController.php:54
@@ -238,61 +416,20 @@ msgid "You do not have permission to delete this item."
 msgstr ""
 
 #: includes/Core/Http/RestController.php:68
+#: includes/Core/Http/RestController.php:101
 msgid "You do not have permission to change approval status."
 msgstr ""
 
-#: includes/Core/Http/RestController.php:82
+#: includes/Core/Http/RestController.php:98
+msgid "Only users who can approve testimonials may change an approved testimonial."
+msgstr ""
+
+#: includes/Core/Http/RestController.php:150
 #: pro/includes/Modules/GoogleReviews/Module.php:46
 msgid "Administrator access required."
 msgstr ""
 
-#: includes/Core/Mail/EmailNotifier.php:37
-msgid "Anonymous"
-msgstr ""
-
-#: includes/Core/Mail/EmailNotifier.php:47
-msgid "New testimonial from {client_name}"
-msgstr ""
-
-#: includes/Core/Mail/EmailNotifier.php:55
-msgid "Review Testimonial"
-msgstr ""
-
-#. translators: %s: site name
-#: includes/Core/Mail/EmailNotifier.php:87
-#, php-format
-msgid "Sent by %s"
-msgstr ""
-
-#: includes/Core/TemplateLoader.php:68
-msgid "Grid layout"
-msgstr ""
-
-#: includes/Core/TemplateLoader.php:69
-msgid "Slider/carousel layout"
-msgstr ""
-
-#: includes/Core/TemplateLoader.php:70
-msgid "Masonry layout"
-msgstr ""
-
-#: includes/Core/TemplateLoader.php:71
-msgid "Vertical list layout"
-msgstr ""
-
-#: includes/Core/TemplateLoader.php:72
-msgid "Frontend submission form"
-msgstr ""
-
-#: includes/Core/TemplateLoader.php:76
-msgid "Video testimonial card (Pro)"
-msgstr ""
-
-#: includes/Core/TemplateLoader.php:77
-msgid "Custom fields row partial (Pro)"
-msgstr ""
-
-#: includes/Core/TemplateLoader.php:101
+#: includes/Core/TemplateLoader.php:84
 msgid "Parent Theme"
 msgstr ""
 
@@ -302,22 +439,22 @@ msgstr ""
 
 #: includes/Modules/Categories/Http/CategoriesController.php:236
 #: includes/Modules/Categories/Http/CategoriesController.php:302
-#: includes/Modules/Multilingual/Http/MultilingualController.php:764
+#: includes/Modules/Multilingual/Http/MultilingualController.php:822
 msgid "Category name is required"
 msgstr ""
 
 #: includes/Modules/Categories/Http/CategoriesController.php:240
 #: includes/Modules/Categories/Http/CategoriesController.php:306
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:242
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:258
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:332
-#: includes/Modules/Frontend/Http/FrontendApi.php:983
 #: includes/Modules/Shortcodes/Http/ShortcodesController.php:203
 #: includes/Modules/Shortcodes/Http/ShortcodesController.php:243
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:442
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:525
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:474
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:564
 #: includes/Modules/Views/Http/ViewsController.php:327
 #: includes/Modules/Views/Http/ViewsController.php:375
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:242
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:258
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:332
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:312
 msgid "Validation failed"
 msgstr ""
 
@@ -346,423 +483,47 @@ msgid "Category deleted successfully"
 msgstr ""
 
 #: includes/Modules/Categories/Http/CategoriesController.php:391
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:410
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:769
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:809
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:410
 msgid "No items provided"
 msgstr ""
 
 #: includes/Modules/Categories/Http/CategoriesController.php:409
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:428
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:806
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:846
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:428
 msgid "Order updated successfully"
 msgstr ""
 
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:221
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:321
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:386
-msgid "Custom field not found"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:259
-msgid "This field key already exists"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:278
-msgid "Failed to create custom field"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:303
-msgid "Custom field created successfully"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:351
-msgid "Failed to update custom field"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:368
-msgid "Custom field updated successfully"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:398
-msgid "Failed to delete custom field"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:401
-msgid "Custom field deleted successfully"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:464
-#: includes/Modules/Multilingual/Http/MultilingualController.php:772
-msgid "Field label is required"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:468
-msgid "Field key must only contain lowercase letters, numbers, and underscores"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:472
-msgid "Invalid field type"
-msgstr ""
-
-#: includes/Modules/CustomFields/Http/CustomFieldsController.php:476
-msgid "Select fields require at least one option"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:27
-#: assets/blocks/testimonial-block/edit.jsx:216
-#: assets/blocks/testimonial-block/edit.jsx:226
-msgid "Plugixa Testimonials"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:57
-msgid "Content"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:62
-msgid "Config Source"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:66
-msgid "Saved Shortcode"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:67
-msgid "Custom"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:73
-#: assets/blocks/testimonial-block/edit.jsx:100
-msgid "Select Shortcode"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:82
-#: assets/blocks/testimonial-block/edit.jsx:122
-msgid "View"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:99
-#: assets/blocks/testimonial-block/edit.jsx:151
-msgid "Limit"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:105
-#: assets/blocks/testimonial-block/edit.jsx:156
-msgid "0 = no limit"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:109
-#: assets/blocks/testimonial-block/edit.jsx:159
-msgid "Order By"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:113
-#: assets/blocks/testimonial-block/edit.jsx:56
-msgid "Display Order"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:122
-#: assets/blocks/testimonial-block/edit.jsx:165
-msgid "Order"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:126
-#: assets/blocks/testimonial-block/edit.jsx:63
-msgid "Ascending"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:127
-#: assets/blocks/testimonial-block/edit.jsx:64
-msgid "Descending"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:133
-#: assets/blocks/testimonial-block/edit.jsx:134
-msgid "Featured Only"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:135
-#: includes/Modules/Elementor/TestimonialWidget.php:180
-#: includes/Modules/Frontend/Shortcodes.php:1268
-msgid "Yes"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:136
-#: includes/Modules/Elementor/TestimonialWidget.php:181
-#: includes/Modules/Frontend/Shortcodes.php:1268
-msgid "No"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:143
-#: assets/blocks/testimonial-block/edit.jsx:139
-msgid "Minimum Rating"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:147
-msgid "Any"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:161
-#: assets/blocks/testimonial-block/edit.jsx:172
-msgid "Display Options"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:167
-#: assets/blocks/testimonial-block/edit.jsx:174
-msgid "Show Photo"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:168
-#: assets/blocks/testimonial-block/edit.jsx:179
-msgid "Show Rating"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:169
-#: assets/blocks/testimonial-block/edit.jsx:184
-msgid "Show Role"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:170
-#: assets/blocks/testimonial-block/edit.jsx:189
-msgid "Show Company"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:171
-#: assets/blocks/testimonial-block/edit.jsx:194
-msgid "Show Date"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:172
-#: assets/blocks/testimonial-block/edit.jsx:199
-msgid "Show Website"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:173
-#: assets/blocks/testimonial-block/edit.jsx:204
-msgid "Show Quote Icon"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:192
-msgid "Card"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:198
-msgid "Card Background"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:204
-msgid "Text Color"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:210
-msgid "Name Color"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:216
-msgid "Role Color"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:222
-msgid "Border Color"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:230
-msgid "Stars"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:236
-msgid "Star Color"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:242
-msgid "Empty Star Color"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:250
-msgid "Spacing & Borders"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:256
-msgid "Border Radius"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:263
-msgid "Card Padding"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:270
-msgid "Gap"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:277
-msgid "Border Width"
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:346
-#: assets/blocks/testimonial-block/edit.jsx:46
-msgid "Select a shortcode..."
-msgstr ""
-
-#: includes/Modules/Elementor/TestimonialWidget.php:358
-#: assets/blocks/testimonial-block/edit.jsx:51
-msgid "Default View"
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:718
-msgid "Testimonial submissions are currently disabled."
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:729
-msgid "reCAPTCHA verification required."
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:740
-#: includes/Modules/Frontend/Http/FrontendApi.php:745
-msgid "reCAPTCHA verification failed."
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:752
-msgid "reCAPTCHA score too low. Please try again."
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:780
-msgid "Invalid file upload."
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:786
-msgid "File too large. Maximum size is 2MB."
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:795
-msgid "Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed."
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:810
-#: includes/Modules/Frontend/Http/FrontendApi.php:822
-msgid "Failed to upload photo."
-msgstr ""
-
-#. translators: %s: custom field label
-#. translators: %s: form field name
-#: includes/Modules/Frontend/Http/FrontendApi.php:878
-#: includes/Modules/Frontend/Http/FrontendApi.php:940
-#, php-format
-msgid "%s is required"
-msgstr ""
-
-#. translators: %s: custom field label
-#: includes/Modules/Frontend/Http/FrontendApi.php:901
-#, php-format
-msgid "%s must be a valid number"
-msgstr ""
-
-#. translators: %s: custom field label
-#: includes/Modules/Frontend/Http/FrontendApi.php:907
-#, php-format
-msgid "%s must be a valid URL"
-msgstr ""
-
-#. translators: %s: custom field label
-#: includes/Modules/Frontend/Http/FrontendApi.php:913
-#, php-format
-msgid "%s must be a valid date"
-msgstr ""
-
-#. translators: %s: custom field label
-#: includes/Modules/Frontend/Http/FrontendApi.php:919
-#, php-format
-msgid "%s must be a valid hex color"
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:934
-msgid "Email is required"
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:946
-msgid "Please enter a valid email address"
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:951
-msgid "Please enter a valid URL"
-msgstr ""
-
-#. translators: %d: minimum number of characters
-#: includes/Modules/Frontend/Http/FrontendApi.php:962
-#, php-format
-msgid "Testimonial must be at least %d characters"
-msgstr ""
-
-#. translators: %d: maximum number of characters
-#: includes/Modules/Frontend/Http/FrontendApi.php:966
-#, php-format
-msgid "Testimonial must not exceed %d characters"
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:991
-msgid "Failed to submit testimonial"
-msgstr ""
-
-#: includes/Modules/Frontend/Http/FrontendApi.php:1038
-msgid "Thank you for your testimonial!"
-msgstr ""
-
-#: includes/Modules/Frontend/Shortcodes.php:288
+#: includes/Modules/Frontend/Shortcodes.php:283
 msgid "Load More"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:319
+#: includes/Modules/Frontend/Shortcodes.php:314
 msgid "No testimonials found."
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:825
-msgid "Your Name"
-msgstr ""
-
-#: includes/Modules/Frontend/Shortcodes.php:828
-msgid "Your Role/Title"
-msgstr ""
-
-#: includes/Modules/Frontend/Shortcodes.php:831
-#: templates/submission-form.php:170
-msgid "Company"
-msgstr ""
-
-#: includes/Modules/Frontend/Shortcodes.php:841
-#: templates/submission-form.php:249
-msgid "Your Testimonial"
-msgstr ""
-
-#: includes/Modules/Frontend/Shortcodes.php:844
-msgid "Website URL"
-msgstr ""
-
-#: includes/Modules/Frontend/Shortcodes.php:847
-#: templates/submission-form.php:60
-#: templates/submission-form.php:349
-msgid "Submit Testimonial"
-msgstr ""
-
-#: includes/Modules/Frontend/Shortcodes.php:868
-#: includes/Modules/Frontend/Shortcodes.php:968
+#: includes/Modules/Frontend/Shortcodes.php:765
+#: includes/Modules/Frontend/Shortcodes.php:865
 msgid "All"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:869
+#: includes/Modules/Frontend/Shortcodes.php:766
 msgid "All Categories"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:1374
+#: includes/Modules/Frontend/Shortcodes.php:1146
 msgid "Loading more..."
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:1382
+#: includes/Modules/Frontend/Shortcodes.php:1154
 msgid "Testimonials pagination"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:1386
+#: includes/Modules/Frontend/Shortcodes.php:1158
 msgid "Prev"
 msgstr ""
 
-#: includes/Modules/Frontend/Shortcodes.php:1400
+#: includes/Modules/Frontend/Shortcodes.php:1172
 msgid "Next"
 msgstr ""
 
@@ -778,250 +539,94 @@ msgstr ""
 msgid "Google Fonts API returned an error."
 msgstr ""
 
-#: includes/Modules/ImportExport/Http/ImportExportController.php:75
-#: includes/Modules/ImportExport/Http/ImportExportController.php:154
-#: pro/includes/Modules/PdfExport/Http/PdfExportController.php:56
-msgid "No testimonials to export"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:198
-msgid "No file uploaded"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:205
-msgid "Only CSV and JSON files are supported"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:210
-msgid "File size must be under 10MB"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:217
-msgid "Failed to read uploaded file"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:273
-msgid "Missing required parameters"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:278
-msgid "Invalid file token"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:282
-msgid "Invalid format"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:289
-msgid "Import file not found. Please upload again."
-msgstr ""
-
-#. translators: %d: number of testimonials imported
-#: includes/Modules/ImportExport/Http/ImportExportController.php:354
-#, php-format
-msgid "%d testimonials imported successfully"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:579
-msgid "CSV file is empty or has no data rows"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:621
-msgid "Invalid JSON file"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:631
-msgid "JSON must contain a \"testimonials\" array or be an array of objects"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:635
-msgid "No testimonials found in JSON"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:797
-msgid "Missing client name"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:801
-msgid "Missing testimonial text"
-msgstr ""
-
-#: includes/Modules/ImportExport/Http/ImportExportController.php:843
-msgid "Database insert failed"
-msgstr ""
-
-#: includes/Modules/Multilingual/Http/MultilingualController.php:180
-#: includes/Modules/Multilingual/Http/MultilingualController.php:219
-#: includes/Modules/Multilingual/Http/MultilingualController.php:300
-#: includes/Modules/Multilingual/Http/MultilingualController.php:335
-#: includes/Modules/Multilingual/Http/MultilingualController.php:431
-#: includes/Modules/Multilingual/Http/MultilingualController.php:537
+#: includes/Modules/Multilingual/Http/MultilingualController.php:223
+#: includes/Modules/Multilingual/Http/MultilingualController.php:262
+#: includes/Modules/Multilingual/Http/MultilingualController.php:352
+#: includes/Modules/Multilingual/Http/MultilingualController.php:387
+#: includes/Modules/Multilingual/Http/MultilingualController.php:483
+#: includes/Modules/Multilingual/Http/MultilingualController.php:592
 msgid "Invalid entity type."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:192
-#: includes/Modules/Multilingual/Http/MultilingualController.php:446
+#: includes/Modules/Multilingual/Http/MultilingualController.php:235
+#: includes/Modules/Multilingual/Http/MultilingualController.php:498
 msgid "Item not found."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:230
+#: includes/Modules/Multilingual/Http/MultilingualController.php:273
 msgid "Source item not found."
 msgstr ""
 
 #. translators: 1: language code, 2: existing translation ID
-#: includes/Modules/Multilingual/Http/MultilingualController.php:245
+#: includes/Modules/Multilingual/Http/MultilingualController.php:288
 #, php-format
 msgid "A translation in \"%1$s\" already exists (ID: %2$d)."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:274
+#: includes/Modules/Multilingual/Http/MultilingualController.php:326
 msgid "Failed to create translation."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:286
+#: includes/Modules/Multilingual/Http/MultilingualController.php:338
 msgid "Translation created successfully."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:311
+#: includes/Modules/Multilingual/Http/MultilingualController.php:363
 msgid "One or both items not found."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:315
+#: includes/Modules/Multilingual/Http/MultilingualController.php:367
 msgid "Cannot link items with the same language."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:322
+#: includes/Modules/Multilingual/Http/MultilingualController.php:374
 msgid "Items linked as translations."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:340
+#: includes/Modules/Multilingual/Http/MultilingualController.php:392
 msgid "Translation unlinked."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:436
-#: includes/Modules/Multilingual/Http/MultilingualController.php:542
+#: includes/Modules/Multilingual/Http/MultilingualController.php:488
+#: includes/Modules/Multilingual/Http/MultilingualController.php:597
 msgid "Entity does not support translations."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:554
+#: includes/Modules/Multilingual/Http/MultilingualController.php:609
 msgid "Default language translation is required."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:563
+#: includes/Modules/Multilingual/Http/MultilingualController.php:618
 msgid "Validation failed for default language."
 msgstr ""
 
 #. translators: %s: language code
-#: includes/Modules/Multilingual/Http/MultilingualController.php:594
+#: includes/Modules/Multilingual/Http/MultilingualController.php:649
 #, php-format
 msgid "Validation failed for language: %s"
 msgstr ""
 
 #. translators: %s: language code
-#: includes/Modules/Multilingual/Http/MultilingualController.php:650
+#: includes/Modules/Multilingual/Http/MultilingualController.php:705
 #, php-format
 msgid "Failed to create translation for: %s"
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:734
+#: includes/Modules/Multilingual/Http/MultilingualController.php:792
 msgid "Translations saved successfully."
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:753
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:1048
+#: includes/Modules/Multilingual/Http/MultilingualController.php:811
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:1004
 msgid "Client name is required"
 msgstr ""
 
-#: includes/Modules/Multilingual/Http/MultilingualController.php:756
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:1052
+#: includes/Modules/Multilingual/Http/MultilingualController.php:814
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:1008
 msgid "Testimonial text is required"
 msgstr ""
 
-#: includes/Modules/Requests/Http/RequestsController.php:198
-#: includes/Modules/Requests/Http/RequestsController.php:290
-msgid "Request not found."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:219
-msgid "A valid email address is required."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:249
-msgid "Failed to create request."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:269
-msgid "Request sent successfully."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:270
-msgid "Request created but email could not be sent."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:294
-msgid "This request has already been submitted."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:321
-msgid "Request resent successfully."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:322
-msgid "Email could not be sent."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:332
-msgid "Recipients list is required."
-msgstr ""
-
-#. translators: 1: number of requests sent, 2: number that failed
-#: includes/Modules/Requests/Http/RequestsController.php:370
-#, php-format
-msgid "%1$d requests sent, %2$d failed."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:385
-msgid "Failed to delete request."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:388
-msgid "Request deleted."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:401
-msgid "IDs are required."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:408
-msgid "Requests deleted."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:424
-#: includes/Modules/Requests/Http/RequestsController.php:437
-msgid "Invalid or expired request."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:441
-msgid "This testimonial has already been submitted."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:452
-msgid "This request has expired."
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:477
-msgid "Customer"
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:491
-msgid "We'd love your feedback!"
-msgstr ""
-
-#: includes/Modules/Requests/Http/RequestsController.php:520
-msgid "Leave Your Testimonial"
-msgstr ""
-
-#: includes/Modules/Settings/Http/SettingsController.php:68
+#: includes/Modules/Settings/Http/SettingsController.php:73
 msgid "Settings saved successfully"
 msgstr ""
 
@@ -1055,8 +660,8 @@ msgid "Shortcode deleted successfully"
 msgstr ""
 
 #: includes/Modules/Shortcodes/Http/ShortcodesController.php:297
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:637
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:711
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:677
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:751
 #: includes/Modules/Views/Http/ViewsController.php:451
 msgid "No IDs provided"
 msgstr ""
@@ -1080,81 +685,81 @@ msgstr ""
 msgid "Name is required"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:404
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:437
 msgid "Testimonial not found"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:423
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:425
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:455
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:457
 msgid "Unknown"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:487
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:519
 msgid "Failed to create testimonial"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:513
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:552
 msgid "Testimonial created successfully"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:548
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:587
 msgid "Failed to update testimonial"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:579
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:619
 msgid "Testimonial updated successfully"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:625
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:665
 msgid "Failed to delete testimonial"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:628
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:668
 msgid "Testimonial deleted successfully"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:657
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:697
 msgid "Failed to delete testimonials"
 msgstr ""
 
 #. translators: %d: number of testimonials deleted
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:663
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:703
 #, php-format
 msgid "%d testimonials deleted successfully"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:675
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:1059
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:715
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:1015
 msgid "Invalid status"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:695
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:735
 msgid "Failed to update status"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:700
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:740
 msgid "Status updated successfully"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:748
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:788
 msgid "Invalid action"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:752
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:792
 msgid "Failed to perform bulk action"
 msgstr ""
 
 #. translators: %d: number of testimonials affected
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:758
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:798
 #, php-format
 msgid "Bulk action completed on %d testimonials"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:1054
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:1010
 msgid "Testimonial text must be at least 10 characters"
 msgstr ""
 
-#: includes/Modules/Testimonials/Http/TestimonialsController.php:1063
+#: includes/Modules/Testimonials/Http/TestimonialsController.php:1019
 msgid "Rating must be between 1 and 5"
 msgstr ""
 
@@ -1217,21 +822,67 @@ msgstr ""
 msgid "Default view updated successfully"
 msgstr ""
 
-#: includes/Modules/WooCommerce/Http/WoocommerceContentController.php:47
-#: includes/Modules/WooCommerce/Http/WoocommerceContentController.php:85
-msgid "WooCommerce is not active."
+#: pro/includes/Modules/CustomFields/FrontendFields.php:112
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:136
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:181
+msgid "Yes"
 msgstr ""
 
-#: includes/Modules/WooCommerce/WCProductMetabox.php:65
-msgid "Testimonial Shortcode"
+#: pro/includes/Modules/CustomFields/FrontendFields.php:112
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:137
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:182
+msgid "No"
 msgstr ""
 
-#: includes/Modules/WooCommerce/WCProductMetabox.php:67
-msgid "None"
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:221
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:321
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:386
+msgid "Custom field not found"
 msgstr ""
 
-#: includes/Modules/WooCommerce/WCProductMetabox.php:74
-msgid "Select a testimonial shortcode to display on this product page."
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:259
+msgid "This field key already exists"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:278
+msgid "Failed to create custom field"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:303
+msgid "Custom field created successfully"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:351
+msgid "Failed to update custom field"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:368
+msgid "Custom field updated successfully"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:398
+msgid "Failed to delete custom field"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:401
+msgid "Custom field deleted successfully"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:464
+#: pro/includes/Modules/CustomFields/Module.php:88
+msgid "Field label is required"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:468
+msgid "Field key must only contain lowercase letters, numbers, and underscores"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:472
+msgid "Invalid field type"
+msgstr ""
+
+#: pro/includes/Modules/CustomFields/Http/CustomFieldsController.php:476
+msgid "Select fields require at least one option"
 msgstr ""
 
 #: pro/includes/Modules/DemoData/Http/DemoDataController.php:50
@@ -1244,6 +895,193 @@ msgstr ""
 
 #: pro/includes/Modules/DemoData/Http/DemoDataController.php:66
 msgid "All data has been reset and demo data re-loaded."
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:28
+#: pro/assets/blocks/testimonial-block/edit.jsx:216
+#: pro/assets/blocks/testimonial-block/edit.jsx:226
+msgid "Plugixa Testimonials"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:58
+msgid "Content"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:63
+msgid "Config Source"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:67
+msgid "Saved Shortcode"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:68
+msgid "Custom"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:74
+#: pro/assets/blocks/testimonial-block/edit.jsx:100
+msgid "Select Shortcode"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:83
+#: pro/assets/blocks/testimonial-block/edit.jsx:122
+msgid "View"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:100
+#: pro/assets/blocks/testimonial-block/edit.jsx:151
+msgid "Limit"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:106
+#: pro/assets/blocks/testimonial-block/edit.jsx:156
+msgid "0 = no limit"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:110
+#: pro/assets/blocks/testimonial-block/edit.jsx:159
+msgid "Order By"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:114
+#: pro/assets/blocks/testimonial-block/edit.jsx:56
+msgid "Display Order"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:123
+#: pro/assets/blocks/testimonial-block/edit.jsx:165
+msgid "Order"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:127
+#: pro/assets/blocks/testimonial-block/edit.jsx:63
+msgid "Ascending"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:128
+#: pro/assets/blocks/testimonial-block/edit.jsx:64
+msgid "Descending"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:134
+#: pro/assets/blocks/testimonial-block/edit.jsx:134
+msgid "Featured Only"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:144
+#: pro/assets/blocks/testimonial-block/edit.jsx:139
+msgid "Minimum Rating"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:148
+msgid "Any"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:162
+#: pro/assets/blocks/testimonial-block/edit.jsx:172
+msgid "Display Options"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:168
+#: pro/assets/blocks/testimonial-block/edit.jsx:174
+msgid "Show Photo"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:169
+#: pro/assets/blocks/testimonial-block/edit.jsx:179
+msgid "Show Rating"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:170
+#: pro/assets/blocks/testimonial-block/edit.jsx:184
+msgid "Show Role"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:171
+#: pro/assets/blocks/testimonial-block/edit.jsx:189
+msgid "Show Company"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:172
+#: pro/assets/blocks/testimonial-block/edit.jsx:194
+msgid "Show Date"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:173
+#: pro/assets/blocks/testimonial-block/edit.jsx:199
+msgid "Show Website"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:174
+#: pro/assets/blocks/testimonial-block/edit.jsx:204
+msgid "Show Quote Icon"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:193
+msgid "Card"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:199
+msgid "Card Background"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:205
+msgid "Text Color"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:211
+msgid "Name Color"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:217
+msgid "Role Color"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:223
+msgid "Border Color"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:231
+msgid "Stars"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:237
+msgid "Star Color"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:243
+msgid "Empty Star Color"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:251
+msgid "Spacing & Borders"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:257
+msgid "Border Radius"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:264
+msgid "Card Padding"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:271
+msgid "Gap"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:278
+msgid "Border Width"
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:347
+#: pro/assets/blocks/testimonial-block/edit.jsx:46
+msgid "Select a shortcode..."
+msgstr ""
+
+#: pro/includes/Modules/Elementor/TestimonialWidget.php:359
+#: pro/assets/blocks/testimonial-block/edit.jsx:51
+msgid "Default View"
 msgstr ""
 
 #: pro/includes/Modules/FacebookReviews/FacebookClient.php:53
@@ -1351,48 +1189,222 @@ msgstr ""
 msgid "Connection successful! API key is valid."
 msgstr ""
 
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:75
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:154
+#: pro/includes/Modules/PdfExport/Http/PdfExportController.php:56
+msgid "No testimonials to export"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:198
+msgid "No file uploaded"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:205
+msgid "Only CSV and JSON files are supported"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:210
+msgid "File size must be under 10MB"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:217
+msgid "Failed to read uploaded file"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:273
+msgid "Missing required parameters"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:278
+msgid "Invalid file token"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:282
+msgid "Invalid format"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:289
+msgid "Import file not found. Please upload again."
+msgstr ""
+
+#. translators: %d: number of testimonials imported
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:354
+#, php-format
+msgid "%d testimonials imported successfully"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:579
+msgid "CSV file is empty or has no data rows"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:621
+msgid "Invalid JSON file"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:631
+msgid "JSON must contain a \"testimonials\" array or be an array of objects"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:635
+msgid "No testimonials found in JSON"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:797
+msgid "Missing client name"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:801
+msgid "Missing testimonial text"
+msgstr ""
+
+#: pro/includes/Modules/ImportExport/Http/ImportExportController.php:843
+msgid "Database insert failed"
+msgstr ""
+
+#: pro/includes/Modules/Notifications/EmailNotifier.php:37
+msgid "Anonymous"
+msgstr ""
+
+#: pro/includes/Modules/Notifications/EmailNotifier.php:47
+msgid "New testimonial from {client_name}"
+msgstr ""
+
+#: pro/includes/Modules/Notifications/EmailNotifier.php:55
+msgid "Review Testimonial"
+msgstr ""
+
+#. translators: %s: site name
+#: pro/includes/Modules/Notifications/EmailNotifier.php:87
+#, php-format
+msgid "Sent by %s"
+msgstr ""
+
 #: pro/includes/Modules/PdfExport/Http/PdfExportController.php:96
 msgid "Failed to generate PDF: "
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:62
+#: pro/includes/Modules/Pro/ProBootstrap.php:98
 msgid "Google Reviews"
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:63
+#: pro/includes/Modules/Pro/ProBootstrap.php:99
 msgid "Import Google Reviews"
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:64
+#: pro/includes/Modules/Pro/ProBootstrap.php:100
 msgid "Facebook Reviews"
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:65
+#: pro/includes/Modules/Pro/ProBootstrap.php:101
 msgid "Import Facebook Reviews"
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:66
+#: pro/includes/Modules/Pro/ProBootstrap.php:102
 msgid "WooCommerce Reviews"
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:67
+#: pro/includes/Modules/Pro/ProBootstrap.php:103
 msgid "Import WooCommerce Reviews"
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:68
+#: pro/includes/Modules/Pro/ProBootstrap.php:104
 msgid "Data Management"
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:69
+#: pro/includes/Modules/Pro/ProBootstrap.php:105
 msgid "Load Demo Data"
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:70
+#: pro/includes/Modules/Pro/ProBootstrap.php:106
 msgid "Reset Demo Data"
 msgstr ""
 
-#: pro/includes/Modules/Pro/ProBootstrap.php:71
+#: pro/includes/Modules/Pro/ProBootstrap.php:107
 msgid "PDF"
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:198
+#: pro/includes/Modules/Requests/Http/RequestsController.php:290
+msgid "Request not found."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:219
+msgid "A valid email address is required."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:249
+msgid "Failed to create request."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:269
+msgid "Request sent successfully."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:270
+msgid "Request created but email could not be sent."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:294
+msgid "This request has already been submitted."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:321
+msgid "Request resent successfully."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:322
+msgid "Email could not be sent."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:332
+msgid "Recipients list is required."
+msgstr ""
+
+#. translators: 1: number of requests sent, 2: number that failed
+#: pro/includes/Modules/Requests/Http/RequestsController.php:370
+#, php-format
+msgid "%1$d requests sent, %2$d failed."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:385
+msgid "Failed to delete request."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:388
+msgid "Request deleted."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:401
+msgid "IDs are required."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:408
+msgid "Requests deleted."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:424
+#: pro/includes/Modules/Requests/Http/RequestsController.php:437
+msgid "Invalid or expired request."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:441
+msgid "This testimonial has already been submitted."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:452
+msgid "This request has expired."
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:491
+msgid "Customer"
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:505
+msgid "We'd love your feedback!"
+msgstr ""
+
+#: pro/includes/Modules/Requests/Http/RequestsController.php:534
+msgid "Leave Your Testimonial"
 msgstr ""
 
 #: pro/includes/Modules/ReviewSources/Http/ReviewSourcesController.php:104
@@ -1421,252 +1433,291 @@ msgstr ""
 msgid "Failed to import the review from %s"
 msgstr ""
 
+#: pro/includes/Modules/SubmissionForm/FormShortcode.php:94
+msgid "Your Name"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/FormShortcode.php:97
+msgid "Your Role/Title"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/FormShortcode.php:100
+#: pro/templates/frontend/submission-form.php:170
+msgid "Company"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/FormShortcode.php:110
+#: pro/templates/frontend/submission-form.php:249
+msgid "Your Testimonial"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/FormShortcode.php:113
+msgid "Website URL"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/FormShortcode.php:116
+#: pro/templates/frontend/submission-form.php:60
+#: pro/templates/frontend/submission-form.php:349
+msgid "Submit Testimonial"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:47
+msgid "Testimonial submissions are currently disabled."
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:58
+msgid "reCAPTCHA verification required."
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:69
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:74
+msgid "reCAPTCHA verification failed."
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:81
+msgid "reCAPTCHA score too low. Please try again."
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:109
+msgid "Invalid file upload."
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:115
+msgid "File too large. Maximum size is 2MB."
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:124
+msgid "Invalid file type. Only JPEG, PNG, GIF, and WebP images are allowed."
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:139
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:151
+msgid "Failed to upload photo."
+msgstr ""
+
+#. translators: %s: custom field label
+#. translators: %s: form field name
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:207
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:269
+#, php-format
+msgid "%s is required"
+msgstr ""
+
+#. translators: %s: custom field label
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:230
+#, php-format
+msgid "%s must be a valid number"
+msgstr ""
+
+#. translators: %s: custom field label
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:236
+#, php-format
+msgid "%s must be a valid URL"
+msgstr ""
+
+#. translators: %s: custom field label
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:242
+#, php-format
+msgid "%s must be a valid date"
+msgstr ""
+
+#. translators: %s: custom field label
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:248
+#, php-format
+msgid "%s must be a valid hex color"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:263
+msgid "Email is required"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:275
+msgid "Please enter a valid email address"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:280
+msgid "Please enter a valid URL"
+msgstr ""
+
+#. translators: %d: minimum number of characters
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:291
+#, php-format
+msgid "Testimonial must be at least %d characters"
+msgstr ""
+
+#. translators: %d: maximum number of characters
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:295
+#, php-format
+msgid "Testimonial must not exceed %d characters"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:320
+msgid "Failed to submit testimonial"
+msgstr ""
+
+#: pro/includes/Modules/SubmissionForm/Http/SubmitController.php:362
+msgid "Thank you for your testimonial!"
+msgstr ""
+
+#: pro/includes/Modules/WooCommerce/Http/WoocommerceContentController.php:47
+#: pro/includes/Modules/WooCommerce/Http/WoocommerceContentController.php:85
+msgid "WooCommerce is not active."
+msgstr ""
+
+#: pro/includes/Modules/WooCommerce/WCProductMetabox.php:65
+msgid "Testimonial Shortcode"
+msgstr ""
+
+#: pro/includes/Modules/WooCommerce/WCProductMetabox.php:67
+msgid "None"
+msgstr ""
+
+#: pro/includes/Modules/WooCommerce/WCProductMetabox.php:74
+msgid "Select a testimonial shortcode to display on this product page."
+msgstr ""
+
 #: pro/includes/Modules/WooCommerceReviews/WooCommerceReviewSource.php:37
 msgid "WooCommerce"
 msgstr ""
 
-#: templates/submission-form.php:22
+#: pro/templates/frontend/submission-form.php:22
 msgid "Thank you for your testimonial! It will be reviewed shortly."
 msgstr ""
 
-#: templates/submission-form.php:88
+#: pro/templates/frontend/submission-form.php:88
 msgid "Form sections"
 msgstr ""
 
-#: templates/submission-form.php:91
+#: pro/templates/frontend/submission-form.php:91
 msgid "Personal Info"
 msgstr ""
 
-#: templates/submission-form.php:95
+#: pro/templates/frontend/submission-form.php:95
 msgid "Your Review"
 msgstr ""
 
-#: templates/submission-form.php:100
+#: pro/templates/frontend/submission-form.php:100
 msgid "Additional Info"
 msgstr ""
 
-#: templates/submission-form.php:126
+#: pro/templates/frontend/submission-form.php:126
 msgid "Your name"
 msgstr ""
 
-#: templates/submission-form.php:136
+#: pro/templates/frontend/submission-form.php:136
 msgid "Email"
 msgstr ""
 
-#: templates/submission-form.php:144
+#: pro/templates/frontend/submission-form.php:144
 msgid "Your email"
 msgstr ""
 
-#: templates/submission-form.php:155
+#: pro/templates/frontend/submission-form.php:155
 msgid "Role / Title"
 msgstr ""
 
-#: templates/submission-form.php:162
+#: pro/templates/frontend/submission-form.php:162
 msgid "e.g. Marketing Manager"
 msgstr ""
 
-#: templates/submission-form.php:177
+#: pro/templates/frontend/submission-form.php:177
 msgid "Your company"
 msgstr ""
 
-#: templates/submission-form.php:188
+#: pro/templates/frontend/submission-form.php:188
 msgid "Website"
 msgstr ""
 
-#: templates/submission-form.php:204
+#: pro/templates/frontend/submission-form.php:204
 msgid "Profile Photo"
 msgstr ""
 
-#: templates/submission-form.php:213
+#: pro/templates/frontend/submission-form.php:213
 msgid "Choose Photo"
 msgstr ""
 
-#: templates/submission-form.php:256
+#: pro/templates/frontend/submission-form.php:256
 msgid "Share your experience..."
 msgstr ""
 
-#: templates/submission-form.php:302
+#: pro/templates/frontend/submission-form.php:302
 msgid "Select..."
 msgstr ""
 
-#: templates/submission-form.php:342
+#: pro/templates/frontend/submission-form.php:342
 msgid "← Previous"
 msgstr ""
 
-#: templates/submission-form.php:346
+#: pro/templates/frontend/submission-form.php:346
 msgid "Next →"
 msgstr ""
 
-#: templates/submission-form.php:362
+#: pro/templates/frontend/submission-form.php:362
 msgid "Thank You!"
 msgstr ""
 
-#: templates/submission-form.php:365
+#: pro/templates/frontend/submission-form.php:365
 msgid "Submit another testimonial"
 msgstr ""
 
-#: assets/blocks/testimonial-block/edit.jsx:88
+#: pro/assets/blocks/testimonial-block/edit.jsx:88
 msgid "Display Mode"
 msgstr ""
 
-#: assets/blocks/testimonial-block/edit.jsx:92
+#: pro/assets/blocks/testimonial-block/edit.jsx:92
 msgid "Use Saved Shortcode"
 msgstr ""
 
-#: assets/blocks/testimonial-block/edit.jsx:93
+#: pro/assets/blocks/testimonial-block/edit.jsx:93
 msgid "Custom Configuration"
 msgstr ""
 
-#: assets/blocks/testimonial-block/edit.jsx:105
+#: pro/assets/blocks/testimonial-block/edit.jsx:105
 msgid "Shortcode"
 msgstr ""
 
-#: assets/blocks/testimonial-block/edit.jsx:116
+#: pro/assets/blocks/testimonial-block/edit.jsx:116
 msgid "Display Settings"
 msgstr ""
 
-#: assets/blocks/testimonial-block/edit.jsx:149
+#: pro/assets/blocks/testimonial-block/edit.jsx:149
 msgid "Query"
 msgstr ""
 
-#: assets/blocks/testimonial-block/edit.jsx:217
+#: pro/assets/blocks/testimonial-block/edit.jsx:217
 msgid "Select a saved shortcode from the block settings panel."
 msgstr ""
 
-#: assets/blocks/testimonial-block/edit.jsx:227
+#: pro/assets/blocks/testimonial-block/edit.jsx:227
 msgid "No testimonials found for the current configuration."
 msgstr ""
 
-#: assets/blocks/testimonial-block/block.json
+#: pro/assets/blocks/testimonial-block/block.json
 msgctxt "block title"
 msgid "Plugixa Testimonials"
 msgstr ""
 
-#: assets/blocks/testimonial-block/block.json
+#: pro/assets/blocks/testimonial-block/block.json
 msgctxt "block description"
 msgid "Display testimonials from PlugixaTestimonial plugin with customizable layouts and filters."
 msgstr ""
 
-#: assets/blocks/testimonial-block/block.json
+#: pro/assets/blocks/testimonial-block/block.json
 msgctxt "block keyword"
 msgid "testimonial"
 msgstr ""
 
-#: assets/blocks/testimonial-block/block.json
+#: pro/assets/blocks/testimonial-block/block.json
 msgctxt "block keyword"
 msgid "review"
 msgstr ""
 
-#: assets/blocks/testimonial-block/block.json
+#: pro/assets/blocks/testimonial-block/block.json
 msgctxt "block keyword"
 msgid "rating"
 msgstr ""
 
-#: assets/blocks/testimonial-block/block.json
+#: pro/assets/blocks/testimonial-block/block.json
 msgctxt "block keyword"
 msgid "plugixa"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:469
-msgid "Upgrade to Pro"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:470
-msgid "See Pro features"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:471
-msgid "See Pro plans"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:472
-msgid "Compare plans"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:473
-msgid "Plugixa Testimonial Pro"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:474
-msgid "Everything in the free plugin keeps working. Pro brings in the reviews your customers already left on Google, Facebook and WooCommerce, and adds PDF export and demo data. Your testimonials, displays and settings stay as they are when you upgrade."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:475
-msgid "Bring in your reviews"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:476
-msgid "Export and setup"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:477
-msgid "Google reviews"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:478
-msgid "Connect your Google Business Profile to bring in all of your reviews, or search any business with your own Places API key."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:479
-msgid "Facebook reviews"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:480
-msgid "Bring in your Facebook Page's reviews through your own Meta app."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:481
-msgid "WooCommerce product reviews"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:482
-msgid "Turn approved product reviews into testimonials, filtered by rating, category or verified owners."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:483
-msgid "Daily sync"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:484
-msgid "New reviews arrive by themselves, and none is imported twice."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:485
-msgid "PDF export"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:486
-msgid "Download your testimonials as a formatted PDF document."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:487
-msgid "Demo data"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:488
-msgid "Fill a test site with sample testimonials, categories and displays in one click, and remove them just as easily."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:489
-msgid "Priority support"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:490
-msgid "Faster answers from the team that builds the plugin."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:491
-msgid "Already bought Pro? Download it from your Plugixa account and install it. It takes over from this plugin and keeps all your data."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:492
-msgid "Get more from Plugixa Testimonial"
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:493
-msgid "Review import from Google, Facebook and WooCommerce, a daily sync, PDF export and more come with Pro."
-msgstr ""
-
-#: includes/Core/Admin/Assets.php:494
-msgid "Hide this card"
 msgstr ""

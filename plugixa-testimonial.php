@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Plugin Name: Plugixa Testimonial – Customer Reviews, Star Ratings & Testimonial Slider
+ * Plugin Name: Plugixa Testimonial – Customer Reviews, Star Ratings & Social Proof
  * Plugin URI: https://www.plugixa.com/plugins/plugixa-testimonial
  * Description: A modern testimonial management plugin with React admin panel, star ratings, client photos, approval workflow, and multiple display layouts.
- * Version: 1.1.1
+ * Version: 1.2.0
  * Author: Plugixa
  * Author URI: https://www.plugixa.com
  * License: GPLv2 or later
@@ -29,7 +29,7 @@ if ( !defined( 'ABSPATH' ) ) {
     exit;
 }
 // Plugin constants
-define( 'PLUGIXA_TESTIMONIAL_VERSION', '1.1.1' );
+define( 'PLUGIXA_TESTIMONIAL_VERSION', '1.2.0' );
 define( 'PLUGIXA_TESTIMONIAL_PATH', plugin_dir_path( __FILE__ ) );
 define( 'PLUGIXA_TESTIMONIAL_URL', plugin_dir_url( __FILE__ ) );
 define( 'PLUGIXA_TESTIMONIAL_BASENAME', plugin_basename( __FILE__ ) );
@@ -132,24 +132,20 @@ spl_autoload_register( function ( $class ) {
     // \PlugixaTestimonial\Kses and \PlugixaTestimonial\Frontend\Shortcodes; a site's own code
     // may hook a class by its old name. Each alias is made only when the old name is asked for.
     $plugixa_testimonial_old_names = [
-        'Plugin'                                 => 'Core\\Plugin',
-        'Activator'                              => 'Core\\Activator',
-        'Deactivator'                            => 'Core\\Deactivator',
-        'Uninstaller'                            => 'Core\\Uninstaller',
-        'Cache'                                  => 'Core\\Cache',
-        'Kses'                                   => 'Core\\Kses',
-        'Multilingual'                           => 'Core\\Multilingual',
-        'TemplateLoader'                         => 'Core\\TemplateLoader',
-        'Admin\\Admin'                           => 'Core\\Admin\\Admin',
-        'Admin\\Assets'                          => 'Core\\Admin\\Assets',
-        'Email\\EmailNotifier'                   => 'Core\\Mail\\EmailNotifier',
-        'Fonts\\FontManager'                     => 'Modules\\GoogleFonts\\FontManager',
-        'Frontend\\Schema'                       => 'Modules\\Frontend\\Schema',
-        'Frontend\\Shortcodes'                   => 'Modules\\Frontend\\Shortcodes',
-        'Frontend\\SocialProof'                  => 'Modules\\Frontend\\SocialProof',
-        'Blocks\\TestimonialBlock'               => 'Modules\\Blocks\\TestimonialBlock',
-        'Integrations\\Elementor\\Elementor'     => 'Modules\\Elementor\\Elementor',
-        'Integrations\\WooCommerce\\WooCommerce' => 'Modules\\WooCommerce\\WooCommerce',
+        'Plugin'                => 'Core\\Plugin',
+        'Activator'             => 'Core\\Activator',
+        'Deactivator'           => 'Core\\Deactivator',
+        'Uninstaller'           => 'Core\\Uninstaller',
+        'Cache'                 => 'Core\\Cache',
+        'Kses'                  => 'Core\\Kses',
+        'Multilingual'          => 'Core\\Multilingual',
+        'TemplateLoader'        => 'Core\\TemplateLoader',
+        'Admin\\Admin'          => 'Core\\Admin\\Admin',
+        'Admin\\Assets'         => 'Core\\Admin\\Assets',
+        'Fonts\\FontManager'    => 'Modules\\GoogleFonts\\FontManager',
+        'Frontend\\Schema'      => 'Modules\\Frontend\\Schema',
+        'Frontend\\Shortcodes'  => 'Modules\\Frontend\\Shortcodes',
+        'Frontend\\SocialProof' => 'Modules\\Frontend\\SocialProof',
     ];
     if ( isset( $plugixa_testimonial_old_names[$relative_class] ) ) {
         $new_class = $prefix . $plugixa_testimonial_old_names[$relative_class];

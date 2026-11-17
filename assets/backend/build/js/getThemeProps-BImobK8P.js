@@ -1,1 +1,0 @@
-import{et as e,tt as t}from"./useTranslation-DWkm9T6I.js";var n=t();function r(t){let{theme:n,name:r,props:i}=t;return!n||!n.components||!n.components[r]||!n.components[r].defaultProps?i:e(n.components[r].defaultProps,i)}export{n,r as t};

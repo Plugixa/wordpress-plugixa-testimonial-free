@@ -29,7 +29,6 @@ class Multilingual {
     public const MULTILINGUAL_TABLES = [
         'plugixatestimonial_testimonials',
         'plugixatestimonial_categories',
-        'plugixatestimonial_custom_fields',
     ];
 
     public static function instance(): Multilingual {
@@ -315,17 +314,21 @@ class Multilingual {
         $maps = [
             'testimonials' => [
                 'translatable' => ['client_name', 'client_role', 'client_company', 'testimonial_text'],
-                'shared'       => ['rating', 'client_photo_id', 'video_url', 'website_url', 'status', 'is_featured', 'display_order', 'source', 'external_id'],
+                'shared'       => ['rating', 'client_photo_id', 'website_url', 'status', 'is_featured', 'display_order', 'source', 'external_id'],
             ],
             'categories' => [
                 'translatable' => ['name', 'description', 'slug'],
                 'shared'       => ['display_order', 'status'],
             ],
-            'custom-fields' => [
-                'translatable' => ['field_label', 'placeholder'],
-                'shared'       => ['field_key', 'field_type', 'field_options', 'is_required', 'show_in_frontend', 'menu_order'],
-            ],
         ];
+
+        /**
+         * Translatable and shared fields per entity. An extension adds its entities
+         * and the fields it owns on existing ones.
+         *
+         * @param array<string, array{translatable: string[], shared: string[]}> $maps
+         */
+        $maps = apply_filters('plugixatestimonial_multilingual_field_maps', $maps);
 
         return $maps[$entity] ?? ['translatable' => [], 'shared' => []];
     }
@@ -335,7 +338,13 @@ class Multilingual {
      */
     public function get_multilingual_tables(): array {
         global $wpdb;
-        return array_map(fn($t) => $wpdb->prefix . $t, self::MULTILINGUAL_TABLES);
+        /**
+         * Unprefixed table names with multilingual columns. An extension adds its own.
+         *
+         * @param string[] $tables
+         */
+        $tables = apply_filters('plugixatestimonial_multilingual_tables', self::MULTILINGUAL_TABLES);
+        return array_map(fn($t) => $wpdb->prefix . $t, $tables);
     }
 
     /**
@@ -343,11 +352,15 @@ class Multilingual {
      */
     public function get_entity_table_map(): array {
         global $wpdb;
-        return [
+        /**
+         * REST entity name => prefixed table. An extension adds its own entities.
+         *
+         * @param array<string, string> $map
+         */
+        return apply_filters('plugixatestimonial_multilingual_entity_tables', [
             'testimonials'  => $wpdb->prefix . 'plugixatestimonial_testimonials',
             'categories'    => $wpdb->prefix . 'plugixatestimonial_categories',
-            'custom-fields' => $wpdb->prefix . 'plugixatestimonial_custom_fields',
-        ];
+        ]);
     }
 
     /**

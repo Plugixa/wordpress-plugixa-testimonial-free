@@ -90,15 +90,12 @@ class Admin {
             __('Dashboard', 'plugixa-testimonial'),
             __('Testimonials', 'plugixa-testimonial'),
             __('Categories', 'plugixa-testimonial'),
-            __('Custom Fields', 'plugixa-testimonial'),
             __('Views', 'plugixa-testimonial'),
             __('Shortcodes', 'plugixa-testimonial'),
         ];
 
-        // Requests expose recipient email addresses, so they are admin-only (the REST
-        // routes require manage_options). Keep the skeleton in step with the React nav.
+        // Settings is admin-only, as in the React nav.
         if (current_user_can('manage_options')) {
-            $tabs[] = __('Requests', 'plugixa-testimonial');
             $tabs[] = __('Settings', 'plugixa-testimonial');
         }
 
@@ -171,10 +168,8 @@ class Admin {
             '/dashboard'     => __('Dashboard', 'plugixa-testimonial'),
             '/testimonials'  => __('Testimonials', 'plugixa-testimonial'),
             '/categories'    => __('Categories', 'plugixa-testimonial'),
-            '/custom-fields' => __('Custom Fields', 'plugixa-testimonial'),
             '/views'         => __('Views', 'plugixa-testimonial'),
             '/shortcodes'    => __('Shortcodes', 'plugixa-testimonial'),
-            '/requests'      => __('Requests', 'plugixa-testimonial'),
             '/settings'      => __('Settings', 'plugixa-testimonial'),
         ];
         return $titles[$route] ?? __('Dashboard', 'plugixa-testimonial');

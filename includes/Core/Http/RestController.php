@@ -68,6 +68,74 @@ abstract class RestController extends WP_REST_Controller {
             : $this->forbid(__('You do not have permission to change approval status.', 'plugixa-testimonial'));
     }
 
+    /** Whether the current user may make moderation decisions (approve, reject). */
+    protected function can_approve(): bool {
+        return $this->can('plugixa_testimonial_approve', 'publish_posts');
+    }
+
+    /**
+     * The moderation rule for every write that can set or keep a testimonial's status.
+     *
+     * check_permission() is edit-level (Contributors pass it), but create and update take
+     * a `status` field, so without this a Contributor published a testimonial by sending
+     * status=approved - the same act PATCH /status reserves for check_approve_permission.
+     * A user who cannot approve may therefore:
+     *   - never move a row INTO approved or rejected (both are moderation decisions);
+     *   - never change a row that is already approved, in any field, because that edits
+     *     public content (WordPress core likewise stops Contributors editing published posts).
+     *
+     * @param string|null $requested Status the write would store; null when it sends none.
+     * @param string|null $current   Stored status, or null for a new row. Pass 'approved'
+     *                               when any translation sibling is approved: updates copy
+     *                               status and rating across the group.
+     * @return true|WP_Error
+     */
+    protected function check_moderation(?string $requested, ?string $current) {
+        if ($this->can_approve()) {
+            return true;
+        }
+        if ($current === 'approved') {
+            return $this->forbid(__('Only users who can approve testimonials may change an approved testimonial.', 'plugixa-testimonial'));
+        }
+        if ($requested !== null && $requested !== $current && in_array($requested, ['approved', 'rejected'], true)) {
+            return $this->forbid(__('You do not have permission to change approval status.', 'plugixa-testimonial'));
+        }
+        return true;
+    }
+
+    /**
+     * Stored status of a testimonial for check_moderation(): 'approved' when the row or
+     * any row in its translation group is approved, otherwise the row's own status, or
+     * null when the row does not exist.
+     */
+    protected function stored_testimonial_status(int $id): ?string {
+        global $wpdb;
+        $table = $wpdb->prefix . 'plugixatestimonial_testimonials';
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. The table name is bound as an identifier with %i and every value through prepare(). An authorisation read must never be served from a cache.
+        $row = $wpdb->get_row($wpdb->prepare("SELECT status, translation_group FROM %i WHERE id = %d", $table, $id), ARRAY_A);
+        if (!$row) {
+            return null;
+        }
+        if (!empty($row['translation_group']) && $this->group_has_approved_row((string) $row['translation_group'])) {
+            return 'approved';
+        }
+        return (string) $row['status'];
+    }
+
+    /** Whether any testimonial in the translation group is approved. */
+    protected function group_has_approved_row(string $group): bool {
+        global $wpdb;
+        $table = $wpdb->prefix . 'plugixatestimonial_testimonials';
+
+        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. The table name is bound as an identifier with %i and every value through prepare(). An authorisation read must never be served from a cache.
+        return (bool) $wpdb->get_var($wpdb->prepare(
+            "SELECT 1 FROM %i WHERE translation_group = %s AND status = 'approved' LIMIT 1",
+            $table,
+            $group
+        ));
+    }
+
     /**
      * Admin-level: API secrets, recipient PII, mail sending and bulk export.
      *

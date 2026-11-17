@@ -93,6 +93,7 @@ class Uninstaller {
             'plugixatestimonial_show_website_migrated',
             'plugixatestimonial_custom_css_purged',
             'plugixatestimonial_external_id_migrated',
+            'plugixatestimonial_layout_views_seeded',
             // Review-platform connections (API keys, OAuth tokens) and the sync log the
             // premium review importers keep. Credentials must not outlive the plugin.
             'plugixatestimonial_review_credentials',

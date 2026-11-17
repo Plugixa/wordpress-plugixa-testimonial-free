@@ -678,24 +678,10 @@ class Activator {
             'show_empty_stars'   => true,
             'date_format'        => 'M j, Y',
             'excerpt_length'     => 150,
-            'form_enabled'       => true,
-            'required_fields'    => ['client_name', 'testimonial_text', 'rating'],
-            'min_text_length'    => 10,
-            'max_text_length'    => 2000,
-            'success_message'    => 'Thank you for your testimonial! It will be reviewed shortly.',
-            'recaptcha_enabled'  => false,
-            'recaptcha_site_key' => '',
-            'recaptcha_secret_key' => '',
-            'recaptcha_score_threshold' => 0.5,
             'google_fonts_api_key' => '',
             'enable_schema'      => true,
             'schema_type'        => 'LocalBusiness',
             'schema_name'        => '',
-            'request_from_name'  => '',
-            'request_from_email' => '',
-            'request_subject'    => 'We\'d love your feedback!',
-            'request_message'    => "Hi {recipient_name},\n\nWe hope you had a great experience with us! We'd really appreciate it if you could take a moment to share your feedback.\n\nSimply click the link below to leave your testimonial:\n\n{submission_link}\n\nThank you for your time!\n\nBest regards,\n{site_name}",
-            'request_expiry_days' => 30,
         ];
 
         if (get_option('plugixatestimonial_settings') === false) {
@@ -716,7 +702,50 @@ class Activator {
         $user_id = get_current_user_id();
         $now = current_time('mysql');
 
-        $grid_config = [
+        $grid_config = self::default_grid_view_config();
+
+        $list_config = array_replace_recursive($grid_config, [
+            'layout' => [
+                'style' => 'list',
+                'columns' => ['desktop' => 1, 'tablet' => 1, 'mobile' => 1],
+            ],
+            'display' => [
+                'excerptLength' => 300,
+            ],
+        ]);
+
+        $views = [
+            [
+                'name'        => 'Grid',
+                'slug'        => 'grid',
+                'description' => 'Responsive grid layout with cards - clean and professional.',
+                'config'      => wp_json_encode($grid_config),
+                'is_default'  => 1,
+                'created_at'  => $now,
+                'created_by'  => $user_id,
+            ],
+            [
+                'name'        => 'List',
+                'slug'        => 'list',
+                'description' => 'Full-width list layout ideal for detailed testimonials.',
+                'config'      => wp_json_encode($list_config),
+                'is_default'  => 0,
+                'created_at'  => $now,
+                'created_by'  => $user_id,
+            ],
+        ];
+
+        foreach ($views as $view) {
+            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
+            $wpdb->insert($table, $view);
+        }
+    }
+
+    /**
+     * The config of the seeded Grid view; other layouts' seeded views start from it.
+     */
+    public static function default_grid_view_config(): array {
+        return [
             'layout' => [
                 'style' => 'grid',
                 'columns' => ['desktop' => 3, 'tablet' => 2, 'mobile' => 1],
@@ -765,78 +794,5 @@ class Activator {
                 'borderRadius' => 50,
             ],
         ];
-
-        $slider_config = array_replace_recursive($grid_config, [
-            'layout' => [
-                'style' => 'slider',
-                'slidesPerView' => ['desktop' => 3, 'tablet' => 2, 'mobile' => 1],
-                'autoplay' => true,
-                'autoplaySpeed' => 5000,
-                'showArrows' => true,
-                'showDots' => true,
-                'loop' => true,
-            ],
-        ]);
-
-        $masonry_config = array_replace_recursive($grid_config, [
-            'layout' => [
-                'style' => 'masonry',
-                'columns' => ['desktop' => 3, 'tablet' => 2, 'mobile' => 1],
-            ],
-        ]);
-
-        $list_config = array_replace_recursive($grid_config, [
-            'layout' => [
-                'style' => 'list',
-                'columns' => ['desktop' => 1, 'tablet' => 1, 'mobile' => 1],
-            ],
-            'display' => [
-                'excerptLength' => 300,
-            ],
-        ]);
-
-        $views = [
-            [
-                'name'        => 'Grid',
-                'slug'        => 'grid',
-                'description' => 'Responsive grid layout with cards - clean and professional.',
-                'config'      => wp_json_encode($grid_config),
-                'is_default'  => 1,
-                'created_at'  => $now,
-                'created_by'  => $user_id,
-            ],
-            [
-                'name'        => 'Slider',
-                'slug'        => 'slider',
-                'description' => 'Carousel slider with autoplay and navigation arrows.',
-                'config'      => wp_json_encode($slider_config),
-                'is_default'  => 0,
-                'created_at'  => $now,
-                'created_by'  => $user_id,
-            ],
-            [
-                'name'        => 'Masonry',
-                'slug'        => 'masonry',
-                'description' => 'Pinterest-style masonry layout with varying card heights.',
-                'config'      => wp_json_encode($masonry_config),
-                'is_default'  => 0,
-                'created_at'  => $now,
-                'created_by'  => $user_id,
-            ],
-            [
-                'name'        => 'List',
-                'slug'        => 'list',
-                'description' => 'Full-width list layout ideal for detailed testimonials.',
-                'config'      => wp_json_encode($list_config),
-                'is_default'  => 0,
-                'created_at'  => $now,
-                'created_by'  => $user_id,
-            ],
-        ];
-
-        foreach ($views as $view) {
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-            $wpdb->insert($table, $view);
-        }
     }
 }

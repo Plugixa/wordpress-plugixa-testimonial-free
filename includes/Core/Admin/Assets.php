@@ -327,17 +327,15 @@ class Assets {
   var c = window.PlugixaTestimonialConfig, h = location.hash.replace('#','');
   if (!h || !c.apiUrl || !c.nonce) return;
   var hdr = {'X-WP-Nonce': c.nonce}, url;
-  var edit = h.match(/^\/(testimonials|categories|custom-fields|views|shortcodes|requests)\/(\d+)$/);
+  var edit = h.match(/^\/(testimonials|categories|views|shortcodes)\/(\d+)$/);
   if (edit) {
     url = c.apiUrl + edit[1] + '/' + edit[2];
   } else if (!(c.preloadedData && c.preloadedData[h])) {
     var lists = {
       '/testimonials': 'testimonials?limit=20&offset=0&group_by_translation=1',
       '/categories': 'categories?limit=20&offset=0&group_by_translation=1',
-      '/custom-fields': 'custom-fields?limit=20&offset=0&group_by_translation=1',
       '/views': 'views?limit=20&offset=0',
       '/shortcodes': 'shortcodes?limit=100&offset=0',
-      '/requests': 'requests?limit=20&offset=0',
       '/dashboard': 'settings/dashboard'
     };
     if (lists[h]) url = c.apiUrl + lists[h];
@@ -363,12 +361,18 @@ JS;
         $preload_map = [
             '/testimonials'  => ['/plugixatestimonial/v1/testimonials', ['limit' => 20, 'offset' => 0, 'group_by_translation' => '1']],
             '/categories'    => ['/plugixatestimonial/v1/categories', ['limit' => 20, 'offset' => 0, 'group_by_translation' => '1']],
-            '/custom-fields' => ['/plugixatestimonial/v1/custom-fields', ['limit' => 20, 'offset' => 0, 'group_by_translation' => '1']],
             '/views'         => ['/plugixatestimonial/v1/views', ['limit' => 20, 'offset' => 0]],
             '/shortcodes'    => ['/plugixatestimonial/v1/shortcodes', ['limit' => 100, 'offset' => 0]],
-            '/requests'      => ['/plugixatestimonial/v1/requests', ['limit' => 20, 'offset' => 0]],
             '/dashboard'     => ['/plugixatestimonial/v1/settings/dashboard', []],
         ];
+
+        /**
+         * Hash route => [REST route, query args] whose first page is preloaded into the
+         * admin page. An extension adds its own list here.
+         *
+         * @param array<string, array{string, array}> $preload_map
+         */
+        $preload_map = apply_filters('plugixatestimonial_admin_preload_routes', $preload_map);
 
         if (!isset($preload_map[$route])) {
             return [];
@@ -471,7 +475,28 @@ JS;
             'proSeePlans'        => __('See Pro plans', 'plugixa-testimonial'),
             'proComparePlans'    => __('Compare plans', 'plugixa-testimonial'),
             'proPageTitle'       => __('Plugixa Testimonial Pro', 'plugixa-testimonial'),
-            'proPageIntro'       => __('Everything in the free plugin keeps working. Pro brings in the reviews your customers already left on Google, Facebook and WooCommerce, and adds PDF export and demo data. Your testimonials, displays and settings stay as they are when you upgrade.', 'plugixa-testimonial'),
+            'proPageIntro'     => __('Pro adds the layouts, the ways to collect testimonials and the integrations a growing site needs, and brings in the reviews your customers already left on Google, Facebook and WooCommerce. Your testimonials, displays and settings stay as they are when you upgrade.', 'plugixa-testimonial'),
+            'proGroupDisplay'  => __('More ways to show them', 'plugixa-testimonial'),
+            'proFLayouts'      => __('Slider and masonry layouts', 'plugixa-testimonial'),
+            'proFLayoutsDesc'  => __('A carousel with seven transition effects and autoplay, and a masonry wall for cards of different heights, next to the grid and list.', 'plugixa-testimonial'),
+            'proFVideo'        => __('Video testimonials', 'plugixa-testimonial'),
+            'proFVideoDesc'    => __('Add a YouTube, Vimeo or self-hosted video to any testimonial. It plays in the card when a visitor clicks it.', 'plugixa-testimonial'),
+            'proFFields'       => __('Custom fields', 'plugixa-testimonial'),
+            'proFFieldsDesc'   => __('Add your own fields, such as product, location or order number, and show them on the cards.', 'plugixa-testimonial'),
+            'proGroupCollect'  => __('Collect testimonials', 'plugixa-testimonial'),
+            'proFForm'         => __('Submission form', 'plugixa-testimonial'),
+            'proFFormDesc'     => __('A form your customers fill in on your site, with photo upload and reCAPTCHA. New testimonials wait for your approval.', 'plugixa-testimonial'),
+            'proFRequests'     => __('Testimonial requests', 'plugixa-testimonial'),
+            'proFRequestsDesc' => __('Email a customer a personal link to the form, with their name already filled in.', 'plugixa-testimonial'),
+            'proFNotify'       => __('Email notifications', 'plugixa-testimonial'),
+            'proFNotifyDesc'   => __('Get an email the moment a new testimonial arrives.', 'plugixa-testimonial'),
+            'proGroupIntegrations' => __('Show them anywhere', 'plugixa-testimonial'),
+            'proFBuilders'     => __('Elementor widget and block', 'plugixa-testimonial'),
+            'proFBuildersDesc' => __('Place testimonials with the Elementor widget or the block editor block, with a live preview.', 'plugixa-testimonial'),
+            'proFWooTab'       => __('WooCommerce product tab', 'plugixa-testimonial'),
+            'proFWooTabDesc'   => __('Show testimonials in a tab on your product pages.', 'plugixa-testimonial'),
+            'proFImportExport' => __('CSV and JSON import and export', 'plugixa-testimonial'),
+            'proFImportExportDesc' => __('Move testimonials in from a spreadsheet or another site, and back out again.', 'plugixa-testimonial'),
             'proGroupReviews'    => __('Bring in your reviews', 'plugixa-testimonial'),
             'proGroupTools'      => __('Export and setup', 'plugixa-testimonial'),
             'proFGoogle'         => __('Google reviews', 'plugixa-testimonial'),
@@ -490,7 +515,7 @@ JS;
             'proFSupportDesc'    => __('Faster answers from the team that builds the plugin.', 'plugixa-testimonial'),
             'proOwnedNote'       => __('Already bought Pro? Download it from your Plugixa account and install it. It takes over from this plugin and keeps all your data.', 'plugixa-testimonial'),
             'proCardTitle'       => __('Get more from Plugixa Testimonial', 'plugixa-testimonial'),
-            'proCardBody'        => __('Review import from Google, Facebook and WooCommerce, a daily sync, PDF export and more come with Pro.', 'plugixa-testimonial'),
+            'proCardBody'      => __('Slider and masonry layouts, the submission form, video testimonials, review import from Google, Facebook and WooCommerce and more come with Pro.', 'plugixa-testimonial'),
             'proCardHide'        => __('Hide this card', 'plugixa-testimonial'),
         ];
 

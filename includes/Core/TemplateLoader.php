@@ -63,23 +63,6 @@ class TemplateLoader {
         return apply_filters('plugixa_testimonial_template_path', $located, $template, $template_name);
     }
 
-    public static function get_template_list(): array {
-        $templates = [
-            'grid'            => __('Grid layout', 'plugixa-testimonial'),
-            'slider'          => __('Slider/carousel layout', 'plugixa-testimonial'),
-            'masonry'         => __('Masonry layout', 'plugixa-testimonial'),
-            'list'            => __('Vertical list layout', 'plugixa-testimonial'),
-            'submission-form' => __('Frontend submission form', 'plugixa-testimonial'),
-        ];
-
-        if (Edition::is_premium()) {
-            $templates['video-card']         = __('Video testimonial card (Pro)', 'plugixa-testimonial');
-            $templates['custom-fields-row']  = __('Custom fields row partial (Pro)', 'plugixa-testimonial');
-        }
-
-        return $templates;
-    }
-
     public static function get_template_override_info(string $template): array|false {
         $template_name = $template . '.php';
 

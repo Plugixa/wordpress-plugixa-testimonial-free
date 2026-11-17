@@ -136,11 +136,54 @@ class MultilingualController extends RestController {
         }
 
         $delete_languages = $request->get_param('delete_languages');
-        if (empty($delete_languages)) {
-            return true;
+        if (!empty($delete_languages)) {
+            $delete = $this->check_delete_permission($request);
+            if (is_wp_error($delete)) {
+                return $delete;
+            }
         }
 
-        return $this->check_delete_permission($request);
+        if ($request->get_param('entity') === 'testimonials') {
+            return $this->check_batch_moderation($request);
+        }
+
+        return true;
+    }
+
+    /**
+     * The moderation rule (RestController::check_moderation()) for a testimonial batch.
+     *
+     * `shared.status` is written to every row of the batch, and the handler targets
+     * existing rows two ways: by each translation's `id`, and by translation_group +
+     * language when no id is sent. Every row reachable either way is checked, so a
+     * Contributor cannot publish through `shared.status`, nor overwrite an approved row
+     * by naming its id or its group.
+     */
+    private function check_batch_moderation($request) {
+        $shared = $request->get_param('shared');
+        $requested = (is_array($shared) && array_key_exists('status', $shared))
+            ? sanitize_key((string) $shared['status'])
+            : null;
+
+        $group = $request->get_param('translation_group');
+        $current = (is_string($group) && $group !== '' && $this->group_has_approved_row($group)) ? 'approved' : null;
+
+        $translations = $request->get_param('translations');
+        if ($current === null && is_array($translations)) {
+            foreach ($translations as $trans) {
+                $id = is_array($trans) && isset($trans['id']) ? (int) $trans['id'] : 0;
+                if ($id > 0) {
+                    $status = $this->stored_testimonial_status($id);
+                    if ($status === 'approved') {
+                        $current = 'approved';
+                        break;
+                    }
+                    $current = $current ?? $status;
+                }
+            }
+        }
+
+        return $this->check_moderation($requested, $current);
     }
 
     /**
@@ -260,6 +303,15 @@ class MultilingualController extends RestController {
         }
         if (array_key_exists('modified_by', $new_data)) {
             $new_data['modified_by'] = null;
+        }
+
+        // A new translation copies the source's status. For a user who cannot approve,
+        // copying an approved or rejected source would make that moderation decision
+        // for them, so their copy starts pending (see RestController::check_moderation()).
+        if ($entity === 'testimonials' && in_array($new_data['status'] ?? '', ['approved', 'rejected'], true) && !$this->can_approve()) {
+            $new_data['status'] = 'pending';
+            $new_data['approved_at'] = null;
+            $new_data['approved_by'] = null;
         }
 
         // Make slug unique if the table has a slug column
@@ -510,12 +562,15 @@ class MultilingualController extends RestController {
                 }
             }
 
-            // For testimonials, include custom field meta
-            if ($entity === 'testimonials') {
-                $trans_data['custom_fields'] = $this->get_testimonial_meta((int) $row['id']);
-            }
-
-            $translations[$lang] = $trans_data;
+            /**
+             * One language's data in a translation group response. An extension adds
+             * the fields it owns (custom-field values).
+             *
+             * @param array  $trans_data Translatable fields plus id.
+             * @param string $entity     REST entity name.
+             * @param int    $id         Row id.
+             */
+            $translations[$lang] = apply_filters('plugixatestimonial_multilingual_translation', $trans_data, $entity, (int) $row['id']);
         }
 
         return $this->success([
@@ -653,12 +708,15 @@ class MultilingualController extends RestController {
                     }
                 }
 
-                // Save testimonial custom field meta + categories
-                if ($entity === 'testimonials') {
-                    if (isset($trans_data['custom_fields']) && is_array($trans_data['custom_fields'])) {
-                        $this->save_testimonial_meta($result_ids[$lang_code], $trans_data['custom_fields']);
-                    }
-                }
+                /**
+                 * One language of a translation group was saved. An extension stores
+                 * the fields it owns (custom-field values).
+                 *
+                 * @param string $entity     REST entity name.
+                 * @param int    $id         Row id of this language.
+                 * @param array  $trans_data The submitted data for this language.
+                 */
+                do_action('plugixatestimonial_multilingual_translation_saved', $entity, (int) $result_ids[$lang_code], $trans_data);
             }
 
             // Save categories for testimonials (shared across all translations)
@@ -765,17 +823,17 @@ class MultilingualController extends RestController {
                     }
                 }
                 break;
-
-            case 'custom-fields':
-                if ($is_required) {
-                    if (empty($data['field_label'] ?? '')) {
-                        $errors['field_label'] = __('Field label is required', 'plugixa-testimonial');
-                    }
-                }
-                break;
         }
 
-        return $errors;
+        /**
+         * Validation errors for one translation. An extension validates its entities.
+         *
+         * @param array  $errors      Field => message.
+         * @param string $entity      REST entity name.
+         * @param array  $data        Submitted translatable fields.
+         * @param bool   $is_required Whether this is the default language.
+         */
+        return apply_filters('plugixatestimonial_multilingual_validate', $errors, $entity, $data, $is_required);
     }
 
     /**
@@ -808,9 +866,6 @@ class MultilingualController extends RestController {
                 if (array_key_exists('client_photo_id', $data)) {
                     $sanitized['client_photo_id'] = $data['client_photo_id'] ? (int) $data['client_photo_id'] : null;
                 }
-                if (array_key_exists('video_url', $data)) {
-                    $sanitized['video_url'] = esc_url_raw($data['video_url'] ?? '');
-                }
                 if (array_key_exists('website_url', $data)) {
                     $sanitized['website_url'] = esc_url_raw($data['website_url'] ?? '');
                 }
@@ -835,36 +890,17 @@ class MultilingualController extends RestController {
                     $sanitized['status'] = in_array($status, ['publish', 'draft', 'trash']) ? $status : 'publish';
                 }
                 break;
-
-            case 'custom-fields':
-                if (array_key_exists('field_key', $data)) {
-                    $sanitized['field_key'] = sanitize_key($data['field_key']);
-                }
-                if (array_key_exists('field_type', $data)) {
-                    $type = sanitize_key($data['field_type']);
-                    $valid_types = ['text', 'textarea', 'url', 'number', 'date', 'select', 'checkbox', 'color'];
-                    $sanitized['field_type'] = in_array($type, $valid_types) ? $type : 'text';
-                }
-                if (array_key_exists('field_options', $data)) {
-                    $opts = $data['field_options'];
-                    if (is_string($opts)) {
-                        $opts = json_decode($opts, true);
-                    }
-                    $sanitized['field_options'] = is_array($opts) ? wp_json_encode(array_map('sanitize_text_field', $opts)) : null;
-                }
-                if (array_key_exists('is_required', $data)) {
-                    $sanitized['is_required'] = $data['is_required'] ? 1 : 0;
-                }
-                if (array_key_exists('show_in_frontend', $data)) {
-                    $sanitized['show_in_frontend'] = $data['show_in_frontend'] ? 1 : 0;
-                }
-                if (array_key_exists('menu_order', $data)) {
-                    $sanitized['menu_order'] = (int) $data['menu_order'];
-                }
-                break;
         }
 
-        return $sanitized;
+        /**
+         * Sanitized shared fields. An extension sanitizes the fields it owns. It is
+         * handed the raw $data and must sanitize every value it returns.
+         *
+         * @param array  $sanitized Sanitized fields so far.
+         * @param string $entity    REST entity name.
+         * @param array  $data      Submitted shared fields.
+         */
+        return apply_filters('plugixatestimonial_multilingual_sanitize_shared', $sanitized, $entity, $data);
     }
 
     /**
@@ -890,78 +926,17 @@ class MultilingualController extends RestController {
                 }
                 $sanitized['slug'] = $slug;
                 break;
-
-            case 'custom-fields':
-                $sanitized['field_label'] = sanitize_text_field($data['field_label'] ?? '');
-                $sanitized['placeholder'] = sanitize_text_field($data['placeholder'] ?? '');
-                break;
         }
 
-        return $sanitized;
-    }
-
-    /**
-     * Get custom field meta values for a testimonial
-     */
-    private function get_testimonial_meta(int $testimonial_id): array {
-        global $wpdb;
-        $meta_table = $wpdb->prefix . 'plugixatestimonial_meta';
-
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. Table names are bound as identifiers with %i and every value through prepare(). Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-        $rows = $wpdb->get_results(
-            $wpdb->prepare("SELECT meta_key, meta_value FROM %i WHERE testimonial_id = %d", $meta_table, $testimonial_id),
-            ARRAY_A
-        );
-
-        $meta = [];
-        foreach ($rows ?: [] as $row) {
-            $meta[$row['meta_key']] = $row['meta_value'];
-        }
-        return $meta;
-    }
-
-    /**
-     * Save custom field meta values for a testimonial
-     */
-    private function save_testimonial_meta(int $testimonial_id, array $custom_fields): void {
-        global $wpdb;
-        $meta_table = $wpdb->prefix . 'plugixatestimonial_meta';
-
-        foreach ($custom_fields as $key => $value) {
-            $key = sanitize_key($key);
-            if (empty($key)) continue;
-
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. Table names are bound as identifiers with %i and every value through prepare(). Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-            $existing = $wpdb->get_var($wpdb->prepare("SELECT id FROM %i WHERE testimonial_id = %d AND meta_key = %s", $meta_table,
-                $testimonial_id,
-                $key
-            ));
-
-            if ($value === null || $value === '') {
-                if ($existing) {
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    $wpdb->delete($meta_table, ['testimonial_id' => $testimonial_id, 'meta_key' => $key]);
-                }
-            } elseif ($existing) {
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                $wpdb->update(
-                    $meta_table,
-                    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    ['meta_value' => sanitize_text_field($value)],
-                    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value itself is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    ['testimonial_id' => $testimonial_id, 'meta_key' => $key]
-                );
-            } else {
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                $wpdb->insert($meta_table, [
-                    'testimonial_id' => $testimonial_id,
-                    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    'meta_key'       => $key,
-                    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value itself is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    'meta_value'     => sanitize_text_field($value),
-                ]);
-            }
-        }
+        /**
+         * Sanitized translatable fields. An extension sanitizes its entities. It is
+         * handed the raw $data and must sanitize every value it returns.
+         *
+         * @param array  $sanitized Sanitized fields so far.
+         * @param string $entity    REST entity name.
+         * @param array  $data      Submitted translatable fields.
+         */
+        return apply_filters('plugixatestimonial_multilingual_sanitize_translatable', $sanitized, $entity, $data);
     }
 
     /**

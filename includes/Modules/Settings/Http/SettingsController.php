@@ -50,8 +50,13 @@ class SettingsController extends RestController {
     }
 
     public function get_settings($request) {
-        $settings = $this->get_all_settings();
-        $settings['wc_active'] = class_exists('WooCommerce');
+        /**
+         * Read-only facts an extension adds to the settings response, such as whether a
+         * plugin it integrates with is active. Never stored.
+         *
+         * @param array $settings The stored settings merged over their defaults.
+         */
+        $settings = apply_filters('plugixatestimonial_settings_response', $this->get_all_settings());
         return $this->success($settings);
     }
 
@@ -167,20 +172,6 @@ class SettingsController extends RestController {
             'show_empty_stars'     => true,
             'date_format'          => 'M j, Y',
             'excerpt_length'       => 150,
-            'form_enabled'         => true,
-            'form_style'           => 'inline',
-            'photo_upload_enabled' => false,
-            'required_fields'      => ['client_name', 'testimonial_text', 'rating'],
-            'min_text_length'      => 10,
-            'max_text_length'      => 2000,
-            'success_message'      => 'Thank you for your testimonial! It will be reviewed shortly.',
-            'recaptcha_enabled'    => false,
-            'recaptcha_site_key'   => '',
-            'recaptcha_secret_key' => '',
-            'recaptcha_score_threshold' => 0.5,
-            'wc_testimonial_enabled'      => false,
-            'wc_testimonial_tab_title'    => 'Testimonials',
-            'wc_testimonial_tab_priority' => 50,
             'google_fonts_api_key'         => '',
             'enable_schema'               => true,
             'schema_type'                 => 'LocalBusiness',
@@ -199,16 +190,6 @@ class SettingsController extends RestController {
             'sp_text_color'                => '#1d2327',
             'sp_border_color'              => '#e0e0e0',
             'sp_hide_on_mobile'            => false,
-            'notification_enabled'          => false,
-            'notification_recipients'      => '',
-            'notification_subject'         => 'New testimonial from {client_name}',
-            'notification_message'         => "Hi,\n\nA new testimonial has been submitted on {site_name}.\n\nFrom: {client_name}\nRating: {rating}/5\n\n\"{testimonial_text}\"\n\nReview it here: {admin_url}",
-            'request_from_name'            => '',
-            'request_from_email'           => '',
-            'request_subject'              => 'We\'d love your feedback!',
-            'request_message'              => "Hi {recipient_name},\n\nWe hope you had a great experience with us! We'd really appreciate it if you could take a moment to share your feedback.\n\nSimply click the link below to leave your testimonial:\n\n{submission_link}\n\nThank you for your time!\n\nBest regards,\n{site_name}",
-            'request_expiry_days'          => 30,
-            'request_submission_page_id'   => 0,
         ];
 
         /**
@@ -259,64 +240,6 @@ class SettingsController extends RestController {
         $settings['excerpt_length'] = isset($input['excerpt_length'])
             ? max(50, min(1000, absint($input['excerpt_length'])))
             : $current['excerpt_length'];
-
-        // Submission
-        $settings['form_enabled'] = isset($input['form_enabled'])
-            ? (bool) $input['form_enabled']
-            : $current['form_enabled'];
-
-        $settings['form_style'] = isset($input['form_style']) && in_array($input['form_style'], ['inline', 'modal'])
-            ? $input['form_style']
-            : ($current['form_style'] ?? 'inline');
-
-        $settings['photo_upload_enabled'] = isset($input['photo_upload_enabled'])
-            ? (bool) $input['photo_upload_enabled']
-            : ($current['photo_upload_enabled'] ?? false);
-
-        $settings['required_fields'] = isset($input['required_fields']) && is_array($input['required_fields'])
-            ? array_map('sanitize_key', $input['required_fields'])
-            : $current['required_fields'];
-
-        $settings['min_text_length'] = isset($input['min_text_length'])
-            ? max(1, absint($input['min_text_length']))
-            : $current['min_text_length'];
-
-        $settings['max_text_length'] = isset($input['max_text_length'])
-            ? max(100, absint($input['max_text_length']))
-            : $current['max_text_length'];
-
-        $settings['success_message'] = isset($input['success_message'])
-            ? sanitize_text_field($input['success_message'])
-            : $current['success_message'];
-
-        $settings['recaptcha_enabled'] = isset($input['recaptcha_enabled'])
-            ? (bool) $input['recaptcha_enabled']
-            : $current['recaptcha_enabled'];
-
-        $settings['recaptcha_site_key'] = isset($input['recaptcha_site_key'])
-            ? sanitize_text_field($input['recaptcha_site_key'])
-            : $current['recaptcha_site_key'];
-
-        $settings['recaptcha_secret_key'] = isset($input['recaptcha_secret_key'])
-            ? sanitize_text_field($input['recaptcha_secret_key'])
-            : $current['recaptcha_secret_key'];
-
-        $settings['recaptcha_score_threshold'] = isset($input['recaptcha_score_threshold'])
-            ? max(0.0, min(1.0, floatval($input['recaptcha_score_threshold'])))
-            : ($current['recaptcha_score_threshold'] ?? 0.5);
-
-        // WooCommerce
-        $settings['wc_testimonial_enabled'] = isset($input['wc_testimonial_enabled'])
-            ? (bool) $input['wc_testimonial_enabled']
-            : $current['wc_testimonial_enabled'];
-
-        $settings['wc_testimonial_tab_title'] = isset($input['wc_testimonial_tab_title'])
-            ? sanitize_text_field($input['wc_testimonial_tab_title'])
-            : $current['wc_testimonial_tab_title'];
-
-        $settings['wc_testimonial_tab_priority'] = isset($input['wc_testimonial_tab_priority'])
-            ? max(1, min(200, absint($input['wc_testimonial_tab_priority'])))
-            : $current['wc_testimonial_tab_priority'];
 
         // Google Fonts
         $settings['google_fonts_api_key'] = isset($input['google_fonts_api_key'])
@@ -393,48 +316,6 @@ class SettingsController extends RestController {
         $settings['sp_hide_on_mobile'] = isset($input['sp_hide_on_mobile'])
             ? (bool) $input['sp_hide_on_mobile']
             : ($current['sp_hide_on_mobile'] ?? false);
-
-        // Notification Settings
-        $settings['notification_enabled'] = isset($input['notification_enabled'])
-            ? (bool) $input['notification_enabled']
-            : ($current['notification_enabled'] ?? false);
-
-        $settings['notification_recipients'] = isset($input['notification_recipients'])
-            ? sanitize_text_field($input['notification_recipients'])
-            : ($current['notification_recipients'] ?? '');
-
-        $settings['notification_subject'] = isset($input['notification_subject'])
-            ? sanitize_text_field($input['notification_subject'])
-            : ($current['notification_subject'] ?? 'New testimonial from {client_name}');
-
-        $settings['notification_message'] = isset($input['notification_message'])
-            ? sanitize_textarea_field($input['notification_message'])
-            : ($current['notification_message'] ?? '');
-
-        // Request Email Settings
-        $settings['request_from_name'] = isset($input['request_from_name'])
-            ? sanitize_text_field($input['request_from_name'])
-            : ($current['request_from_name'] ?? '');
-
-        $settings['request_from_email'] = isset($input['request_from_email'])
-            ? sanitize_email($input['request_from_email'])
-            : ($current['request_from_email'] ?? '');
-
-        $settings['request_subject'] = isset($input['request_subject'])
-            ? sanitize_text_field($input['request_subject'])
-            : ($current['request_subject'] ?? 'We\'d love your feedback!');
-
-        $settings['request_message'] = isset($input['request_message'])
-            ? sanitize_textarea_field($input['request_message'])
-            : ($current['request_message'] ?? '');
-
-        $settings['request_expiry_days'] = isset($input['request_expiry_days'])
-            ? max(1, min(365, absint($input['request_expiry_days'])))
-            : ($current['request_expiry_days'] ?? 30);
-
-        $settings['request_submission_page_id'] = isset($input['request_submission_page_id'])
-            ? absint($input['request_submission_page_id'])
-            : ($current['request_submission_page_id'] ?? 0);
 
         /**
          * Settings-sanitize seam.

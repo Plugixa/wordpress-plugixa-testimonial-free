@@ -18,18 +18,6 @@ use PlugixaTestimonial\Core\Kses;
  */
 class Shortcodes {
 
-    /**
-     * Script/style handle for the bundled Swiper library.
-     *
-     * Must stay prefixed: Elementor Pro, WPBakery and many themes register a bare
-     * 'swiper' handle, and WordPress silently keeps whichever was registered first -
-     * so an unprefixed handle can leave us running against someone else's Swiper
-     * build (or theirs against ours).
-     */
-    const SWIPER_HANDLE = 'plugixa-testimonial-swiper';
-
-    const SWIPER_VERSION = '11.2.6';
-
     /** Handle for the main frontend script. */
     const FRONTEND_HANDLE = 'plugixa-testimonial-frontend';
 
@@ -271,13 +259,20 @@ class Shortcodes {
             $view_config['categories']['colors'] = $dm_cats;
         }
 
+        // A layout this build does not have (one an extension provided) falls
+        // back to grid rather than to an empty page.
         $layout_style = $view_config['layout']['style'] ?? 'grid';
-
-        // Enqueue frontend assets (Swiper only for slider layout)
-        self::enqueue_base_assets();
-        if ($layout_style === 'slider') {
-            self::enqueue_slider_assets();
+        if (!in_array($layout_style, self::layouts(), true)) {
+            $layout_style = 'grid';
         }
+
+        self::enqueue_base_assets();
+        /**
+         * The layout's own assets. A layout an extension adds enqueues its scripts here.
+         *
+         * @param string $layout_style The layout being rendered.
+         */
+        do_action('plugixatestimonial_enqueue_layout_assets', $layout_style);
 
         // Resolve pagination config
         $pagination_view = $view_config['pagination'] ?? [];
@@ -378,10 +373,7 @@ class Shortcodes {
             . $pagination_attr
             . '>';
 
-        $template = 'grid';
-        if (in_array($layout_style, ['grid', 'slider', 'masonry', 'list'])) {
-            $template = $layout_style;
-        }
+        $template = $layout_style;
 
         // Build category navigation HTML
         $cat_config = $view_config['categories'] ?? [];
@@ -749,107 +741,12 @@ class Shortcodes {
     }
 
     /**
-     * Render submission form shortcode
-     * Usage: [plugixa_testimonial_form]
+     * [plugixa_testimonial_form] prints nothing in this build. The tag stays registered so a
+     * page that uses it never shows the raw shortcode; an extension may replace it with
+     * the submission form.
      */
     public function render_form($atts): string {
-        $settings = get_option('plugixatestimonial_settings', []);
-
-        if (empty($settings['form_enabled'])) {
-            return '';
-        }
-
-        self::enqueue_base_assets();
-
-        $instance_id = 'pxt-form-' . wp_unique_id();
-        $form_style = $settings['form_style'] ?? 'inline';
-        $photo_upload_enabled = !empty($settings['photo_upload_enabled']);
-
-        // Query custom field definitions for frontend form
-        global $wpdb;
-        $cf_table = $wpdb->prefix . 'plugixatestimonial_custom_fields';
-
-        // The language filter is a bound gate inside one constant-literal WHERE, so
-        // the query text does not change when multilingual is off. Gate 0 disables it.
-        $multilingual = \PlugixaTestimonial\Core\Multilingual::instance();
-        $current_lang = $multilingual->get_current_language();
-        $lang_active  = $multilingual->is_multilingual_active() ? 1 : 0;
-        $lang_values  = $lang_active
-            ? $multilingual->language_filter_values($cf_table, $current_lang, $multilingual->get_default_language())
-            : ['', 0, '', $cf_table, ''];
-
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- Custom plugin table; WordPress core has no API for it. The table name is bound as an identifier with %i and every value through prepare(). Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-        $custom_fields = $wpdb->get_results($wpdb->prepare(
-            "SELECT cf.field_key, cf.field_label, cf.field_type, cf.field_options, cf.placeholder, cf.is_required
-             FROM %i cf
-             WHERE cf.show_in_frontend = 1
-               AND cf.status = 'publish'
-               AND ( %d = 0 OR ( cf.language_code = %s OR ( %d = 1 AND cf.language_code = %s AND cf.translation_group NOT IN ( SELECT translation_group FROM %i WHERE language_code = %s AND translation_group IS NOT NULL ) ) OR cf.language_code IS NULL ) )
-             ORDER BY cf.menu_order ASC",
-            $cf_table,
-            $lang_active,
-            ...$lang_values
-        ), ARRAY_A);
-
-        if ($custom_fields) {
-            foreach ($custom_fields as &$cf) {
-                $cf['is_required'] = (bool) $cf['is_required'];
-                if (!empty($cf['field_options'])) {
-                    $cf['field_options'] = json_decode($cf['field_options'], true) ?: [];
-                } else {
-                    $cf['field_options'] = [];
-                }
-            }
-            unset($cf);
-        } else {
-            $custom_fields = [];
-        }
-
-        $template_file = \PlugixaTestimonial\Core\TemplateLoader::locate('submission-form');
-        if ($template_file) {
-            ob_start();
-            include $template_file;
-            // Late escape at the single point the fragment leaves this method.
-            return wp_kses(ob_get_clean(), \PlugixaTestimonial\Core\Kses::allowed_html());
-        }
-
-        // Fallback inline form
-        $required_fields = $settings['required_fields'] ?? ['client_name', 'testimonial_text', 'rating'];
-        $nonce = self::public_rest_nonce();
-        $api_url = esc_url_raw(rest_url('plugixatestimonial/v1/frontend/submit'));
-        $success_message = esc_attr($settings['success_message'] ?? 'Thank you for your testimonial!');
-
-        $output = '<div class="pxt-custom-form-wrapper" data-api-url="' . esc_attr($api_url) . '" data-nonce="' . esc_attr($nonce) . '" data-success-message="' . $success_message . '">';
-        $output .= '<form class="plugixa-testimonial-form pxt:flex pxt:flex-col pxt:gap-4" method="post">';
-
-        $output .= '<div><label>' . esc_html__('Your Name', 'plugixa-testimonial') . (in_array('client_name', $required_fields) ? ' <span class="pxt-custom-required">*</span>' : '') . '</label>';
-        $output .= '<input type="text" name="client_name" ' . (in_array('client_name', $required_fields) ? 'required' : '') . ' /></div>';
-
-        $output .= '<div><label>' . esc_html__('Your Role/Title', 'plugixa-testimonial') . '</label>';
-        $output .= '<input type="text" name="client_role" /></div>';
-
-        $output .= '<div><label>' . esc_html__('Company', 'plugixa-testimonial') . '</label>';
-        $output .= '<input type="text" name="client_company" /></div>';
-
-        $output .= '<div><label>' . esc_html__('Rating', 'plugixa-testimonial') . ' <span class="pxt-custom-required">*</span></label>';
-        $output .= '<div class="pxt-custom-star-input">';
-        for ($i = 1; $i <= 5; $i++) {
-            $output .= '<span class="pxt-custom-star-btn active" data-value="' . $i . '">&#9733;</span>';
-        }
-        $output .= '<input type="hidden" name="rating" value="5" /></div></div>';
-
-        $output .= '<div><label>' . esc_html__('Your Testimonial', 'plugixa-testimonial') . (in_array('testimonial_text', $required_fields) ? ' <span class="pxt-custom-required">*</span>' : '') . '</label>';
-        $output .= '<textarea name="testimonial_text" rows="5" ' . (in_array('testimonial_text', $required_fields) ? 'required' : '') . '></textarea></div>';
-
-        $output .= '<div><label>' . esc_html__('Website URL', 'plugixa-testimonial') . '</label>';
-        $output .= '<input type="url" name="website_url" /></div>';
-
-        $output .= '<div><button type="submit" class="pxt-custom-submit-btn">' . esc_html__('Submit Testimonial', 'plugixa-testimonial') . '</button></div>';
-        $output .= '<div class="pxt-custom-form-message" style="display:none;"></div>';
-        $output .= '</form></div>';
-
-        // Late escape at the single point the fragment leaves this method.
-        return wp_kses($output, \PlugixaTestimonial\Core\Kses::allowed_html());
+        return '';
     }
 
     /**
@@ -1195,162 +1092,37 @@ class Shortcodes {
                 $order_map[$tid][$cid] = (int) $row['display_order'];
             }
 
-            // Batch-load custom field meta values
-            $meta_table = $wpdb->prefix . 'plugixatestimonial_meta';
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. The table name is bound as an identifier with %i and every value through prepare(). Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-            $meta_rows = $wpdb->get_results(
-                $wpdb->prepare(
-                    "SELECT testimonial_id, meta_key, meta_value FROM %i WHERE FIND_IN_SET(testimonial_id, %s)",
-                    $meta_table,
-                    $t_ids_csv
-                ),
-                ARRAY_A
-            );
-
-            $meta_map = [];
-            foreach ($meta_rows as $row) {
-                $tid = (int) $row['testimonial_id'];
-                $meta_map[$tid][$row['meta_key']] = $row['meta_value'];
-            }
-
             foreach ($testimonials as $idx => &$t) {
                 $tid = (int) $t['id'];
                 $t['category_ids'] = $cat_map[$tid] ?? [];
                 $t['category_orders'] = $order_map[$tid] ?? [];
                 $t['global_order'] = $idx;
-                $t['custom_fields'] = $meta_map[$tid] ?? [];
             }
             unset($t);
         }
 
-        return $testimonials;
+        /**
+         * Rows about to be rendered by a shortcode, block or widget. An extension adds
+         * the display fields it owns (custom-field values).
+         *
+         * @param array[] $testimonials Approved rows.
+         */
+        return apply_filters('plugixatestimonial_display_testimonials', $testimonials);
     }
 
     /**
-     * Render custom field values for a testimonial in the frontend
+     * Custom-field values of a testimonial as HTML. Theme template overrides call this, so
+     * it stays; in this build nothing fills the filter and it returns ''.
      */
     public function render_custom_fields(array $testimonial): string {
-        global $wpdb;
-
-        $custom_fields_data = $testimonial['custom_fields'] ?? [];
-        if (empty($custom_fields_data)) {
-            return '';
-        }
-
-        $cf_table = $wpdb->prefix . 'plugixatestimonial_custom_fields';
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. The table name is bound as an identifier with %i and every value through prepare(). Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); this single indexed lookup runs once per shortcode render and is not separately cached.
-        $definitions = $wpdb->get_results(
-            $wpdb->prepare("SELECT field_key, field_label, field_type FROM %i WHERE show_in_frontend = 1 ORDER BY menu_order ASC", $cf_table),
-            ARRAY_A
-        );
-
-        if (empty($definitions)) {
-            return '';
-        }
-
-        $html = '';
-        foreach ($definitions as $def) {
-            $key = $def['field_key'];
-            $value = $custom_fields_data[$key] ?? '';
-
-            if ($value === '' || $value === null) {
-                continue;
-            }
-
-            $label = esc_html($def['field_label']);
-            $type = $def['field_type'];
-
-            switch ($type) {
-                case 'url':
-                    $formatted = '<a href="' . esc_url($value) . '" target="_blank" rel="noopener noreferrer">' . esc_html($value) . '</a>';
-                    break;
-                case 'checkbox':
-                    $formatted = esc_html($value === '1' || $value === 'true' ? __('Yes', 'plugixa-testimonial') : __('No', 'plugixa-testimonial'));
-                    break;
-                case 'color':
-                    // A visitor can submit this value, so it is validated as a colour before
-                    // it reaches a style attribute; anything else is shown as text only.
-                    // It travels in a custom property because wp_kses() (safecss_filter_attr)
-                    // drops rgb()/rgba() from an ordinary property but keeps it in a variable.
-                    $color = \PlugixaTestimonial\Core\ViewStyle::color((string) $value);
-                    $formatted = ($color !== ''
-                        ? '<span class="pxt-color-swatch" style="--pxt-swatch:' . esc_attr($color) . ';background-color:var(--pxt-swatch)"></span> '
-                        : '') . esc_html($value);
-                    break;
-                default:
-                    $formatted = esc_html($value);
-                    break;
-            }
-
-            $html .= '<div class="pxt-custom-field pxt-custom-field--' . esc_attr($type) . '">';
-            $html .= '<span class="pxt-custom-field-label">' . $label . ':</span> ';
-            $html .= '<span class="pxt-custom-field-value">' . $formatted . '</span>';
-            $html .= '</div>';
-        }
-
-        return $html;
+        return (string) apply_filters('plugixatestimonial_render_custom_fields', '', $testimonial);
     }
 
     /**
-     * Render video embed for a testimonial
+     * A testimonial's video as HTML. Kept for theme template overrides, as above.
      */
     public function render_video(array $testimonial): string {
-        $video_url = $testimonial['video_url'] ?? '';
-        if (empty($video_url)) {
-            return '';
-        }
-
-        $video_type = self::detect_video_type($video_url);
-
-        if ($video_type === 'youtube') {
-            $video_id = self::extract_youtube_id($video_url);
-            if (!$video_id) return '';
-            return '<div class="pxt-video-wrapper">'
-                . '<div class="pxt-video-thumb" data-pxt-video-type="youtube" data-pxt-video-id="' . esc_attr($video_id) . '">'
-                . '<img src="https://img.youtube.com/vi/' . esc_attr($video_id) . '/hqdefault.jpg" alt="" loading="lazy" />'
-                . '<button class="pxt-video-play" aria-label="Play video"><svg viewBox="0 0 68 48" width="68"><path d="M66.5 7.7s-.7-4.7-2.8-6.8C60.7-2 57.2-2 55.6-2.2 46.5-3 34-3 34-3s-12.5 0-21.6 .8C10.8-2 7.3-2 4.3 .9 2.2 3 1.5 7.7 1.5 7.7S.8 13.2.8 18.7v5.1c0 5.5.7 11 .7 11s.7 4.7 2.8 6.8c3 3.1 6.9 3 8.7 3.3 6.3.6 26.8.9 26.8.9s12.5 0 21.6-.8c1.6-.2 5.1-.2 8.1-3.1 2.1-2.1 2.8-6.8 2.8-6.8s.7-5.5.7-11v-5.1c0-5.5-.7-11-.7-11z" fill="#212121" fill-opacity=".8"/><path d="M45 24L27 14v20" fill="#fff"/></svg></button>'
-                . '</div></div>';
-        }
-
-        if ($video_type === 'vimeo') {
-            $video_id = self::extract_vimeo_id($video_url);
-            if (!$video_id) return '';
-            return '<div class="pxt-video-wrapper">'
-                . '<div class="pxt-video-thumb" data-pxt-video-type="vimeo" data-pxt-video-id="' . esc_attr($video_id) . '">'
-                . '<div class="pxt-video-placeholder">Vimeo</div>'
-                . '<button class="pxt-video-play" aria-label="Play video"><svg viewBox="0 0 68 48" width="68"><path d="M66.5 7.7s-.7-4.7-2.8-6.8C60.7-2 57.2-2 55.6-2.2 46.5-3 34-3 34-3s-12.5 0-21.6 .8C10.8-2 7.3-2 4.3 .9 2.2 3 1.5 7.7 1.5 7.7S.8 13.2.8 18.7v5.1c0 5.5.7 11 .7 11s.7 4.7 2.8 6.8c3 3.1 6.9 3 8.7 3.3 6.3.6 26.8.9 26.8.9s12.5 0 21.6-.8c1.6-.2 5.1-.2 8.1-3.1 2.1-2.1 2.8-6.8 2.8-6.8s.7-5.5.7-11v-5.1c0-5.5-.7-11-.7-11z" fill="#1ab7ea" fill-opacity=".9"/><path d="M45 24L27 14v20" fill="#fff"/></svg></button>'
-                . '</div></div>';
-        }
-
-        if ($video_type === 'self-hosted') {
-            return '<div class="pxt-video-wrapper">'
-                . '<video class="pxt-video-player" controls preload="metadata">'
-                . '<source src="' . esc_url($video_url) . '" type="video/mp4" />'
-                . '</video></div>';
-        }
-
-        return '';
-    }
-
-    public static function detect_video_type(string $url): string {
-        if (preg_match('/youtube\.com|youtu\.be/i', $url)) return 'youtube';
-        if (preg_match('/vimeo\.com/i', $url)) return 'vimeo';
-        if (preg_match('/\.(mp4|webm|ogg)(\?|$)/i', $url)) return 'self-hosted';
-        return '';
-    }
-
-    public static function extract_youtube_id(string $url): string {
-        if (preg_match('/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/', $url, $m)) {
-            return $m[1];
-        }
-        return '';
-    }
-
-    public static function extract_vimeo_id(string $url): string {
-        if (preg_match('/vimeo\.com\/(?:video\/)?(\d+)/', $url, $m)) {
-            return $m[1];
-        }
-        return '';
+        return (string) apply_filters('plugixatestimonial_render_video', '', $testimonial);
     }
 
     /**
@@ -1441,61 +1213,23 @@ class Shortcodes {
                 PLUGIXA_TESTIMONIAL_VERSION . '.' . filemtime($js_file),
                 true
             );
-            $settings = get_option('plugixatestimonial_settings', []);
             $plugixa_testimonial_vars = [
                 'restUrl' => esc_url_raw(rest_url('plugixatestimonial/v1/')),
                 'nonce'   => self::public_rest_nonce(),
             ];
 
-            if (!empty($settings['recaptcha_enabled']) && !empty($settings['recaptcha_site_key'])) {
-                $plugixa_testimonial_vars['recaptchaSiteKey'] = $settings['recaptcha_site_key'];
-                wp_enqueue_script(
-                    'google-recaptcha-v3',
-                    'https://www.google.com/recaptcha/api.js?render=' . rawurlencode($settings['recaptcha_site_key']),
-                    [],
-                    // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion -- Intentional; see the surrounding code.
-                    null,
-                    true
-                );
-            }
+            /**
+             * Values an extension adds to the frontend script's settings object.
+             *
+             * @param array $plugixa_testimonial_vars restUrl and nonce.
+             */
+            $plugixa_testimonial_vars = apply_filters('plugixatestimonial_frontend_vars', $plugixa_testimonial_vars);
 
             wp_localize_script('plugixa-testimonial-frontend', 'plugixaTestimonialVars', $plugixa_testimonial_vars);
         }
-    }
 
-    /**
-     * Enqueue Swiper vendor CSS and JS (only for slider layouts)
-     */
-    public static function enqueue_slider_assets(): void {
-        static $enqueued = false;
-        if ($enqueued) {
-            return;
-        }
-        $enqueued = true;
-
-        wp_enqueue_style(
-            self::SWIPER_HANDLE,
-            PLUGIXA_TESTIMONIAL_URL . 'assets/frontend/vendor/swiper/swiper-bundle.min.css',
-            [],
-            self::SWIPER_VERSION
-        );
-
-        wp_enqueue_script(
-            self::SWIPER_HANDLE,
-            PLUGIXA_TESTIMONIAL_URL . 'assets/frontend/vendor/swiper/swiper-bundle.min.js',
-            [],
-            self::SWIPER_VERSION,
-            true
-        );
-
-        // Swiper is only enqueued for slider layouts, so it can't be a registration-time
-        // dependency of the frontend script (that would pull it onto every page). Add it
-        // after the fact so our script still runs after Swiper has defined itself.
-        $scripts = wp_scripts();
-        $frontend = $scripts->registered[self::FRONTEND_HANDLE] ?? null;
-        if ($frontend && !in_array(self::SWIPER_HANDLE, $frontend->deps, true)) {
-            $frontend->deps[] = self::SWIPER_HANDLE;
-        }
+        /** The base frontend assets are queued; an extension adds its own here. */
+        do_action('plugixatestimonial_enqueue_frontend_assets');
     }
 
     /**
@@ -1504,6 +1238,18 @@ class Shortcodes {
      */
     public static function enqueue_frontend_assets(): void {
         self::enqueue_base_assets();
-        self::enqueue_slider_assets();
+        do_action('plugixatestimonial_enqueue_layout_assets', '');
+    }
+
+    /**
+     * Layouts this build can render. An extension may add its own.
+     *
+     * @return string[]
+     */
+    public static function layouts(): array {
+        /**
+         * @param string[] $layouts Layout slugs; each needs a template of the same name.
+         */
+        return (array) apply_filters('plugixatestimonial_layouts', ['grid', 'list']);
     }
 }

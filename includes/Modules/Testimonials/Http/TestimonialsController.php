@@ -38,7 +38,7 @@ class TestimonialsController extends RestController {
             [
                 'methods'             => 'POST',
                 'callback'            => [$this, 'create_item'],
-                'permission_callback' => [$this, 'check_permission'],
+                'permission_callback' => [$this, 'check_create_permission'],
                 'args'                => $this->get_create_params(),
             ],
         ]);
@@ -52,7 +52,7 @@ class TestimonialsController extends RestController {
             [
                 'methods'             => 'PUT',
                 'callback'            => [$this, 'update_item'],
-                'permission_callback' => [$this, 'check_permission'],
+                'permission_callback' => [$this, 'check_update_permission'],
                 'args'                => $this->get_update_params(),
             ],
             [
@@ -102,6 +102,32 @@ class TestimonialsController extends RestController {
                 'permission_callback' => [$this, 'check_permission'],
             ],
         ]);
+    }
+
+    /**
+     * Edit-level, plus the moderation rule: `status` is a field of this payload, so an
+     * edit-only user must not be able to publish through it (see check_moderation()).
+     * The status is read the way sanitize_testimonial_data() reads it, so the value
+     * checked here is the value the handler stores.
+     */
+    public function check_create_permission($request) {
+        $edit = $this->check_permission($request);
+        if (is_wp_error($edit)) {
+            return $edit;
+        }
+        return $this->check_moderation(sanitize_key($request->get_param('status') ?? 'pending'), null);
+    }
+
+    /** As check_create_permission(), against the stored row and its translation group. */
+    public function check_update_permission($request) {
+        $edit = $this->check_permission($request);
+        if (is_wp_error($edit)) {
+            return $edit;
+        }
+        return $this->check_moderation(
+            sanitize_key($request->get_param('status') ?? 'pending'),
+            $this->stored_testimonial_status((int) $request->get_param('id'))
+        );
     }
 
     public function get_items($request) {
@@ -352,19 +378,26 @@ class TestimonialsController extends RestController {
             ), ARRAY_A);
         }
 
-        // Attach categories, photo, and custom fields to each item
+        // Attach categories and photo to each item
         if ($items) {
             $item_ids = array_column($items, 'id');
             $categories_map = $this->get_categories_for_testimonials($item_ids);
-            $meta_map = $this->get_meta_for_testimonials($item_ids);
 
             foreach ($items as &$item) {
                 $item['categories'] = $categories_map[$item['id']] ?? [];
                 $item['client_photo'] = !empty($item['client_photo_id'])
                     ? $this->get_image_data((int) $item['client_photo_id'])
                     : null;
-                $item['custom_fields'] = $meta_map[$item['id']] ?? (object) [];
             }
+            unset($item);
+
+            /**
+             * Testimonial rows on their way to the admin app. An extension adds its own
+             * fields here (custom-field values).
+             *
+             * @param array[] $items Rows, each with categories and client_photo attached.
+             */
+            $items = apply_filters('plugixatestimonial_admin_testimonials', $items);
 
             // Attach translation maps when multilingual is active
             if ($multilingual->is_multilingual_active()) {
@@ -413,9 +446,8 @@ class TestimonialsController extends RestController {
             ? $this->get_image_data((int) $item['client_photo_id'])
             : null;
 
-        // Attach custom fields
-        $meta_map = $this->get_meta_for_testimonials([$id]);
-        $item['custom_fields'] = $meta_map[$id] ?? (object) [];
+        // Fields an extension adds (see the list route).
+        $item = apply_filters('plugixatestimonial_admin_testimonials', [$item])[0];
 
         // Author name
         if (!empty($item['created_by'])) {
@@ -494,19 +526,26 @@ class TestimonialsController extends RestController {
             $ml->assign_language($table, $insert_id, $data['language_code'], $data['translation_group'] ?? null);
         }
 
-        // Send notification email
-        \PlugixaTestimonial\Core\Mail\EmailNotifier::send_new_submission_notification($insert_id, $data);
+        /**
+         * A testimonial row was created. Notifications can listen here.
+         *
+         * @param int    $insert_id Testimonial id.
+         * @param array  $data      The stored column values.
+         * @param string $context   'admin' (this route) or 'submission' (the public form).
+         */
+        do_action('plugixatestimonial_testimonial_created', $insert_id, $data, 'admin');
 
         // Sync categories via pivot table
         $this->sync_categories($insert_id, $categories);
 
-        // Save custom field values
-        if ($request->has_param('custom_fields')) {
-            $custom_fields = $request->get_param('custom_fields');
-            if (is_array($custom_fields)) {
-                $this->save_testimonial_meta($insert_id, $custom_fields);
-            }
-        }
+        /**
+         * A testimonial was saved through the admin route. An extension stores the
+         * request fields it owns (custom-field values) here.
+         *
+         * @param int             $id      Testimonial id.
+         * @param WP_REST_Request $request The create or update request.
+         */
+        do_action('plugixatestimonial_testimonial_saved', $insert_id, $request);
 
         return $this->success(
             ['id' => $insert_id],
@@ -566,13 +605,14 @@ class TestimonialsController extends RestController {
             $this->sync_categories($id, $categories);
         }
 
-        // Save custom field values
-        if ($request->has_param('custom_fields')) {
-            $custom_fields = $request->get_param('custom_fields');
-            if (is_array($custom_fields)) {
-                $this->save_testimonial_meta($id, $custom_fields);
-            }
-        }
+        /**
+         * A testimonial was saved through the admin route. An extension stores the
+         * request fields it owns (custom-field values) here.
+         *
+         * @param int             $id      Testimonial id.
+         * @param WP_REST_Request $request The create or update request.
+         */
+        do_action('plugixatestimonial_testimonial_saved', $id, $request);
 
         return $this->success(
             ['id' => $id],
@@ -822,94 +862,6 @@ class TestimonialsController extends RestController {
     }
 
     /**
-     * Get custom field meta for a list of testimonial IDs
-     */
-    private function get_meta_for_testimonials(array $ids): array {
-        global $wpdb;
-
-        if (empty($ids)) {
-            return [];
-        }
-
-        $meta_table = $wpdb->prefix . 'plugixatestimonial_meta';
-
-        // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. The table name is bound as an identifier with %i and every value through prepare(). Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-        $results = $wpdb->get_results(
-            $wpdb->prepare("SELECT testimonial_id, meta_key, meta_value FROM %i WHERE FIND_IN_SET(testimonial_id, %s)", $meta_table,
-                implode(',', array_map('intval', $ids))
-            ),
-            ARRAY_A
-        );
-
-        $map = [];
-        foreach ($results as $row) {
-            $tid = (int) $row['testimonial_id'];
-            if (!isset($map[$tid])) {
-                $map[$tid] = [];
-            }
-            $map[$tid][$row['meta_key']] = $row['meta_value'];
-        }
-
-        return $map;
-    }
-
-    /**
-     * Save custom field meta values for a testimonial
-     */
-    private function save_testimonial_meta(int $testimonial_id, array $custom_fields): void {
-        global $wpdb;
-
-        $meta_table = $wpdb->prefix . 'plugixatestimonial_meta';
-
-        foreach ($custom_fields as $meta_key => $meta_value) {
-            $meta_key = sanitize_key($meta_key);
-            if (empty($meta_key)) {
-                continue;
-            }
-
-            // Check if meta row exists
-            // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. Table names are bound as identifiers with %i and every value through prepare(). Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-            $existing = $wpdb->get_var(
-                $wpdb->prepare("SELECT id FROM %i WHERE testimonial_id = %d AND meta_key = %s", $meta_table,
-                    $testimonial_id,
-                    $meta_key
-                )
-            );
-
-            if ($meta_value === '' || $meta_value === null) {
-                // Delete empty values
-                if ($existing) {
-                    // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    $wpdb->delete($meta_table, [
-                        'testimonial_id' => $testimonial_id,
-                        // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value itself is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                        'meta_key'       => $meta_key,
-                    ]);
-                }
-            } elseif ($existing) {
-                // Update existing
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                $wpdb->update(
-                    $meta_table,
-                    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value itself is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    ['meta_value' => sanitize_text_field($meta_value)],
-                    ['id' => (int) $existing]
-                );
-            } else {
-                // Insert new
-                // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- Custom plugin table; WordPress core has no API for it. No SQL string is assembled here - the table name and every value are passed as arguments to $wpdb's insert()/update()/delete() helper, which escapes and prepares them internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                $wpdb->insert($meta_table, [
-                    'testimonial_id' => $testimonial_id,
-                    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    'meta_key'       => $meta_key,
-                    // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_value -- Custom plugin table; WordPress core has no API for it. These are dedicated columns of the plugin's own meta table, not WP postmeta - the SlowDBQuery sniff targets meta_query lookups against wp_postmeta and does not apply here. The value itself is passed as an argument to the $wpdb helper, which escapes it internally. Object-cache invalidation for these tables is centralised on the REST lifecycle (see PlugixaTestimonial\Core\Cache::register()); admin CRUD reads are intentionally uncached so an editor always sees the row they just wrote.
-                    'meta_value'     => sanitize_text_field($meta_value),
-                ]);
-            }
-        }
-    }
-
-    /**
      * Get categories for a list of testimonial IDs via pivot table
      */
     private function get_categories_for_testimonials(array $ids): array {
@@ -1024,9 +976,6 @@ class TestimonialsController extends RestController {
         if ($request->has_param('source')) {
             $data['source'] = sanitize_text_field($request->get_param('source') ?? '');
         }
-        if ($request->has_param('video_url')) {
-            $data['video_url'] = esc_url_raw($request->get_param('video_url') ?? '');
-        }
         if ($request->has_param('client_photo_id')) {
             $photo_id = $request->get_param('client_photo_id');
             $data['client_photo_id'] = $photo_id ? (int) $photo_id : null;
@@ -1038,7 +987,14 @@ class TestimonialsController extends RestController {
             $data['_categories'] = is_array($categories) ? array_map('intval', $categories) : [];
         }
 
-        return $data;
+        /**
+         * The column values about to be written for a testimonial. An extension adds
+         * the columns it owns (video_url).
+         *
+         * @param array           $data    Column values, plus the internal _categories key.
+         * @param WP_REST_Request $request The create or update request.
+         */
+        return apply_filters('plugixatestimonial_testimonial_data', $data, $request);
     }
 
     private function validate_testimonial_data(array $data, ?int $id = null): array {
@@ -1067,7 +1023,13 @@ class TestimonialsController extends RestController {
     }
 
     public function get_create_params(): array {
-        return [
+        /**
+         * Arguments of the testimonial create/update routes. An extension declares the
+         * request fields it owns (video_url, custom_fields).
+         *
+         * @param array $params Route argument schema.
+         */
+        return apply_filters('plugixatestimonial_testimonial_params', [
             'client_name' => ['type' => 'string', 'required' => true],
             'testimonial_text' => ['type' => 'string', 'required' => true],
             'rating' => ['type' => 'integer', 'default' => 5, 'minimum' => 1, 'maximum' => 5],
@@ -1079,12 +1041,10 @@ class TestimonialsController extends RestController {
             'is_featured' => ['type' => 'boolean', 'default' => false],
             'display_order' => ['type' => 'integer', 'default' => 0],
             'source' => ['type' => 'string', 'required' => false],
-            'video_url' => ['type' => ['string', 'null'], 'required' => false],
             'categories' => ['type' => 'array', 'required' => false],
-            'custom_fields' => ['type' => 'object', 'required' => false],
             'language_code' => ['type' => 'string', 'required' => false],
             'translation_of' => ['type' => 'integer', 'required' => false],
-        ];
+        ]);
     }
 
     public function get_update_params(): array {
